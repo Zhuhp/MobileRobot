@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TimyRobot</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+        <string name="monitoring">Monitoring</string>
+    <string name="add_bt_device">Add BT Device</string>
+    <string name="add_event">Add Event</string>
+    <string name="hello">Hello World, MainScreen!</string>
+	<string name="settings">Settings</string>
+	<string name="no_devices">First you have to add a new Bluetooth device.</string>
+	<string name="no_events">No events selected!</string>
+	<string name="connect">Connect</string>
+	<string name="connected">Connected</string>
+	<string name="disconnect">Disconnect</string>
+	<string name="disconnected">Disconnected</string>
+	<string name="connecting">Connecting</string>
+	<string name="remove">Remove</string>
+	<string name="remove_all">Remove All</string>
+	<string name="force_disable_all">Force Disable All</string>
+	<string name="enable">Enable</string>
+	<string name="disable">Disable</string>
+	<string name="disabled">disabled</string>
+	<string name="force_enable">Force Enable</string>
+	<string name="force_disable">Force Disable</string>
+	<string name="no_plugins_installed">There are no Amarino plug-ins installed on your phone.
+	\n\nInstall the AmarinoPlugInBundle to get some events to start with.</string>
+	<string name="plugin_info_msg">This is a plug-in for Amarino 2.0 and not a standalone application.
+	\n\nYou can add this plug-in to Amarino, by selecting \'Add Event\' within Amarino</string>
+	
+
+	<string name="flag_btn">Flag: %s</string>
+	
+	<!-- Context menu MainScreen -->
+	<string name="show_events">Show Events</string>
+	<string name="remove_device">Remove Device</string>
+	<string name="menu_about">About</string>
+
+	<!-- Service messages -->
+	<string name="service_started_title">background service started</string>
+	<string name="service_notify_text">Amarino is running</string>
+	<string name="service_active_connections">Active connections: %s</string>
+	<string name="service_no_active_connections">No active connections</string>
+	<string name="service_connecting_to">Connecting to %s</string>
+	<string name="service_connection_to_failed">Connection failed.</string>
+	<string name="service_connected_to">Connected to %s</string>
+	<string name="service_disconnected_from">Disconnected from %s</string>
+	<string name="service_pairing_request">Pairing request for %s\n\nPull down your status bar to enter the pin.</string>
+	<string name="service_address_invalid">Given address [%s] is invalid. Must be of form xx:xx:xx:xx:xx:xx</string>
+	<string name="service_message_to_send">message to send: %s</string>
+	<string name="service_ready_to_shutdown">service ready to shutdown</string>
+	
+	<!-- Titles -->
+	<string name="monitoring_title">"Monitoring"</string>
+	<string name="settings_title">"Settings"</string>
+
+</resources>
