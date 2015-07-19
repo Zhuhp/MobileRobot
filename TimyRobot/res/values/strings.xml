@@ -55,5 +55,9 @@
 	<string name="monitoring_title">"Monitoring"</string>
 	<string name="settings_title">"Settings"</string>
     <string name="title_activity_emotion">EmotionActivity</string>
+	<string name="find_blue">寻找蓝牙</string>
+	<string name="send_data">发送数据</string>
+	<string name="blue_not_avaliable">对不起，蓝牙不可用</string>
+	<string name="blue_not_enable">Bluetooth was not enabled.</string>
 
 </resources>

@@ -284,11 +284,20 @@ public class BluetoothService {
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
             try {
-                if(BluetoothService.this.isAndroid)
+                //zhuhp start
+//                UUID uuid = mmDevice.getUuids()[0].getUuid();
+                if(BluetoothService.this.isAndroid) {
                     tmp = device.createRfcommSocketToServiceRecord(UUID_ANDROID_DEVICE);
-                else
+//                    tmp = device.createRfcommSocketToServiceRecord(uuid);
+                }
+                else {
                     tmp = device.createRfcommSocketToServiceRecord(UUID_OTHER_DEVICE);
-            } catch (IOException e) { }
+//                    tmp = device.createRfcommSocketToServiceRecord(uuid);
+                }
+                //zhuhp end
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mmSocket = tmp;
         }
 
@@ -303,9 +312,12 @@ public class BluetoothService {
                 mmSocket.connect();
             } catch (IOException e) {
                 // Close the socket
+                e.printStackTrace();
                 try {
                     mmSocket.close();
-                } catch (IOException e2) { }
+                } catch (IOException e2) {
+                    e.printStackTrace();
+                }
                 connectionFailed();
                 return;
             }
