@@ -5,17 +5,24 @@
     tools:context="com.timyrobot.ui.activity.EmotionActivity">
 
     <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btn_find_blue"
         android:layout_width="wrap_content"
         android:text="@string/find_blue"
+        android:visibility="gone"
         android:layout_height="wrap_content" />
     <Button
         android:id="@+id/btn_send_data"
         android:layout_width="wrap_content"
         android:text="@string/send_data"
+        android:visibility="gone"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv_emotion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

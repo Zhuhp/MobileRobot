@@ -38,9 +38,7 @@ public class CameraInterface {
 		}
 		return mCameraInterface;
 	}
-	/**´ò¿ªCamera
-	 * @param callback
-	 */
+
 	public void doOpenCamera(CamOpenOverCallback callback, int cameraId){
 		Log.i(TAG, "Camera open....");
 		mCamera = Camera.open(cameraId);
@@ -49,10 +47,7 @@ public class CameraInterface {
 			callback.cameraHasOpened();
 		}
 	}
-	/**¿ªÆôÔ¤ÀÀ
-	 * @param holder
-	 * @param previewRate
-	 */
+
 	public void doStartPreview(SurfaceHolder holder, float previewRate){
 		Log.i(TAG, "doStartPreview...");
 		if(isPreviewing){
@@ -62,10 +57,9 @@ public class CameraInterface {
 		if(mCamera != null){
 
 			mParams = mCamera.getParameters();
-			mParams.setPictureFormat(PixelFormat.JPEG);//ÉèÖÃÅÄÕÕºó´æ´¢µÄÍ¼Æ¬¸ñÊ½
+			mParams.setPictureFormat(PixelFormat.JPEG);
 			CamParaUtil.getInstance().printSupportPictureSize(mParams);
 			CamParaUtil.getInstance().printSupportPreviewSize(mParams);
-			//ÉèÖÃPreviewSizeºÍPictureSize
 			Size pictureSize = CamParaUtil.getInstance().getPropPictureSize(
 					mParams.getSupportedPictureSizes(),previewRate, 800);
 			mParams.setPictureSize(pictureSize.width, pictureSize.height);
@@ -84,7 +78,7 @@ public class CameraInterface {
 
 			try {
 				mCamera.setPreviewDisplay(holder);
-				mCamera.startPreview();//¿ªÆôÔ¤ÀÀ
+				mCamera.startPreview();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -93,16 +87,14 @@ public class CameraInterface {
 			isPreviewing = true;
 			mPreviwRate = previewRate;
 
-			mParams = mCamera.getParameters(); //ÖØĞÂgetÒ»´Î
-			Log.i(TAG, "×îÖÕÉèÖÃ:PreviewSize--With = " + mParams.getPreviewSize().width
+			mParams = mCamera.getParameters();
+			Log.i(TAG, ":PreviewSize--With = " + mParams.getPreviewSize().width
 					+ "Height = " + mParams.getPreviewSize().height);
-			Log.i(TAG, "×îÖÕÉèÖÃ:PictureSize--With = " + mParams.getPictureSize().width
+			Log.i(TAG, ":PictureSize--With = " + mParams.getPictureSize().width
 					+ "Height = " + mParams.getPictureSize().height);
 		}
 	}
-	/**
-	 * Í£Ö¹Ô¤ÀÀ£¬ÊÍ·ÅCamera
-	 */
+
 	public void doStopCamera(){
 		if(null != mCamera)
 		{
@@ -114,18 +106,13 @@ public class CameraInterface {
 			mCamera = null;     
 		}
 	}
-	/**
-	 * ÅÄÕÕ
-	 */
+
 	public void doTakePicture(){
 		if(isPreviewing && (mCamera != null)){
 			mCamera.takePicture(mShutterCallback, null, mJpegPictureCallback);
 		}
 	}
-	
-	/**»ñÈ¡Camera.Parameters
-	 * @return
-	 */
+
 	public Camera.Parameters getCameraParams(){
 		if(mCamera != null){
 			mParams = mCamera.getParameters();
@@ -133,9 +120,7 @@ public class CameraInterface {
 		}
 		return null;
 	}
-	/**»ñÈ¡CameraÊµÀı
-	 * @return
-	 */
+
 	public Camera getCameraDevice(){
 		return mCamera;
 	}
@@ -151,9 +136,8 @@ public class CameraInterface {
 		
 	
 
-	/*ÎªÁËÊµÏÖÅÄÕÕµÄ¿ìÃÅÉùÒô¼°ÅÄÕÕ±£´æÕÕÆ¬ĞèÒªÏÂÃæÈı¸ö»Øµ÷±äÁ¿*/
 	ShutterCallback mShutterCallback = new ShutterCallback() 
-	//¿ìÃÅ°´ÏÂµÄ»Øµ÷£¬ÔÚÕâÀïÎÒÃÇ¿ÉÒÔÉèÖÃÀàËÆ²¥·Å¡°ßÇàê¡±ÉùÖ®ÀàµÄ²Ù×÷¡£Ä¬ÈÏµÄ¾ÍÊÇßÇàê¡£
+	//ï¿½ï¿½ï¿½Å°ï¿½ï¿½ÂµÄ»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ²ï¿½ï¿½Å¡ï¿½ï¿½ï¿½ï¿½ê¡±ï¿½ï¿½Ö®ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ÏµÄ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¡£
 	{
 		public void onShutter() {
 			// TODO Auto-generated method stub
@@ -161,7 +145,7 @@ public class CameraInterface {
 		}
 	};
 	PictureCallback mRawCallback = new PictureCallback() 
-	// ÅÄÉãµÄÎ´Ñ¹ËõÔ­Êı¾İµÄ»Øµ÷,¿ÉÒÔÎªnull
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Î´Ñ¹ï¿½ï¿½Ô­ï¿½ï¿½ï¿½İµÄ»Øµï¿½,ï¿½ï¿½ï¿½ï¿½Îªnull
 	{
 
 		public void onPictureTaken(byte[] data, Camera camera) {
@@ -171,26 +155,23 @@ public class CameraInterface {
 		}
 	};
 	PictureCallback mJpegPictureCallback = new PictureCallback() 
-	//¶ÔjpegÍ¼ÏñÊı¾İµÄ»Øµ÷,×îÖØÒªµÄÒ»¸ö»Øµ÷
+	//ï¿½ï¿½jpegÍ¼ï¿½ï¿½ï¿½ï¿½ï¿½İµÄ»Øµï¿½,ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ò»ï¿½ï¿½ï¿½Øµï¿½
 	{
 		public void onPictureTaken(byte[] data, Camera camera) {
 			// TODO Auto-generated method stub
 			Log.i(TAG, "myJpegCallback:onPictureTaken...");
 			Bitmap b = null;
 			if(null != data){
-				b = BitmapFactory.decodeByteArray(data, 0, data.length);//dataÊÇ×Ö½ÚÊı¾İ£¬½«Æä½âÎö³ÉÎ»Í¼
+				b = BitmapFactory.decodeByteArray(data, 0, data.length);
 				mCamera.stopPreview();
 				isPreviewing = false;
 			}
-			//±£´æÍ¼Æ¬µ½sdcard
 			if(null != b)
 			{
-				//ÉèÖÃFOCUS_MODE_CONTINUOUS_VIDEO)Ö®ºó£¬myParam.set("rotation", 90)Ê§Ğ§¡£
-				//Í¼Æ¬¾¹È»²»ÄÜĞı×ªÁË£¬¹ÊÕâÀïÒªĞı×ªÏÂ
+
 				Bitmap rotaBitmap = ImageUtil.getRotateBitmap(b, 90.0f);
 				FileUtil.saveBitmap(rotaBitmap);
 			}
-			//ÔÙ´Î½øÈëÔ¤ÀÀ
 			mCamera.startPreview();
 			isPreviewing = true;
 		}

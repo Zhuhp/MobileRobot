@@ -3,10 +3,13 @@ package com.timyrobot.ui.present.iml;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.robot.R;
 import com.timyrobot.service.bluetooth.BluetoothManager;
+import com.timyrobot.service.emotion.provider.EmotionProviderFactory;
+import com.timyrobot.service.emotion.EmotionManager;
 import com.timyrobot.ui.present.IEmotionPresent;
 import com.timyrobot.ui.view.IEmotionView;
 
@@ -19,9 +22,16 @@ import app.akexorcist.bluetotohspp.library.DeviceList;
 public class EmotionPresent implements IEmotionPresent{
 
     private IEmotionView mView;
+    private EmotionManager mEmotionManager;
 
     public EmotionPresent(IEmotionView view){
         mView = view;
+    }
+
+    @Override
+    public void initEmotionManager(ImageView iv,Context ctx){
+        mEmotionManager = new EmotionManager(iv,ctx, EmotionProviderFactory.getEmotionProvider(0));
+        mEmotionManager.changeEmotion("blink");
     }
 
     @Override

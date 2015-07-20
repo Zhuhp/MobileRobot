@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.robot.R;
+import com.timyrobot.service.emotion.EmotionManager;
 import com.timyrobot.ui.present.IEmotionPresent;
 import com.timyrobot.ui.present.iml.EmotionPresent;
 import com.timyrobot.ui.view.IEmotionView;
@@ -16,17 +18,23 @@ import app.akexorcist.bluetotohspp.library.BluetoothState;
 public class EmotionActivity extends Activity implements IEmotionView,View.OnClickListener{
 
     private IEmotionPresent mPresent;
+    private EmotionManager mEmotionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
-        findViewById(R.id.btn_find_blue).setOnClickListener(this);
-        findViewById(R.id.btn_send_data).setOnClickListener(this);
         mPresent = new EmotionPresent(this);
         if(!mPresent.initBluetoothService(this)){
             finish();
         }
+        mPresent.initEmotionManager((ImageView)findViewById(R.id.iv_emotion),this);
+        initView();
+    }
+
+    private void initView(){
+        findViewById(R.id.btn_find_blue).setOnClickListener(this);
+        findViewById(R.id.btn_send_data).setOnClickListener(this);
     }
 
     @Override
