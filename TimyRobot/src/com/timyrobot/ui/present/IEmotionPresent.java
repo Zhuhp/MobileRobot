@@ -10,6 +10,9 @@ import android.widget.ImageView;
  */
 public interface IEmotionPresent {
 
+    //语音，智能对话
+    void initTalk(Context context);
+
     //表情操作
     void initEmotionManager(ImageView iv,Context context);
 
