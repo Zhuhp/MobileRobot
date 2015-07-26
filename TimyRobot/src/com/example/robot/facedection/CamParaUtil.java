@@ -37,7 +37,7 @@ public class CamParaUtil {
 			i++;
 		}
 		if(i == list.size()){
-			i = 0;//如果没找到，就选最小的size
+			i = 0;
 		}
 		return list.get(i);
 	}
@@ -53,7 +53,7 @@ public class CamParaUtil {
 			i++;
 		}
 		if(i == list.size()){
-			i = 0;//如果没找到，就选最小的size
+			i = 0;
 		}
 		return list.get(i);
 	}
@@ -85,7 +85,7 @@ public class CamParaUtil {
 
 	}
 
-	/**打印支持的previewSizes
+	/**
 	 * @param params
 	 */
 	public  void printSupportPreviewSize(Camera.Parameters params){
@@ -97,7 +97,7 @@ public class CamParaUtil {
 	
 	}
 
-	/**打印支持的pictureSizes
+	/**
 	 * @param params
 	 */
 	public  void printSupportPictureSize(Camera.Parameters params){
@@ -108,7 +108,7 @@ public class CamParaUtil {
 					+" height = " + size.height);
 		}
 	}
-	/**打印支持的聚焦模式
+	/**
 	 * @param params
 	 */
 	public void printSupportFocusMode(Camera.Parameters params){

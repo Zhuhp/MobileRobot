@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
-        android:name=".tuling.IRApplication"
+        android:name="com.timyrobot.IRApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
@@ -52,7 +52,7 @@
 
         <activity
             android:name="com.timyrobot.ui.activity.EmotionActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_emotion" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

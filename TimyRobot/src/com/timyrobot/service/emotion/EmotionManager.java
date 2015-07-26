@@ -15,7 +15,7 @@ import com.timyrobot.service.emotion.provider.IEmotionProvider;
 public class EmotionManager {
 
     public enum EmotionType{
-        DEFAULT,CUSTOM;
+        DEFAULT,CUSTOM
     }
 
     private Context mContext;

@@ -15,7 +15,7 @@ public class FileUtil {
 	private static   String storagePath = "";
 	private static final String DST_FOLDER_NAME = "PlayCamera";
 
-	/**初始化保存路径
+	/**
 	 * @return
 	 */
 	private static String initPath(){
@@ -29,7 +29,7 @@ public class FileUtil {
 		return storagePath;
 	}
 
-	/**保存Bitmap到sdcard
+	/**
 	 * @param b
 	 */
 	public static void saveBitmap(Bitmap b){
@@ -44,10 +44,10 @@ public class FileUtil {
 			b.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 			bos.flush();
 			bos.close();
-			Log.i(TAG, "saveBitmap成功");
+			Log.i(TAG, "");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			Log.i(TAG, "saveBitmap:失败");
+			Log.i(TAG, "");
 			e.printStackTrace();
 		}
 

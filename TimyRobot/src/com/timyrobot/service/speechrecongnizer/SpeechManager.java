@@ -7,6 +7,9 @@ import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.TextUnderstander;
+import com.iflytek.cloud.TextUnderstanderListener;
+import com.iflytek.cloud.UnderstanderResult;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.tuling.util.GetTulingResultThread;
@@ -16,22 +19,23 @@ import com.tuling.util.TulingManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.xml.transform.Result;
-
 /**
  * Created by zhangtingting on 15/7/20.
  */
 public class SpeechManager {
 
-    public static final String TULING_KEY = "1deb50ef7d72b9e73907598a50abc60f";
+    public static final String TULING_KEY = "777e74f738a03b4d855fe611c3e7fcc3";
     public static final String TAG = "tuling";
 
     private Context mCtx;
     private RecognizerDialog mIatDialog;
     private SpeechSynthesizer mSST;
+    private TextUnderstander mUnderstander;
     private TulingManager mTulingManager;
 
-    public SpeechManager(Context ctx){
+    private ConversationListener mListener;
+
+    public SpeechManager(Context ctx,ConversationListener listener){
         mCtx = ctx;
         mIatDialog = new RecognizerDialog(mCtx, null);
         mIatDialog.setListener(mRecognizerListener);
@@ -40,7 +44,9 @@ public class SpeechManager {
         mSST.setParameter(SpeechConstant.SPEED, "35");
         mSST.setParameter(SpeechConstant.VOLUME, "80");
         mSST.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
+        mUnderstander = TextUnderstander.createTextUnderstander(mCtx,null);
         mTulingManager = new TulingManager(mCtx);
+        mListener = listener;
     }
 
     public void startConversation(){
@@ -48,6 +54,18 @@ public class SpeechManager {
             mIatDialog.show();
         }
     }
+
+    private TextUnderstanderListener mUnderstanderListener = new TextUnderstanderListener() {
+        @Override
+        public void onResult(UnderstanderResult understanderResult) {
+
+        }
+
+        @Override
+        public void onError(SpeechError speechError) {
+
+        }
+    };
 
     private RecognizerDialogListener mRecognizerListener = new RecognizerDialogListener() {
 
@@ -61,11 +79,17 @@ public class SpeechManager {
             String parseResult = SpeechJsonParser.parseIatResult(
                     recognizerResult.getResultString());
             result.append(parseResult);
+            Log.d(TAG,result.toString());
+            Log.d(TAG, "isLast:" + isLast);
             if(!isLast){
                 //并不是最后一次解析的数据
                 return;
             }
-            new GetTulingResultThread(TULING_KEY, result.toString(),mWatcher);
+            String content = result.toString();
+            if(mListener != null){
+                mListener.onUserTalk(content);
+            }
+            new GetTulingResultThread(TULING_KEY, content, mWatcher).start();
             result = null;
         }
 
@@ -75,6 +99,8 @@ public class SpeechManager {
                 mIatDialog.dismiss();
             }
         }
+
+
     };
 
     private ResultWatcher mWatcher = new ResultWatcher() {
@@ -85,6 +111,9 @@ public class SpeechManager {
                 JSONObject object = new JSONObject(s);
                 String result = object.getString("text");
                 result = result.replace("br", "");
+                if(mListener != null){
+                    mListener.onRobotTalk(result);
+                }
                 if (!mSST.isSpeaking()) {
                     mSST.startSpeaking(result, null);
                 }
@@ -93,4 +122,27 @@ public class SpeechManager {
             }
         }
     };
+
+    /**
+     * 对话的监听流程
+     */
+    public interface ConversationListener{
+
+        /**
+         * 用户意图
+         */
+        void onUserIntent();
+
+        /**
+         * 用户谈话的内容
+         * @param content
+         */
+        void onUserTalk(String content);
+
+        /**
+         * 机器人谈话的内容
+         * @param content
+         */
+        void onRobotTalk(String content);
+    }
 }

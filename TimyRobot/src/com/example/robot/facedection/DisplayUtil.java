@@ -30,7 +30,7 @@ public class DisplayUtil {
 	} 
 	
 	/**
-	 * 获取屏幕宽度和高度，单位为px
+	 *
 	 * @param context
 	 * @return
 	 */
@@ -44,7 +44,7 @@ public class DisplayUtil {
 	}
 	
 	/**
-	 * 获取屏幕长宽比
+	 *
 	 * @param context
 	 * @return
 	 */

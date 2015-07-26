@@ -53,14 +53,14 @@ public class FaceView extends ImageView {
 		boolean isMirror = false;
 		int Id = CameraInterface.getInstance().getCameraId();
 		if(Id == CameraInfo.CAMERA_FACING_BACK){
-			isMirror = false; //后置Camera无需mirror
+			isMirror = false;
 		}else if(Id == CameraInfo.CAMERA_FACING_FRONT){
-			isMirror = true;  //前置Camera需要mirror
+			isMirror = true;
 		}
 		Util.prepareMatrix(mMatrix, isMirror, 90, getWidth(), getHeight());
 		canvas.save();
-		mMatrix.postRotate(0); //Matrix.postRotate默认是顺时针
-		canvas.rotate(-0);   //Canvas.rotate()默认是逆时针 
+		mMatrix.postRotate(0);
+		canvas.rotate(-0);
 		for(int i = 0; i< mFaces.length; i++){
 			mRect.set(mFaces[i].rect);
 			mMatrix.mapRect(mRect);

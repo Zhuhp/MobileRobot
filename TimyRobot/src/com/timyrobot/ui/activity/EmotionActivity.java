@@ -25,10 +25,11 @@ public class EmotionActivity extends Activity implements IEmotionView,View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
         mPresent = new EmotionPresent(this);
-        if(!mPresent.initBluetoothService(this)){
-            finish();
-        }
+//        if(!mPresent.initBluetoothService(this)){
+//            finish();
+//        }
         mPresent.initEmotionManager((ImageView)findViewById(R.id.iv_emotion),this);
+        mPresent.initTalk(this);
         initView();
     }
 
@@ -40,13 +41,13 @@ public class EmotionActivity extends Activity implements IEmotionView,View.OnCli
     @Override
     protected void onStart() {
         super.onStart();
-        mPresent.startBluetoothService(this);
+//        mPresent.startBluetoothService(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresent.stopBluetoothService();
+//        mPresent.stopBluetoothService();
     }
 
     @Override
@@ -56,7 +57,8 @@ public class EmotionActivity extends Activity implements IEmotionView,View.OnCli
                 mPresent.findBlue(this);
                 break;
             case R.id.btn_send_data:
-                mPresent.sendData("hello");
+//                mPresent.sendData("hello");
+                mPresent.startTalk();
                 break;
         }
     }
