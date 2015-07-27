@@ -35,11 +35,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
 
         <service android:name=".amarino.AmarinoService" />
@@ -52,17 +47,20 @@
 
         <activity
             android:name="com.timyrobot.ui.activity.EmotionActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_emotion" >
+            android:screenOrientation="portrait" >
+
+        </activity>
+        <activity
+            android:name="com.timyrobot.ui.activity.BluetoothServerActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="com.timyrobot.ui.activity.BluetoothServerActivity"
-            android:label="@string/title_activity_emotion" >
+            android:name="com.timyrobot.test.BluetoothTestActivity" >
 
         </activity>
     </application>

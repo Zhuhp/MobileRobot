@@ -36,7 +36,11 @@ public class SpeechManager {
 
     private ConversationListener mListener;
 
+    //判断是否有一个对话正在进行，有的话就不开起新的对话
     private boolean isConversion = false;
+
+    //判断语音识别框是否有返回结果，如果点击屏幕，识别框会消失
+    //导致对话提前结束，这是要设置isConversion为false
     private boolean hasResult = false;
 
     public SpeechManager(Context ctx,ConversationListener listener){
