@@ -26,7 +26,7 @@ public class BluetoothTestActivity extends Activity implements IEmotionView,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emotion);
+        setContentView(R.layout.activity_bluetooth_test);
         mBluePresent = new BluetoothPresent();
         if(!mBluePresent.initBluetoothService(this)){
             finish();
