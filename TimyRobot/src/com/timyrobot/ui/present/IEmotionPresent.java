@@ -17,12 +17,5 @@ public interface IEmotionPresent {
     //表情操作
     void initEmotionManager(ImageView iv,Context context);
 
-    //蓝牙操作
-    boolean initBluetoothService(Context context);
-    void startBluetoothService(Activity context);
-    void sendData(String cmd);
-    void stopBluetoothService();
-    void findBlue(Activity context);
-    void resolveBlueResult(Intent intent);
-    void enableBlue();
+
 }

@@ -1,6 +1,7 @@
 package com.timyrobot.service.speechrecongnizer;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import com.iflytek.cloud.RecognizerResult;
@@ -35,10 +36,14 @@ public class SpeechManager {
 
     private ConversationListener mListener;
 
+    private boolean isConversion = false;
+    private boolean hasResult = false;
+
     public SpeechManager(Context ctx,ConversationListener listener){
         mCtx = ctx;
         mIatDialog = new RecognizerDialog(mCtx, null);
         mIatDialog.setListener(mRecognizerListener);
+        mIatDialog.setOnDismissListener(mDismissListener);
         mSST = SpeechSynthesizer.createSynthesizer(mCtx, null);
         mSST.setParameter(SpeechConstant.VOICE_NAME, "xiaoyu");
         mSST.setParameter(SpeechConstant.SPEED, "35");
@@ -50,7 +55,9 @@ public class SpeechManager {
     }
 
     public void startConversation(){
-        if((!mSST.isSpeaking()) && (!mIatDialog.isShowing())){
+        if((!isConversion) && (!mSST.isSpeaking()) && (!mIatDialog.isShowing())){
+            isConversion = true;
+            hasResult = false;
             mIatDialog.show();
         }
     }
@@ -73,6 +80,8 @@ public class SpeechManager {
 
         @Override
         public void onResult(RecognizerResult recognizerResult, boolean isLast) {
+            hasResult = true;
+            Log.d(TAG,"onResult");
             if(result == null){
                 result = new StringBuilder();
             }
@@ -98,9 +107,19 @@ public class SpeechManager {
             if(mIatDialog.isShowing()){
                 mIatDialog.dismiss();
             }
+            isConversion = false;
         }
 
 
+    };
+
+    private DialogInterface.OnDismissListener mDismissListener = new DialogInterface.OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            if(!hasResult){
+                isConversion = false;
+            }
+        }
     };
 
     private ResultWatcher mWatcher = new ResultWatcher() {
@@ -120,6 +139,7 @@ public class SpeechManager {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            isConversion = false;
         }
     };
 

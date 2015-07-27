@@ -8,28 +8,43 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.robot.R;
-import com.timyrobot.service.emotion.EmotionManager;
+import com.example.robot.facedection.CameraSurfaceView;
+import com.example.robot.facedection.FaceView;
+import com.timyrobot.listener.FaceDetectListener;
+import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.IEmotionPresent;
+import com.timyrobot.ui.present.IFaceDectectPresent;
+import com.timyrobot.ui.present.iml.BluetoothPresent;
 import com.timyrobot.ui.present.iml.EmotionPresent;
+import com.timyrobot.ui.present.iml.FaceDectectPresent;
 import com.timyrobot.ui.view.IEmotionView;
 
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
-public class EmotionActivity extends Activity implements IEmotionView,View.OnClickListener{
+public class EmotionActivity extends Activity implements IEmotionView,
+        View.OnClickListener,FaceDetectListener{
 
     private IEmotionPresent mPresent;
-    private EmotionManager mEmotionManager;
+    private IBluetoothPresent mBluePresent;
+    private IFaceDectectPresent mFacePresent;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
         mPresent = new EmotionPresent(this);
-//        if(!mPresent.initBluetoothService(this)){
+        mBluePresent = new BluetoothPresent();
+        mFacePresent = new FaceDectectPresent(this,this);
+//        if(!mBluePresent.initBluetoothService(this)){
 //            finish();
 //        }
-        mPresent.initEmotionManager((ImageView)findViewById(R.id.iv_emotion),this);
+        mPresent.initEmotionManager((ImageView) findViewById(R.id.iv_emotion), this);
         mPresent.initTalk(this);
+
+        mFacePresent.initFaceDectect((CameraSurfaceView) findViewById(R.id.camera_surfaceview),
+                (FaceView) findViewById(R.id.face_view));
         initView();
     }
 
@@ -41,24 +56,25 @@ public class EmotionActivity extends Activity implements IEmotionView,View.OnCli
     @Override
     protected void onStart() {
         super.onStart();
-//        mPresent.startBluetoothService(this);
+        mFacePresent.startDetect();
+//        mBluePresent.startBluetoothService(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        mPresent.stopBluetoothService();
+//        mBluePresent.stopBluetoothService();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_find_blue:
-                mPresent.findBlue(this);
+//                mBluePresent.findBlue(this);
                 break;
             case R.id.btn_send_data:
-//                mPresent.sendData("hello");
-                mPresent.startTalk();
+//                mBluePresent.sendData("hello");
+//                mPresent.startTalk();
                 break;
         }
     }
@@ -69,12 +85,12 @@ public class EmotionActivity extends Activity implements IEmotionView,View.OnCli
         switch (requestCode){
             case BluetoothState.REQUEST_CONNECT_DEVICE:
                 if(resultCode == RESULT_OK) {
-                    mPresent.resolveBlueResult(data);
+                    mBluePresent.resolveBlueResult(data);
                 }
                 break;
             case BluetoothState.REQUEST_ENABLE_BT:
                 if(resultCode == RESULT_OK){
-                    mPresent.enableBlue();
+                    mBluePresent.enableBlue();
                 }else{
                     Toast.makeText(this
                             , R.string.blue_not_enable
@@ -83,5 +99,10 @@ public class EmotionActivity extends Activity implements IEmotionView,View.OnCli
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onFaceDetect() {
+        mPresent.startTalk();
     }
 }
