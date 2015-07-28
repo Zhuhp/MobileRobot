@@ -11,4 +11,9 @@ public class UnknownIntentParser implements IUserIntentParser{
     public Action parseIntent(String result) {
         return null;
     }
+
+    @Override
+    public String getRobotTalkContent() {
+        return null;
+    }
 }

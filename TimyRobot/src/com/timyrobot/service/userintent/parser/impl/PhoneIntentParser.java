@@ -31,4 +31,9 @@ public class PhoneIntentParser implements IUserIntentParser{
         }
         return null;
     }
+
+    @Override
+    public String getRobotTalkContent() {
+        return null;
+    }
 }
