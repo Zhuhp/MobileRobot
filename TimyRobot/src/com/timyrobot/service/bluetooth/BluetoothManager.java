@@ -21,6 +21,7 @@ public enum BluetoothManager {
 
     private BluetoothSPP mBlueSpp;
     private Context mContext;
+    private IBlueConnectListener mBlueConnectListener;
 
     private String mBlueAddress;
 
@@ -36,6 +37,10 @@ public enum BluetoothManager {
         mBlueSpp.setBluetoothConnectionListener(mConnectListener);
         mBlueSpp.setOnDataReceivedListener(mDataReceiverListener);
         return mBlueSpp.isBluetoothAvailable();
+    }
+
+    public void setConnectListener(IBlueConnectListener listener){
+        mBlueConnectListener = listener;
     }
 
     /**
@@ -93,6 +98,12 @@ public enum BluetoothManager {
         mBlueSpp.connect(data);
     }
 
+    public void disconnect(){
+        if(mBlueSpp != null) {
+            mBlueSpp.disconnect();
+        }
+    }
+
     public void sendData(String cmd){
         if(mBlueSpp == null){
             return;
@@ -100,24 +111,34 @@ public enum BluetoothManager {
         mBlueSpp.send(cmd,true);
     }
 
-    private BluetoothSPP.BluetoothConnectionListener mConnectListener = new BluetoothSPP.BluetoothConnectionListener() {
+    private BluetoothSPP.BluetoothConnectionListener mConnectListener =
+            new BluetoothSPP.BluetoothConnectionListener() {
         @Override
         public void onDeviceConnected(String name, String address) {
             Toast.makeText(mContext
                     , "Connected to " + name + "\n" + address
                     , Toast.LENGTH_SHORT).show();
+            if(mBlueConnectListener != null){
+                mBlueConnectListener.connect(name,address);
+            }
         }
 
         @Override
         public void onDeviceDisconnected() {
             Toast.makeText(mContext
                     , "Connection lost", Toast.LENGTH_SHORT).show();
+            if(mBlueConnectListener != null){
+                mBlueConnectListener.disconnect();
+            }
         }
 
         @Override
         public void onDeviceConnectionFailed() {
             Toast.makeText(mContext
                     , "Unable to connect", Toast.LENGTH_SHORT).show();
+            if(mBlueConnectListener != null){
+                mBlueConnectListener.connectFailed();
+            }
         }
     };
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.robot.R;
+import com.timyrobot.service.userintent.action.Action;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.iml.BluetoothPresent;
 import com.timyrobot.ui.view.IEmotionView;
@@ -44,12 +45,16 @@ public class BluetoothTestActivity extends Activity implements IEmotionView,
                 mBluePresent.sendData("hello"+key);
                 key+=13;
                 break;
+            case R.id.btn_disconnect:
+                mBluePresent.disconnect();
+                break;
         }
     }
 
     private void initView(){
         findViewById(R.id.btn_find_blue).setOnClickListener(this);
         findViewById(R.id.btn_send_data).setOnClickListener(this);
+        findViewById(R.id.btn_disconnect).setOnClickListener(this);
     }
 
     @Override
@@ -84,5 +89,10 @@ public class BluetoothTestActivity extends Activity implements IEmotionView,
                 }
                 break;
         }
+    }
+
+    @Override
+    public void userAction(Action action) {
+
     }
 }

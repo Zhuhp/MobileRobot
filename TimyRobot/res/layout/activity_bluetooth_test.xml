@@ -16,4 +16,9 @@
         android:layout_width="wrap_content"
         android:text="@string/send_data"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_disconnect"
+        android:layout_width="wrap_content"
+        android:text="@string/str_disconnect"
+        android:layout_height="wrap_content" />
 </LinearLayout>

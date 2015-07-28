@@ -40,6 +40,7 @@ public class CameraInterface {
 
 	public void doOpenCamera(CamOpenOverCallback callback, int cameraId){
 		Log.i(TAG, "Camera open....");
+		cameraId = 0;
 		mCamera = Camera.open(cameraId);
 		mCameraId = cameraId;
 		if(callback != null){

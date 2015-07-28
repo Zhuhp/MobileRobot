@@ -11,6 +11,7 @@ import com.example.robot.R;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
 import com.timyrobot.listener.FaceDetectListener;
+import com.timyrobot.service.userintent.action.Action;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.IEmotionPresent;
 import com.timyrobot.ui.present.IFaceDectectPresent;
@@ -18,6 +19,7 @@ import com.timyrobot.ui.present.iml.BluetoothPresent;
 import com.timyrobot.ui.present.iml.EmotionPresent;
 import com.timyrobot.ui.present.iml.FaceDectectPresent;
 import com.timyrobot.ui.view.IEmotionView;
+import com.timyrobot.utils.ToastUtils;
 
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
@@ -104,5 +106,10 @@ public class EmotionActivity extends Activity implements IEmotionView,
     @Override
     public void onFaceDetect() {
         mPresent.startTalk();
+    }
+
+    @Override
+    public void userAction(Action action) {
+        ToastUtils.toastShort(this,action.service+";"+action.operation);
     }
 }

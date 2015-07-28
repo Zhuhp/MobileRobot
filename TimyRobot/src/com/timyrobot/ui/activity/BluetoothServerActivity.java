@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.robot.R;
@@ -25,6 +26,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothService;
  */
 public class BluetoothServerActivity extends Activity{
 
+    private static final String SERVER_TAG = "server_tag";
     private static final int REQUEST_ENABLE_BT = 0x100;
     private static final int MESSAGE_READ = 0x200;
     private BluetoothAdapter mBlueAdapter;
@@ -90,13 +92,17 @@ public class BluetoothServerActivity extends Activity{
             while (true) {
                 try {
                     socket = mmServerSocket.accept();
+                    Log.d(SERVER_TAG,"accept:"+socket.toString());
                 } catch (IOException e) {
+                    Log.d(SERVER_TAG,"accept IOException");
                     break;
                 }
                 // If a connection was accepted
                 if (socket != null) {
                     // Do work to manage the connection (in a separate thread)
                     manageConnectedSocket(socket);
+
+                    //去除这一段，就可以保持服务端持久存在
                     try {
                         mmServerSocket.close();
                     } catch (IOException e) {
@@ -176,6 +182,13 @@ public class BluetoothServerActivity extends Activity{
                 } catch (IOException e) {
                     break;
                 }
+            }
+            try {
+                mmInStream.close();
+                mmOutStream.close();
+                mmSocket.close();
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
 

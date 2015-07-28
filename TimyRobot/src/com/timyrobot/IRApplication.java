@@ -21,7 +21,7 @@ public class IRApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		SpeechUtility.createUtility(this, SpeechConstant.APPID + "=5584c37d");
+		SpeechUtility.createUtility(this, SpeechConstant.APPID + "=55b4dd98");
 		EmotionProviderFactory.init(this);
 	}
 

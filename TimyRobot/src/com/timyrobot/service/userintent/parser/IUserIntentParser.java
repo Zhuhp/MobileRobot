@@ -8,4 +8,5 @@ import com.timyrobot.service.userintent.action.Action;
 public interface IUserIntentParser {
 
     Action parseIntent(String result);
+    String getRobotTalkContent();
 }

@@ -1,16 +1,28 @@
 package com.example.robot.view;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import it.gerdavax.easybluetooth.LocalDevice;
-import it.gerdavax.easybluetooth.ReadyListener;
-import it.gerdavax.easybluetooth.RemoteDevice;
-import it.gerdavax.easybluetooth.ScanListener;
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.graphics.Point;
+import android.hardware.Camera;
+import android.hardware.Camera.Face;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
@@ -25,53 +37,28 @@ import com.example.robot.facedection.DisplayUtil;
 import com.example.robot.facedection.EventUtil;
 import com.example.robot.facedection.FaceView;
 import com.example.robot.facedection.GoogleFaceDetect;
-import com.example.robot.tuling.IRApplication;
 import com.example.robot.tuling.JsonParser;
 import com.example.robot.tuling.WordsMeanParser;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
-import com.iflytek.cloud.d.a.m;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.tuling.util.GetTulingResultThread;
 import com.tuling.util.ResultWatcher;
 import com.tuling.util.TulingManager;
 
-import android.R.integer;
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.pm.ActivityInfo;
-import android.graphics.PixelFormat;
-import android.graphics.Point;
-import android.hardware.Camera;
-import android.hardware.Camera.Face;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import it.gerdavax.easybluetooth.LocalDevice;
+import it.gerdavax.easybluetooth.ReadyListener;
+import it.gerdavax.easybluetooth.RemoteDevice;
+import it.gerdavax.easybluetooth.ScanListener;
 
 public class MainActivity extends Activity implements RecognizerDialogListener {
 	private static final String TAG = "MainActivity";

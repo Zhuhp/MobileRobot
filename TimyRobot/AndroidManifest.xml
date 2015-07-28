@@ -48,15 +48,15 @@
         <activity
             android:name="com.timyrobot.ui.activity.EmotionActivity"
             android:screenOrientation="portrait" >
-
-        </activity>
-        <activity
-            android:name="com.timyrobot.ui.activity.BluetoothServerActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.timyrobot.ui.activity.BluetoothServerActivity" >
+
         </activity>
 
         <activity

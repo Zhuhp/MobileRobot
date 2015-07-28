@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.example.robot.R;
 import com.timyrobot.service.bluetooth.BluetoothManager;
+import com.timyrobot.service.bluetooth.IBlueConnectListener;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.utils.ToastUtils;
 
@@ -57,6 +58,16 @@ public class BluetoothPresent implements IBluetoothPresent{
     @Override
     public void enableBlue() {
         BluetoothManager.INSTANCE.enableBlue();
+    }
+
+    @Override
+    public void disconnect() {
+        BluetoothManager.INSTANCE.disconnect();
+    }
+
+    @Override
+    public void setConnectListener(IBlueConnectListener listener) {
+        BluetoothManager.INSTANCE.setConnectListener(listener);
     }
 
 }

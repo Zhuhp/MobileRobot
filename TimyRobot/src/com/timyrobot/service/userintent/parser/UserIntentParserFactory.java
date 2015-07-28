@@ -1,5 +1,6 @@
 package com.timyrobot.service.userintent.parser;
 
+import com.timyrobot.service.userintent.parser.impl.PhoneIntentParser;
 import com.timyrobot.service.userintent.parser.impl.UnknownIntentParser;
 
 /**
@@ -8,7 +9,12 @@ import com.timyrobot.service.userintent.parser.impl.UnknownIntentParser;
 public enum UserIntentParserFactory {
     INSTANCE;
 
-    public IUserIntentParser getParser(String operator){
+    public IUserIntentParser getParser(String service,String operator){
+        if("telephone".equalsIgnoreCase(service)){
+            if("call".equalsIgnoreCase(operator)){
+                return new PhoneIntentParser();
+            }
+        }
         return new UnknownIntentParser();
     }
 }

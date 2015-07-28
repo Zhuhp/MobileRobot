@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.timyrobot.service.bluetooth.IBlueConnectListener;
+
 /**
  * Created by zhangtingting on 15/7/27.
  */
@@ -17,4 +19,6 @@ public interface IBluetoothPresent {
     void findBlue(Activity context);
     void resolveBlueResult(Intent intent);
     void enableBlue();
+    void disconnect();
+    void setConnectListener(IBlueConnectListener listener);
 }
