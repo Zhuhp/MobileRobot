@@ -11,7 +11,7 @@ import com.example.robot.R;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
 import com.timyrobot.listener.FaceDetectListener;
-import com.timyrobot.service.userintent.action.Action;
+import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.IEmotionPresent;
 import com.timyrobot.ui.present.IFaceDectectPresent;
@@ -29,8 +29,6 @@ public class EmotionActivity extends Activity implements IEmotionView,
     private IEmotionPresent mPresent;
     private IBluetoothPresent mBluePresent;
     private IFaceDectectPresent mFacePresent;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

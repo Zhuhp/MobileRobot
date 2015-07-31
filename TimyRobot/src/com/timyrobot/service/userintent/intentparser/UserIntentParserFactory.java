@@ -1,7 +1,7 @@
-package com.timyrobot.service.userintent.parser;
+package com.timyrobot.service.userintent.intentparser;
 
-import com.timyrobot.service.userintent.parser.impl.PhoneIntentParser;
-import com.timyrobot.service.userintent.parser.impl.UnknownIntentParser;
+import com.timyrobot.service.userintent.intentparser.impl.PhoneIntentParser;
+import com.timyrobot.service.userintent.intentparser.impl.UnknownIntentParser;
 
 /**
  * Created by zhangtingting on 15/7/24.

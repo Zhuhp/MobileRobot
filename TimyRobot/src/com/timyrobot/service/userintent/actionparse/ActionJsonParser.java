@@ -1,4 +1,4 @@
-package com.timyrobot.service.userintent.action;
+package com.timyrobot.service.userintent.actionparse;
 
 import org.json.JSONObject;
 

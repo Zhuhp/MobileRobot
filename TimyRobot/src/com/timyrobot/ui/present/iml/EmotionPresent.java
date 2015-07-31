@@ -5,10 +5,9 @@ import android.widget.ImageView;
 
 import com.timyrobot.service.emotion.EmotionManager;
 import com.timyrobot.service.speechrecongnizer.SpeechManager;
-import com.timyrobot.service.userintent.action.Action;
+import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.ui.present.IEmotionPresent;
 import com.timyrobot.ui.view.IEmotionView;
-import com.timyrobot.utils.ToastUtils;
 
 /**
  * Created by zhangtingting on 15/7/18.

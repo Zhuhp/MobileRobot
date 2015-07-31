@@ -1,7 +1,7 @@
-package com.timyrobot.service.userintent.parser.impl;
+package com.timyrobot.service.userintent.intentparser.impl;
 
-import com.timyrobot.service.userintent.action.Action;
-import com.timyrobot.service.userintent.parser.IUserIntentParser;
+import com.timyrobot.service.userintent.actionparse.Action;
+import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 
 /**
  * Created by zhangtingting on 15/7/24.

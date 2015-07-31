@@ -1,14 +1,9 @@
-package com.timyrobot.service.userintent.parser.impl;
+package com.timyrobot.service.userintent.intentparser.impl;
 
-import android.content.Context;
-import android.net.Uri;
+import com.timyrobot.service.userintent.actionparse.Action;
+import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
+import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 
-import com.timyrobot.service.userintent.action.Action;
-import com.timyrobot.service.userintent.action.ActionJsonParser;
-import com.timyrobot.service.userintent.action.IUserAction;
-import com.timyrobot.service.userintent.parser.IUserIntentParser;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**

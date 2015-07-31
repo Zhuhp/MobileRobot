@@ -1,6 +1,6 @@
 package com.timyrobot.ui.view;
 
-import com.timyrobot.service.userintent.action.Action;
+import com.timyrobot.service.userintent.actionparse.Action;
 
 /**
  * Created by zhangtingting on 15/7/18.

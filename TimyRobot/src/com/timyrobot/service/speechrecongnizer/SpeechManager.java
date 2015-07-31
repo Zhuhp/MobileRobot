@@ -14,17 +14,16 @@ import com.iflytek.cloud.TextUnderstanderListener;
 import com.iflytek.cloud.UnderstanderResult;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
-import com.timyrobot.service.userintent.action.Action;
-import com.timyrobot.service.userintent.action.ActionJsonParser;
-import com.timyrobot.service.userintent.parser.IUserIntentParser;
-import com.timyrobot.service.userintent.parser.UserIntentParserFactory;
+import com.timyrobot.service.userintent.actionparse.Action;
+import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
+import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
+import com.timyrobot.service.userintent.intentparser.UserIntentParserFactory;
 import com.tuling.util.GetTulingResultThread;
 import com.tuling.util.ResultWatcher;
 import com.tuling.util.TulingManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 /**
  * Created by zhangtingting on 15/7/20.

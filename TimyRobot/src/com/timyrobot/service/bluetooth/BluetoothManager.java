@@ -22,6 +22,7 @@ public enum BluetoothManager {
     private BluetoothSPP mBlueSpp;
     private Context mContext;
     private IBlueConnectListener mBlueConnectListener;
+    private IDataReceiver mReceiver;
 
     private String mBlueAddress;
 
@@ -41,6 +42,10 @@ public enum BluetoothManager {
 
     public void setConnectListener(IBlueConnectListener listener){
         mBlueConnectListener = listener;
+    }
+
+    public void setDataReceiver(IDataReceiver receiver){
+        mReceiver = receiver;
     }
 
     /**
@@ -145,6 +150,9 @@ public enum BluetoothManager {
     private BluetoothSPP.OnDataReceivedListener mDataReceiverListener = new BluetoothSPP.OnDataReceivedListener() {
         @Override
         public void onDataReceived(byte[] data, String message) {
+            if(mReceiver != null){
+                mReceiver.onReceive(data, message);
+            }
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         }
     };
