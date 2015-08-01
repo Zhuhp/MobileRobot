@@ -8,7 +8,21 @@ import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
  */
 public class UnknownIntentParser implements IUserIntentParser{
     @Override
-    public Action parseIntent(String result) {
+    public void parseIntent(String result) {
+    }
+
+    @Override
+    public void doAction() {
+
+    }
+
+    @Override
+    public Action getAction() {
+        return null;
+    }
+
+    @Override
+    public String getRobotEmotion() {
         return null;
     }
 

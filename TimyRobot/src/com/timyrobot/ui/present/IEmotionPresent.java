@@ -11,7 +11,7 @@ import android.widget.ImageView;
 public interface IEmotionPresent {
 
     //语音，智能对话
-    void initTalk(Context context);
+    void initTalk(Activity context);
     void startTalk();
 
     //表情操作

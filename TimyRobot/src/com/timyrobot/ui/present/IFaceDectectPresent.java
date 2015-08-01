@@ -10,4 +10,5 @@ public interface IFaceDectectPresent {
 
     void initFaceDectect(CameraSurfaceView surfaceView,FaceView faceView);
     void startDetect();
+    void stopDetect();
 }

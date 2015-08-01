@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.robot.R;
@@ -50,6 +51,7 @@ public class BluetoothServerActivity extends Activity{
         }else{
             startAccepteThread();
         }
+        ((ImageView)findViewById(R.id.iv_face)).setImageResource(R.drawable.face);
     }
 
     private void startAccepteThread(){

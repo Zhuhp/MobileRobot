@@ -1,5 +1,7 @@
 package com.timyrobot.service.userintent.intentparser.impl;
 
+import android.app.Activity;
+
 import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
@@ -11,19 +13,46 @@ import org.json.JSONObject;
  */
 public class PhoneIntentParser implements IUserIntentParser{
 
+    /**
+     * 联系人名字
+     */
+    private String mContactName;
+
+    private Activity mActivity;
+
+    private Action mAction;
+
+    public PhoneIntentParser(Activity activity){
+        mActivity = activity;
+    }
+
     @Override
-    public Action parseIntent(String result) {
+    public void parseIntent(String result) {
         try {
             JSONObject object = new JSONObject(result);
             JSONObject slots = ActionJsonParser.getSlots(object);
-            Action action = new Action();
-            action.operation = ActionJsonParser.getOperation(object);
-            action.service = ActionJsonParser.getService(object);
-            action.obj1 = slots.optString("name");
-            return action;
+            mAction = new Action();
+            mAction.operation = ActionJsonParser.getOperation(object);
+            mAction.service = ActionJsonParser.getService(object);
+            mAction.obj1 = slots.optString("name");
+            mContactName = mAction.obj1;
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void doAction() {
+
+    }
+
+    @Override
+    public Action getAction() {
+        return mAction;
+    }
+
+    @Override
+    public String getRobotEmotion() {
         return null;
     }
 

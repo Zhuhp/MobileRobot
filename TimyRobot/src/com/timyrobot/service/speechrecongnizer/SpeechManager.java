@@ -1,5 +1,6 @@
 package com.timyrobot.service.speechrecongnizer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
@@ -33,11 +34,12 @@ public class SpeechManager {
     public static final String TULING_KEY = "777e74f738a03b4d855fe611c3e7fcc3";
     public static final String TAG = "tuling";
 
-    private Context mCtx;
+    private Activity mCtx;
     private RecognizerDialog mIatDialog;
     private SpeechSynthesizer mSST;
     private TextUnderstander mUnderstander;
     private TulingManager mTulingManager;
+    private UserIntentParserFactory mUserIntentParser;
 
     private ConversationListener mListener;
 
@@ -48,7 +50,7 @@ public class SpeechManager {
     //导致对话提前结束，这是要设置isConversion为false
     private boolean hasResult = false;
 
-    public SpeechManager(Context ctx,ConversationListener listener){
+    public SpeechManager(Activity ctx,ConversationListener listener){
         mCtx = ctx;
         mIatDialog = new RecognizerDialog(mCtx, null);
         mIatDialog.setListener(mRecognizerListener);
@@ -60,6 +62,7 @@ public class SpeechManager {
         mSST.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
         mUnderstander = TextUnderstander.createTextUnderstander(mCtx,null);
         mTulingManager = new TulingManager(mCtx);
+        mUserIntentParser = new UserIntentParserFactory(mCtx);
         mListener = listener;
     }
 
@@ -80,10 +83,11 @@ public class SpeechManager {
                 JSONObject object = new JSONObject(resultString);
                 userTalk = ActionJsonParser.getText(object);
                 if(ActionJsonParser.isSuccess(object)&&(mListener!=null)){
-                    IUserIntentParser parser = UserIntentParserFactory.INSTANCE.getParser(
+                    IUserIntentParser parser = mUserIntentParser.getParser(
                             ActionJsonParser.getService(object),
                             ActionJsonParser.getOperation(object));
-                    mListener.onUserIntent(parser.parseIntent(resultString));
+                    parser.parseIntent(resultString);
+                    mListener.onUserIntent(parser);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -181,7 +185,7 @@ public class SpeechManager {
         /**
          * 用户意图
          */
-        void onUserIntent(Action action);
+        void onUserIntent(IUserIntentParser action);
 
         /**
          * 用户谈话的内容

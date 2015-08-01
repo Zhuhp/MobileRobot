@@ -1,61 +1,53 @@
-package com.timyrobot.test;
+package com.timyrobot.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.robot.R;
-import com.timyrobot.service.userintent.actionparse.Action;
-import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
+import com.timyrobot.service.bluetooth.IBlueConnectListener;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.iml.BluetoothPresent;
-import com.timyrobot.ui.view.IEmotionView;
 
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 /**
- * Created by zhangtingting on 15/7/28.
+ * Created by zhangtingting on 15/8/1.
  */
-public class BluetoothTestActivity extends Activity implements IEmotionView,
-        View.OnClickListener{
+public class InitActivity extends Activity implements View.OnClickListener{
 
-    private IBluetoothPresent mBluePresent;
-
-    private int key = 0;
+    private Button mBlueButton;
+    IBluetoothPresent mBluePresent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bluetooth_test);
+        setContentView(R.layout.activity_init);
         mBluePresent = new BluetoothPresent();
-        if(!mBluePresent.initBluetoothService(this)){
+        if(!mBluePresent.initBluetoothService(getApplicationContext())){
             finish();
         }
+        mBluePresent.setConnectListener(new IBlueConnectListener() {
+            @Override
+            public void connect(String name, String address) {
+                Intent intent = new Intent(InitActivity.this,EmotionActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void connectFailed() {
+
+            }
+
+            @Override
+            public void disconnect() {
+
+            }
+        });
         initView();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_find_blue:
-                mBluePresent.findBlue(this);
-                break;
-            case R.id.btn_send_data:
-                mBluePresent.sendData("hello"+key);
-                key+=13;
-                break;
-            case R.id.btn_disconnect:
-                mBluePresent.disconnect();
-                break;
-        }
-    }
-
-    private void initView(){
-        findViewById(R.id.btn_find_blue).setOnClickListener(this);
-        findViewById(R.id.btn_send_data).setOnClickListener(this);
-        findViewById(R.id.btn_disconnect).setOnClickListener(this);
     }
 
     @Override
@@ -68,6 +60,20 @@ public class BluetoothTestActivity extends Activity implements IEmotionView,
     protected void onDestroy() {
         super.onDestroy();
         mBluePresent.stopBluetoothService();
+    }
+
+    private void initView(){
+        mBlueButton = (Button)findViewById(R.id.btn_find_blue);
+        mBlueButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_find_blue:
+                mBluePresent.findBlue(this);
+                break;
+        }
     }
 
     @Override
@@ -90,10 +96,5 @@ public class BluetoothTestActivity extends Activity implements IEmotionView,
                 }
                 break;
         }
-    }
-
-    @Override
-    public void userAction(IUserIntentParser action) {
-
     }
 }

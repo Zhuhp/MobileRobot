@@ -29,12 +29,14 @@ public class FaceDectectPresent implements IFaceDectectPresent{
     float previewRate = -1f;
     private FaceDectHandler mFaceDectHandler = null;
     GoogleFaceDetect googleFaceDetect = null;
+    private CameraInterface mInterface;
 
     private FaceDetectListener mListener;
 
     public FaceDectectPresent(Context context,FaceDetectListener listener){
         mCtx = context;
         mListener = listener;
+        mInterface = CameraInterface.getInstance();
     }
 
     @Override
@@ -42,14 +44,20 @@ public class FaceDectectPresent implements IFaceDectectPresent{
         mFaceDectHandler = new FaceDectHandler();
         mSurfaceView = surfaceView;
         mFaceView = faceView;
-    }
-
-    @Override
-    public void startDetect() {
         googleFaceDetect = new GoogleFaceDetect(mCtx,
                 mFaceDectHandler);
         mFaceDectHandler.sendEmptyMessageDelayed(
                 EventUtil.CAMERA_HAS_STARTED_PREVIEW, 1500);
+    }
+
+    @Override
+    public void startDetect() {
+        startGoogleFaceDetect();
+    }
+
+    @Override
+    public void stopDetect() {
+        stopGoogleFaceDetect();
     }
 
     private class FaceDectHandler extends Handler {
@@ -105,7 +113,7 @@ public class FaceDectectPresent implements IFaceDectectPresent{
 
     private void restartPreviewCamera() {
         stopGoogleFaceDetect();
-        CameraInterface.getInstance().doStartPreview(
+        mInterface.doStartPreview(
                 mSurfaceView.getSurfaceHolder(), previewRate);
         mFaceDectHandler.sendEmptyMessageDelayed(
                 EventUtil.CAMERA_HAS_STARTED_PREVIEW, 1500);
@@ -113,28 +121,30 @@ public class FaceDectectPresent implements IFaceDectectPresent{
     }
 
     private void startGoogleFaceDetect() {
-        Camera.Parameters params = CameraInterface.getInstance()
-                .getCameraParams();
+        Camera.Parameters params = mInterface.getCameraParams();
+        if(params == null){
+            googleFaceDetect = new GoogleFaceDetect(mCtx,
+                    mFaceDectHandler);
+            mFaceDectHandler.sendEmptyMessageDelayed(
+                    EventUtil.CAMERA_HAS_STARTED_PREVIEW, 1500);
+            return;
+        }
         if (params.getMaxNumDetectedFaces() > 0) {
             if (mFaceView != null) {
                 mFaceView.clearFaces();
                 mFaceView.setVisibility(View.VISIBLE);
             }
-            CameraInterface.getInstance().getCameraDevice()
-                    .setFaceDetectionListener(googleFaceDetect);
-            CameraInterface.getInstance().getCameraDevice()
-                    .startFaceDetection();
+            mInterface.getCameraDevice().setFaceDetectionListener(googleFaceDetect);
+            mInterface.getCameraDevice().startFaceDetection();
         }
     }
 
     private void stopGoogleFaceDetect() {
-        Camera.Parameters params = CameraInterface.getInstance()
-                .getCameraParams();
-        if (params.getMaxNumDetectedFaces() > 0) {
-            CameraInterface.getInstance().getCameraDevice()
-                    .setFaceDetectionListener(null);
-            CameraInterface.getInstance().getCameraDevice().stopFaceDetection();
-            mFaceView.clearFaces();
+        if(mInterface.getCameraDevice() == null) {
+            return;
         }
+        mInterface.getCameraDevice().setFaceDetectionListener(null);
+        mInterface.getCameraDevice().stopFaceDetection();
+        mFaceView.clearFaces();
     }
 }
