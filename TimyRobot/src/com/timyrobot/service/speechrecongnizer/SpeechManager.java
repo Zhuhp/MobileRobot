@@ -3,6 +3,7 @@ package com.timyrobot.service.speechrecongnizer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.TextUnderstander;
 import com.iflytek.cloud.TextUnderstanderListener;
 import com.iflytek.cloud.UnderstanderResult;
@@ -66,6 +68,9 @@ public class SpeechManager {
         mListener = listener;
     }
 
+    /**
+     * 开始一次对话
+     */
     public void startConversation(){
         if((!isConversion) && (!mSST.isSpeaking()) && (!mIatDialog.isShowing())){
             isConversion = true;
@@ -74,6 +79,9 @@ public class SpeechManager {
         }
     }
 
+    /**
+     * 语义识别的回调接口
+     */
     private TextUnderstanderListener mUnderstanderListener = new TextUnderstanderListener() {
         @Override
         public void onResult(UnderstanderResult understanderResult) {
@@ -87,6 +95,9 @@ public class SpeechManager {
                             ActionJsonParser.getService(object),
                             ActionJsonParser.getOperation(object));
                     parser.parseIntent(resultString);
+                    if(!TextUtils.isEmpty(parser.getRobotTalkContent())){
+                        userTalk = parser.getRobotTalkContent();
+                    }
                     mListener.onUserIntent(parser);
                 }
             } catch (Exception e) {
@@ -108,6 +119,9 @@ public class SpeechManager {
         }
     };
 
+    /**
+     * 语音识别的回调接口
+     */
     private RecognizerDialogListener mRecognizerListener = new RecognizerDialogListener() {
 
         StringBuilder result = null;
@@ -147,6 +161,9 @@ public class SpeechManager {
 
     };
 
+    /**
+     * 在语音对话框dismiss的时候，判断是否又语音识别的结果，如果没有，就认为对话结束
+     */
     private DialogInterface.OnDismissListener mDismissListener = new DialogInterface.OnDismissListener() {
         @Override
         public void onDismiss(DialogInterface dialog) {
@@ -156,6 +173,9 @@ public class SpeechManager {
         }
     };
 
+    /**
+     * 图灵对话的回调接口
+     */
     private ResultWatcher mWatcher = new ResultWatcher() {
         @Override
         public void onResults(String s) {
@@ -168,12 +188,52 @@ public class SpeechManager {
                     mListener.onRobotTalk(result);
                 }
                 if (!mSST.isSpeaking()) {
-                    mSST.startSpeaking(result, null);
+                    mSST.startSpeaking(result, mSynthesizerListener);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                isConversion = false;
             }
+        }
+    };
+
+    /**
+     * 语音播放的回调接口
+     */
+    private SynthesizerListener mSynthesizerListener = new SynthesizerListener() {
+        @Override
+        public void onSpeakBegin() {
+
+        }
+
+        @Override
+        public void onBufferProgress(int i, int i1, int i2, String s) {
+
+        }
+
+        @Override
+        public void onSpeakPaused() {
+
+        }
+
+        @Override
+        public void onSpeakResumed() {
+
+        }
+
+        @Override
+        public void onSpeakProgress(int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onCompleted(SpeechError speechError) {
             isConversion = false;
+        }
+
+        @Override
+        public void onEvent(int i, int i1, int i2, Bundle bundle) {
+
         }
     };
 

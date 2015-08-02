@@ -94,6 +94,6 @@ public class EmotionActivity extends Activity implements IEmotionView,
         }
         Action bean = action.getAction();
         ToastUtils.toastShort(this,bean.service+";"+bean.operation);
-        BluetoothManager.INSTANCE.sendData(bean.service+";"+bean.operation+";"+bean.obj1);
+        BluetoothManager.INSTANCE.sendData(bean.toString());
     }
 }
