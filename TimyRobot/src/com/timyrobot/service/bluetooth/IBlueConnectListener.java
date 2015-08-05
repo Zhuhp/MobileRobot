@@ -5,6 +5,7 @@ package com.timyrobot.service.bluetooth;
  */
 public interface IBlueConnectListener {
     void connect(String name,String address);
+    void recvMsg(String data);
     void connectFailed();
     void disconnect();
 }
