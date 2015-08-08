@@ -2,7 +2,7 @@ package com.timyrobot.service.emotion.parser;
 
 import android.content.Context;
 
-import com.timyrobot.service.emotion.EmotionManager;
+import com.timyrobot.controlsystem.EmotionControl;
 import com.timyrobot.service.emotion.parser.impl.DefaultEmotionParser;
 
 /**
@@ -16,7 +16,7 @@ public class EmotionParserFactory {
         mCtx = ctx;
     }
 
-    public static IEmotionParser getEmotionParser(EmotionManager.EmotionType type){
+    public static IEmotionParser getEmotionParser(EmotionControl.EmotionType type){
         switch (type){
             case DEFAULT:
                 return new DefaultEmotionParser(mCtx);

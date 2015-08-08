@@ -2,10 +2,13 @@ package com.timyrobot.service.userintent.intentparser.impl;
 
 import android.app.Activity;
 
+import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.common.SystemServiceKey;
 import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -13,55 +16,24 @@ import org.json.JSONObject;
  */
 public class MusicIntentParser implements IUserIntentParser{
 
-    /**
-     * 歌手
-     */
-    private String mArtist;
-
-    private String mSong;
-
-    private Activity mActivity;
-
-    private Action mAction;
-
-    public MusicIntentParser(Activity activity){
-        mActivity = activity;
-    }
+    private ControllCommand mAction;
 
     @Override
-    public void parseIntent(String result) {
+    public ControllCommand parseIntent(String result) {
         try {
             JSONObject object = new JSONObject(result);
-            JSONObject slots = ActionJsonParser.getSlots(object);
-            mAction = new Action();
-            mAction.operation = ActionJsonParser.getOperation(object);
-            mAction.service = ActionJsonParser.getService(object);
-            mAction.obj1 = slots.optString("artist");
-            mAction.obj2 = slots.optString("song");
-            mArtist = mAction.obj1;
-            mSong = mAction.obj2;
-        } catch (Exception e) {
+            JSONObject systemData = new JSONObject();
+            systemData.put(SystemServiceKey.SystemKey.OPERATOR,ActionJsonParser.getOperation(object));
+            systemData.put(SystemServiceKey.SystemKey.SERVICE,ActionJsonParser.getService(object));
+            JSONObject slot = ActionJsonParser.getSlots(object);
+            systemData.put(SystemServiceKey.Music.ARTIST,slot.opt(SystemServiceKey.Music.ARTIST));
+            systemData.put(SystemServiceKey.Music.SONG,slot.opt(SystemServiceKey.Music.SONG));
+            ControllCommand command = new ControllCommand(null,"好的，主人，很荣幸为你服务",false,systemData.toString(),result,null);
+            return command;
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void doAction() {
-
-    }
-
-    @Override
-    public Action getAction() {
-        return mAction;
-    }
-
-    @Override
-    public String getRobotEmotion() {
         return null;
     }
 
-    @Override
-    public String getRobotTalkContent() {
-        return null;
-    }
 }

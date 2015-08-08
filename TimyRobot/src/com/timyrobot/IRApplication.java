@@ -5,6 +5,7 @@ import android.view.WindowManager;
 
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
+import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.emotion.provider.EmotionProviderFactory;
 
 /**
@@ -23,6 +24,7 @@ public class IRApplication extends Application {
 		super.onCreate();
 		SpeechUtility.createUtility(this, SpeechConstant.APPID + "=55b4dd98");
 		EmotionProviderFactory.init(this);
+		RobotData.INSTANCE.initRobotData(this);
 	}
 
 }

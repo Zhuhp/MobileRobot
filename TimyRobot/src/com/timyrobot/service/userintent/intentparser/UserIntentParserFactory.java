@@ -15,32 +15,26 @@ import com.timyrobot.service.userintent.intentparser.impl.WebSearchIntentParser;
  */
 public class UserIntentParserFactory {
 
-    private Activity mActivity;
-
-    public UserIntentParserFactory(Activity activity){
-        mActivity = activity;
-    }
-
-    public IUserIntentParser getParser(String service,String operator){
+    public static IUserIntentParser getParser(String service,String operator){
         if("telephone".equalsIgnoreCase(service)){
             if("call".equalsIgnoreCase(operator)){
-                return new PhoneIntentParser(mActivity);
+                return new PhoneIntentParser();
             }
         }else if("websearch".equalsIgnoreCase(service)){
             if("query".equalsIgnoreCase(operator)){
-                return new WebSearchIntentParser(mActivity);
+                return new WebSearchIntentParser();
             }
         }else if("message".equalsIgnoreCase(service)){
             if("send".equalsIgnoreCase(operator)){
-                return new SmsIntentParser(mActivity);
+                return new SmsIntentParser();
             }
         }else if("music".equalsIgnoreCase(service)){
             if("play".equalsIgnoreCase(operator)){
-                return new MusicIntentParser(mActivity);
+                return new MusicIntentParser();
             }
         }else if("video".equalsIgnoreCase(service)){
             if("play".equalsIgnoreCase(operator)){
-                return new VideoIntentParser(mActivity);
+                return new VideoIntentParser();
             }
         }
         return new UnknownIntentParser();

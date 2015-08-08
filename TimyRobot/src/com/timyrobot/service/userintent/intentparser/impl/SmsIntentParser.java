@@ -2,10 +2,13 @@ package com.timyrobot.service.userintent.intentparser.impl;
 
 import android.app.Activity;
 
+import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.common.SystemServiceKey;
 import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -13,59 +16,25 @@ import org.json.JSONObject;
  */
 public class SmsIntentParser implements IUserIntentParser{
 
-    /**
-     * 联系人名字
-     */
-    private String mContactName;
-
-    private String mContent;
-
-    private String mMsgType;
-
-    private Activity mActivity;
-
-    private Action mAction;
-
-    public SmsIntentParser(Activity activity){
-        mActivity = activity;
+    public SmsIntentParser(){
     }
 
     @Override
-    public void parseIntent(String result) {
+    public ControllCommand parseIntent(String result) {
         try {
             JSONObject object = new JSONObject(result);
-            JSONObject slots = ActionJsonParser.getSlots(object);
-            mAction = new Action();
-            mAction.operation = ActionJsonParser.getOperation(object);
-            mAction.service = ActionJsonParser.getService(object);
-            mAction.obj1 = slots.optString("name");
-            mAction.obj2 = slots.optString("content");
-            mAction.obj3 = slots.optString("messageType");
-            mContactName = mAction.obj1;
-            mContent = mAction.obj2;
-            mMsgType = mAction.obj3;
-        } catch (Exception e) {
+            JSONObject systemData = new JSONObject();
+            systemData.put(SystemServiceKey.SystemKey.OPERATOR,ActionJsonParser.getOperation(object));
+            systemData.put(SystemServiceKey.SystemKey.SERVICE,ActionJsonParser.getService(object));
+            JSONObject slot = ActionJsonParser.getSlots(object);
+            systemData.put(SystemServiceKey.Sms.CONTACT_NAME,slot.opt(SystemServiceKey.Sms.CONTACT_NAME));
+            systemData.put(SystemServiceKey.Sms.CONTENT,slot.opt(SystemServiceKey.Sms.CONTENT));
+            ControllCommand command = new ControllCommand(null,"好的，主人，很荣幸为你服务",false,systemData.toString(),result,null);
+            return command;
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void doAction() {
-
-    }
-
-    @Override
-    public Action getAction() {
-        return mAction;
-    }
-
-    @Override
-    public String getRobotEmotion() {
         return null;
     }
 
-    @Override
-    public String getRobotTalkContent() {
-        return null;
-    }
 }

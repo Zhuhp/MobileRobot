@@ -1,4 +1,4 @@
-package com.timyrobot.ui.present.iml;
+package com.timyrobot.triggersystem;
 
 import android.content.Context;
 import android.hardware.Camera;
@@ -6,21 +6,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.Filter;
 
-import com.example.robot.R;
 import com.example.robot.facedection.CameraInterface;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.EventUtil;
 import com.example.robot.facedection.FaceView;
 import com.example.robot.facedection.GoogleFaceDetect;
-import com.timyrobot.listener.FaceDetectListener;
-import com.timyrobot.ui.present.IFaceDectectPresent;
+import com.timyrobot.common.ConstDefine;
+import com.timyrobot.listener.DataReceiver;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by zhangtingting on 15/7/27.
  */
-public class FaceDectectPresent implements IFaceDectectPresent{
+public enum FaceDectectTrigger{
+    INSTANCE;
 
     Context mCtx;
 
@@ -31,15 +33,14 @@ public class FaceDectectPresent implements IFaceDectectPresent{
     GoogleFaceDetect googleFaceDetect = null;
     private CameraInterface mInterface;
 
-    private FaceDetectListener mListener;
+    private DataReceiver mReceiver;
 
-    public FaceDectectPresent(Context context,FaceDetectListener listener){
+    public void init(Context context, DataReceiver receiver){
         mCtx = context;
-        mListener = listener;
+        mReceiver = receiver;
         mInterface = CameraInterface.getInstance();
     }
 
-    @Override
     public void initFaceDectect(CameraSurfaceView surfaceView,FaceView faceView) {
         mFaceDectHandler = new FaceDectHandler();
         mSurfaceView = surfaceView;
@@ -50,12 +51,10 @@ public class FaceDectectPresent implements IFaceDectectPresent{
                 EventUtil.CAMERA_HAS_STARTED_PREVIEW, 1500);
     }
 
-    @Override
     public void startDetect() {
         startGoogleFaceDetect();
     }
 
-    @Override
     public void stopDetect() {
         stopGoogleFaceDetect();
     }
@@ -76,8 +75,19 @@ public class FaceDectectPresent implements IFaceDectectPresent{
                             + (faces[0].rect.right - faces[0].rect.left) / 2;
 
                     if ((faces[0].rect.right - faces[0].rect.left) > 700) {
-                        if(mListener != null){
-                            mListener.onFaceDetect();
+                        if(mReceiver != null){
+                            //探测到脸的回调
+                            try {
+                                JSONObject object = new JSONObject();
+                                object.put(ConstDefine.TriggerDataKey.TYPE,
+                                        ConstDefine.TriggerDataType.Vision);
+                                object.put(ConstDefine.TriggerDataKey.CONTENT,
+                                        ConstDefine.VisionCMD.DETECT_FACE);
+                                mReceiver.onReceive(object.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                         Log.d("facedetect", "dectect");
                     }

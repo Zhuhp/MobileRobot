@@ -2,7 +2,7 @@ package com.timyrobot.service.emotion.provider;
 
 import android.content.Context;
 
-import com.timyrobot.service.emotion.EmotionManager;
+import com.timyrobot.controlsystem.EmotionControl;
 import com.timyrobot.service.emotion.provider.impl.DefaultEmotionProvider;
 
 /**
@@ -16,7 +16,7 @@ public class EmotionProviderFactory {
         mCtx = ctx;
     }
 
-    public static IEmotionProvider getEmotionProvider(EmotionManager.EmotionType type){
+    public static IEmotionProvider getEmotionProvider(EmotionControl.EmotionType type){
         switch(type){
             case DEFAULT:
                 return new DefaultEmotionProvider(mCtx);

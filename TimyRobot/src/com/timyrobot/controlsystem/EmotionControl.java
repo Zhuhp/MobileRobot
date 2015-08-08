@@ -1,4 +1,4 @@
-package com.timyrobot.service.emotion;
+package com.timyrobot.controlsystem;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
@@ -10,9 +10,9 @@ import com.timyrobot.service.emotion.provider.EmotionProviderFactory;
 import com.timyrobot.service.emotion.provider.IEmotionProvider;
 
 /**
- * Created by zhangtingting on 15/7/19.
+ * Created by zhangtingting on 15/8/6.
  */
-public class EmotionManager {
+public class EmotionControl {
 
     public enum EmotionType{
         DEFAULT,CUSTOM
@@ -25,7 +25,7 @@ public class EmotionManager {
 
     private AnimationDrawable mDrawable;
 
-    public EmotionManager(Context context, ImageView imageView,
+    public EmotionControl(Context context, ImageView imageView,
                           EmotionType type){
         mContext = context;
         mImageView = imageView;
@@ -44,5 +44,4 @@ public class EmotionManager {
             mDrawable.start();
         }
     }
-
 }

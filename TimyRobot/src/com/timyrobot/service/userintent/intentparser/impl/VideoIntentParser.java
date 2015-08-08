@@ -2,65 +2,36 @@ package com.timyrobot.service.userintent.intentparser.impl;
 
 import android.app.Activity;
 
+import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.common.SystemServiceKey;
 import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by zhangtingting on 15/8/2.
  */
 public class VideoIntentParser implements IUserIntentParser{
-    /**
-     * 片名
-     */
-    private String mMovie;
-
-    private String mField;
-
-    private Activity mActivity;
-
-    private Action mAction;
-
-    public VideoIntentParser(Activity activity){
-        mActivity = activity;
-    }
 
     @Override
-    public void parseIntent(String result) {
+    public ControllCommand parseIntent(String result) {
         try {
             JSONObject object = new JSONObject(result);
-            JSONObject slots = ActionJsonParser.getSlots(object);
-            mAction = new Action();
-            mAction.operation = ActionJsonParser.getOperation(object);
-            mAction.service = ActionJsonParser.getService(object);
-            mAction.obj1 = slots.optString("keywords");
-            mAction.obj2 = slots.optString("queryField");
-            mMovie = mAction.obj1;
-            mField = mAction.obj2;
-        } catch (Exception e) {
+            JSONObject systemData = new JSONObject();
+            systemData.put(SystemServiceKey.SystemKey.OPERATOR,ActionJsonParser.getOperation(object));
+            systemData.put(SystemServiceKey.SystemKey.SERVICE,ActionJsonParser.getService(object));
+            JSONObject slot = ActionJsonParser.getSlots(object);
+            systemData.put(SystemServiceKey.Video.KEYWORDS,slot.opt(SystemServiceKey.Video.KEYWORDS));
+            systemData.put(SystemServiceKey.Video.QUERYFIELD,slot.opt(SystemServiceKey.Video.QUERYFIELD));
+            ControllCommand command = new ControllCommand(null,"好的，主人，很荣幸为你服务",false,systemData.toString(),result,null);
+            return command;
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void doAction() {
-
-    }
-
-    @Override
-    public Action getAction() {
-        return mAction;
-    }
-
-    @Override
-    public String getRobotEmotion() {
         return null;
     }
 
-    @Override
-    public String getRobotTalkContent() {
-        return null;
-    }
 }

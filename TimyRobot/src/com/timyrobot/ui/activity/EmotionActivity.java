@@ -1,50 +1,58 @@
 package com.timyrobot.ui.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.robot.R;
-import com.example.robot.facedection.CameraInterface;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
-import com.timyrobot.listener.FaceDetectListener;
-import com.timyrobot.service.bluetooth.BluetoothManager;
-import com.timyrobot.service.userintent.actionparse.Action;
-import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
-import com.timyrobot.ui.present.IBluetoothPresent;
+import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.common.ConstDefine;
+import com.timyrobot.controlsystem.ControlManager;
+import com.timyrobot.listener.DataReceiver;
+import com.timyrobot.listener.ParserResultReceiver;
+import com.timyrobot.parsesystem.ParseManager;
+import com.timyrobot.triggersystem.TriggerManager;
 import com.timyrobot.ui.present.IEmotionPresent;
-import com.timyrobot.ui.present.IFaceDectectPresent;
-import com.timyrobot.ui.present.iml.BluetoothPresent;
-import com.timyrobot.ui.present.iml.EmotionPresent;
-import com.timyrobot.ui.present.iml.FaceDectectPresent;
-import com.timyrobot.ui.view.IEmotionView;
-import com.timyrobot.utils.ToastUtils;
 
-import app.akexorcist.bluetotohspp.library.BluetoothState;
+import java.lang.ref.WeakReference;
 
-public class EmotionActivity extends Activity implements IEmotionView,
-        View.OnClickListener,FaceDetectListener{
+public class EmotionActivity extends Activity implements View.OnClickListener,
+        DataReceiver,ParserResultReceiver{
 
-    private IEmotionPresent mPresent;
-    private IFaceDectectPresent mFacePresent;
-    private boolean isFirstStart = true;
+    public static final String TAG = EmotionActivity.class.getName();
 
+    public final static int SEND_DATA = 0x10001;
+    public final static int PARSE_DATA = 0x10002;
+
+    private Handler mSendHandler;
+    private Handler mParserResultHandler;
+
+    private TriggerManager mTriggerManager;
+    private ParseManager mParseManager;
+    private ControlManager mCtrlManager;
+
+    private boolean isFirstCreate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
-        mPresent = new EmotionPresent(this);
-        mFacePresent = new FaceDectectPresent(getApplicationContext(),this);
-        mPresent.initEmotionManager((ImageView) findViewById(R.id.iv_emotion), this);
-        mPresent.initTalk(this);
-        mFacePresent.initFaceDectect((CameraSurfaceView) findViewById(R.id.camera_surfaceview),
-                (FaceView) findViewById(R.id.face_view));
+        initManager();
         initView();
+        registerReceiver(mStartConversation, new IntentFilter(
+                ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION));
+        isFirstCreate = true;
     }
 
     private void initView(){
@@ -52,23 +60,39 @@ public class EmotionActivity extends Activity implements IEmotionView,
         findViewById(R.id.btn_send_data).setOnClickListener(this);
     }
 
+    private void initManager(){
+        HandlerThread sendThread = new HandlerThread(EmotionActivity.class.getName()+"sendThread");
+        sendThread.start();
+        mSendHandler = new Handler(sendThread.getLooper(),mSendCB);
+        HandlerThread resultThread = new HandlerThread(EmotionActivity.class.getName()+"resultThread");
+        resultThread.start();
+        mParserResultHandler = new Handler(resultThread.getLooper(),mSendCB);
+        mTriggerManager = new TriggerManager(this,this);
+        mTriggerManager.init((CameraSurfaceView)findViewById(R.id.camera_surfaceview),
+                (FaceView)findViewById(R.id.face_view));
+        mParseManager = new ParseManager(this,this);
+        mCtrlManager = new ControlManager(this,(ImageView)findViewById(R.id.iv_emotion));
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        if(!isFirstStart) {
-            mFacePresent.startDetect();
+        if(!isFirstCreate) {
+            mTriggerManager.start();
         }
-        isFirstStart = false;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mFacePresent.stopDetect();
+        mTriggerManager.stop();
     }
 
     @Override
     protected void onDestroy() {
+        if(mStartConversation != null){
+            unregisterReceiver(mStartConversation);
+        }
         super.onDestroy();
     }
 
@@ -82,18 +106,50 @@ public class EmotionActivity extends Activity implements IEmotionView,
         }
     }
 
+    private Handler.Callback mSendCB = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case SEND_DATA:
+                    String content = String.valueOf(msg.obj);
+                    mParseManager.parse(content);
+                    break;
+                case PARSE_DATA:
+                    ControllCommand cmd = (ControllCommand)msg.obj;
+                    mCtrlManager.distribute(cmd);
+                    mSendHandler.removeMessages(PARSE_DATA);
+                    mParserResultHandler.removeMessages(SEND_DATA);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private BroadcastReceiver mStartConversation = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG,"startConversation");
+            mTriggerManager.startConversation();
+        }
+    };
+
     @Override
-    public void onFaceDetect() {
-        mPresent.startTalk();
+    public void onReceive(String data) {
+        //接收到这个信息，并通过HandlerThread来发送
+        //主要是这样可以保证单线程执行
+        Message msg = new Message();
+        msg.what = SEND_DATA;
+        msg.obj = data;
+        mSendHandler.sendMessage(msg);
     }
 
     @Override
-    public void userAction(IUserIntentParser action) {
-        if(action == null){
-            return;
-        }
-        Action bean = action.getAction();
-        ToastUtils.toastShort(this,bean.service+";"+bean.operation);
-        BluetoothManager.INSTANCE.sendData(bean.toString());
+    public void parseResult(ControllCommand cmd) {
+        //接收到这个信息，并通过HandlerThread来发送
+        //主要是这样可以保证单线程执行
+        Message msg = new Message();
+        msg.what = PARSE_DATA;
+        msg.obj = cmd;
+        mParserResultHandler.sendMessage(msg);
     }
 }
