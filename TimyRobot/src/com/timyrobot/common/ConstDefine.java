@@ -16,10 +16,15 @@ public class ConstDefine {
     public final static class TriggerDataKey{
         public final static String TYPE = "type";
         public final static String CONTENT = "content";
+
+        public final static String FACE_TGR_TYPE = "face_tgr_type";
+        public final static String NUMBER = "number";
+
     }
 
     public final static class VisionCMD{
         public final static String DETECT_FACE = "detect_face";
+        public final static String DETECT_MANY_FACES = "detect_many_faces";
     }
 
     public final static class IntentFilterString{

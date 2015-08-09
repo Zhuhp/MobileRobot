@@ -12,6 +12,6 @@ public class GlobalSetting {
     }
 
     public static class BluetoothSetting{
-        public static boolean BLUE_TYPE = BluetoothState.DEVICE_ANDROID;
+        public static boolean BLUE_TYPE = BluetoothState.DEVICE_OTHER;
     }
 }

@@ -46,6 +46,11 @@ public class InitActivity extends Activity implements View.OnClickListener{
             public void disconnect() {
 
             }
+
+            @Override
+            public void recvMsg(String data) {
+
+            }
         });
         initView();
     }
