@@ -31,5 +31,9 @@ public class ConstDefine {
         public final static String BROADCAST_START_CONVERSATION = "broadcast_start_conversation";
     }
 
+    public final static class EmotionNames{
+        public final static String EMOTION_NAME_LAGTH = "laugh";
+    }
+
 
 }

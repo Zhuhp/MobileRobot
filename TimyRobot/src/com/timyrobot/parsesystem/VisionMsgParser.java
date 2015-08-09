@@ -25,7 +25,12 @@ public class VisionMsgParser implements IDataParse{
         try {
             JSONObject object = new JSONObject(content);
             if(object.get(ConstDefine.TriggerDataKey.FACE_TGR_TYPE).equals(ConstDefine.VisionCMD.DETECT_FACE)) {
-                ControllCommand cmd = new ControllCommand(null, null, false, null, null, content);
+                ControllCommand cmd = new ControllCommand(null, null, false, null, null, ConstDefine.VisionCMD.DETECT_FACE);
+                if (mReceiver != null) {
+                    mReceiver.parseResult(cmd);
+                }
+            }else{
+                ControllCommand cmd = new ControllCommand("laugh", null, false, null, null, null);
                 if (mReceiver != null) {
                     mReceiver.parseResult(cmd);
                 }

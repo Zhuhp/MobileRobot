@@ -1,23 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.timyrobot.ui.activity.EmotionActivity">
-
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/btn_find_blue"
-        android:layout_width="wrap_content"
-        android:text="@string/find_blue"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btn_send_data"
-        android:layout_width="wrap_content"
-        android:text="@string/send_data"
-        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -33,10 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
+
     <ImageView
         android:id="@+id/iv_emotion"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
-</LinearLayout>
+</RelativeLayout>

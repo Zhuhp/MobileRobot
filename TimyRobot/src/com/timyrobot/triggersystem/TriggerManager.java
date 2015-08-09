@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
 import com.timyrobot.listener.DataReceiver;
-import com.timyrobot.service.bluetooth.IDataReceiver;
 
 /**
  * Created by zhangtingting on 15/8/7.
@@ -18,6 +17,7 @@ public class TriggerManager {
     }
 
     public void init(CameraSurfaceView cameraSurfaceView,FaceView faceView){
+
         FaceDectectTrigger.INSTANCE.initFaceDectect(cameraSurfaceView, faceView);
     }
 

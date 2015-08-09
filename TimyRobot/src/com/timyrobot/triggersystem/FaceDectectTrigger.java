@@ -4,6 +4,7 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 import com.example.robot.facedection.CameraInterface;
@@ -20,8 +21,10 @@ import org.json.JSONObject;
 /**
  * Created by zhangtingting on 15/7/27.
  */
-public enum FaceDectectTrigger{
+public enum FaceDectectTrigger {
     INSTANCE;
+    private final static String TAG = FaceDectectTrigger.class.getName();
+
 
     Context mCtx;
 
@@ -34,13 +37,13 @@ public enum FaceDectectTrigger{
 
     private DataReceiver mReceiver;
 
-    public void init(Context context, DataReceiver receiver){
+    public void init(Context context, DataReceiver receiver) {
         mCtx = context;
         mReceiver = receiver;
         mInterface = CameraInterface.getInstance();
     }
 
-    public void initFaceDectect(CameraSurfaceView surfaceView,FaceView faceView) {
+    public void initFaceDectect(CameraSurfaceView surfaceView, FaceView faceView) {
         mFaceDectHandler = new FaceDectHandler();
         mSurfaceView = surfaceView;
         mFaceView = faceView;
@@ -60,6 +63,7 @@ public enum FaceDectectTrigger{
 
     private boolean bFirstDectect = true;
     private int lastPosition = 0;
+
     private class FaceDectHandler extends Handler {
 
         @Override
@@ -72,68 +76,59 @@ public enum FaceDectectTrigger{
                         break;
                     }
                     mFaceView.setFaces(faces);
-//                    try {
-//                        JSONObject object = new JSONObject();
-//                        object.put(ConstDefine.TriggerDataKey.TYPE,
-//                                ConstDefine.TriggerDataType.Vision);
-//                        JSONObject facesObj = new JSONObject();
-//                        for(int i=0;i<faces.length;i++){
-//                            facesObj.put(ConstDefine.TriggerDataKey.ITEM+i, faces[i].rect.top+","+faces[i].rect.bottom+","+faces[i].rect.left+","+faces[i].rect.right);
-//                        }
-//                        object.put(ConstDefine.TriggerDataKey.CONTENT, facesObj.toString());
-//                        mReceiver.onReceive(object.toString());
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
+
                     int position = faces[0].rect.left
                             + (faces[0].rect.right - faces[0].rect.left) / 2;
 
-                    if ((faces[0].rect.right - faces[0].rect.left) > 700) {
-                        if(bFirstDectect) {
-                            bFirstDectect = false;
-                            lastPosition = position;
-                            break;
-                        }else{
-                            if(Math.abs(position-lastPosition)<100){
-                                if(mReceiver != null){
-                                    try {
-                                        JSONObject object = new JSONObject();
-                                        object.put(ConstDefine.TriggerDataKey.TYPE,
-                                                ConstDefine.TriggerDataType.Vision);
-                                        JSONObject faceObj = new JSONObject();
-                                        faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
-                                        faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
-                                        object.put(ConstDefine.TriggerDataKey.CONTENT,
-                                                faceObj.toString());
-                                        mReceiver.onReceive(object.toString());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
+//                    if ((faces[0].rect.right - faces[0].rect.left) > 700) {
+////                        if(bFirstDectect) {
+////                            bFirstDectect = false;
+////                            lastPosition = position;
+////                            break;
+////                        }else{
+////                            if(Math.abs(position-lastPosition)<100){
+//                                if(mReceiver != null){
+//                                    try {
+//                                        JSONObject object = new JSONObject();
+//                                        object.put(ConstDefine.TriggerDataKey.TYPE,
+//                                                ConstDefine.TriggerDataType.Vision);
+//                                        JSONObject faceObj = new JSONObject();
+//                                        faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
+//                                        faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
+//                                        object.put(ConstDefine.TriggerDataKey.CONTENT,
+//                                                faceObj.toString());
+//                                        mReceiver.onReceive(object.toString());
+//                                        break;
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+////                                }
+////                            }
+//                        }
 
-                        if(faces.length > 3){
-                            if(mReceiver != null) {
-                                try {
-                                    JSONObject object = new JSONObject();
-                                    object.put(ConstDefine.TriggerDataKey.TYPE,
-                                            ConstDefine.TriggerDataType.Vision);
-                                    JSONObject faceObj = new JSONObject();
-                                    faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_MANY_FACES);
-                                    faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(faces.length));
-                                    object.put(ConstDefine.TriggerDataKey.CONTENT,
-                                            faceObj.toString());
-                                    mReceiver.onReceive(object.toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+
+                    if (faces.length >= 3) {
+                        Log.d(TAG, "Dectect more than 3 face");
+                        if (mReceiver != null) {
+                            try {
+                                JSONObject object = new JSONObject();
+                                object.put(ConstDefine.TriggerDataKey.TYPE,
+                                        ConstDefine.TriggerDataType.Vision);
+                                JSONObject faceObj = new JSONObject();
+                                faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_MANY_FACES);
+                                faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(faces.length));
+                                object.put(ConstDefine.TriggerDataKey.CONTENT,
+                                        faceObj.toString());
+                                mReceiver.onReceive(object.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
-                        lastPosition = 0;
-                        bFirstDectect = true;
-                        break;
                     }
+//                        lastPosition = 0;
+//                        bFirstDectect = true;
+                    break;
+
 
 //                    // Log.d(TAG, "positon->"+position);
 //                    String data = "";
@@ -152,16 +147,17 @@ public enum FaceDectectTrigger{
 //                        else if (position >= 1000)
 //                            data = "f";
 //                    }
-
-                    break;
-                case EventUtil.CAMERA_HAS_STARTED_PREVIEW:
-                    startGoogleFaceDetect();
-                    break;
-            }
-            super.handleMessage(msg);
+            case EventUtil.CAMERA_HAS_STARTED_PREVIEW:
+            startGoogleFaceDetect();
+            break;
         }
 
+        super.
+
+        handleMessage(msg);
     }
+
+}
 
     private void restartPreviewCamera() {
         stopGoogleFaceDetect();

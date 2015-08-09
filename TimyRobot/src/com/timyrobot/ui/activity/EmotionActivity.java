@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.robot.R;
@@ -23,11 +23,8 @@ import com.timyrobot.listener.DataReceiver;
 import com.timyrobot.listener.ParserResultReceiver;
 import com.timyrobot.parsesystem.ParseManager;
 import com.timyrobot.triggersystem.TriggerManager;
-import com.timyrobot.ui.present.IEmotionPresent;
 
-import java.lang.ref.WeakReference;
-
-public class EmotionActivity extends Activity implements View.OnClickListener,
+public class EmotionActivity extends Activity implements
         DataReceiver,ParserResultReceiver{
 
     public static final String TAG = EmotionActivity.class.getName();
@@ -48,19 +45,17 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initManager();
-        initView();
         registerReceiver(mStartConversation, new IntentFilter(
                 ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION));
         isFirstCreate = true;
+
     }
 
-    private void initView(){
-        findViewById(R.id.btn_find_blue).setOnClickListener(this);
-        findViewById(R.id.btn_send_data).setOnClickListener(this);
-    }
 
     private void initManager(){
+
         HandlerThread sendThread = new HandlerThread(EmotionActivity.class.getName()+"sendThread");
         sendThread.start();
         mSendHandler = new Handler(sendThread.getLooper(),mSendCB);
@@ -80,6 +75,12 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
         if(!isFirstCreate) {
             mTriggerManager.start();
         }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -96,15 +97,6 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
         super.onDestroy();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_find_blue:
-                break;
-            case R.id.btn_send_data:
-                break;
-        }
-    }
 
     private Handler.Callback mSendCB = new Handler.Callback() {
         @Override
@@ -124,7 +116,7 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
             return false;
         }
     };
-
+    //start vonversation dialog.
     private BroadcastReceiver mStartConversation = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

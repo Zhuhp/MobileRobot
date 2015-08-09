@@ -6,14 +6,12 @@ import android.widget.ImageView;
 
 import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.common.ConstDefine;
-import com.timyrobot.robot.RobotProxy;
-import com.timyrobot.triggersystem.TriggerManager;
 
 /**
  * Created by zhangtingting on 15/8/7.
  */
 public class ControlManager {
-
+    private final static String TAG = "ControlManager";
     Activity mActivity;
 
     private EmotionControl mEmotionCtrl;
@@ -27,6 +25,7 @@ public class ControlManager {
         mVoiceCtrl = new VoiceControl(mActivity);
         mRobotCtrl = new RobotControl(mActivity);
         mSystemCtrl = new SystemControl(mActivity);
+        mEmotionCtrl.changeEmotion("blink");
     }
 
     public void distribute(ControllCommand cmd){
@@ -43,14 +42,23 @@ public class ControlManager {
         if(!mSystemCtrl.next()){
             return;
         }
+
         if(ConstDefine.VisionCMD.DETECT_FACE.equals(cmd.getCmd())){
             Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
             mActivity.sendBroadcast(intent);
             return;
         }
-        mRobotCtrl.doAction(cmd.getRobotAction());
-        mVoiceCtrl.response(cmd);
-        mSystemCtrl.doAction(cmd.getSystemOperator());
+        if(cmd.getRobotAction()!=null)
+            mRobotCtrl.doAction(cmd.getRobotAction());
+
+        if(cmd.getVoiceContent()!=null)
+            mVoiceCtrl.response(cmd);
+
+        if(cmd.getSystemOperator()!=null)
+            mSystemCtrl.doAction(cmd.getSystemOperator());
+
+        if(cmd.getEmotionName()!=null)
+            mEmotionCtrl.changeEmotion(cmd.getEmotionName());
     }
 
 }

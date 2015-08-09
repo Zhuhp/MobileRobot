@@ -47,7 +47,7 @@
 
         <activity
             android:name="com.timyrobot.ui.activity.EmotionActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="landscape" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
