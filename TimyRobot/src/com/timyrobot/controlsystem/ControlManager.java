@@ -61,4 +61,8 @@ public class ControlManager {
             mEmotionCtrl.changeEmotion(cmd.getEmotionName());
     }
 
+    public void changeEmotion(String name){
+        mEmotionCtrl.changeEmotion(name);
+    }
+
 }

@@ -25,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.ant.liao.GifView;
-import com.ant.liao.GifView.GifImageType;
 import com.example.robot.R;
 import com.example.robot.amarino.AmarinoDbAdapter;
 import com.example.robot.amarino.AmarinoIntent;
@@ -300,90 +299,7 @@ public class MainActivity extends Activity implements RecognizerDialogListener {
 	}
 
 	private void initFaceViews() {
-		// face eyes
-		norGif = (GifView) findViewById(R.id.norGif);
-		happyGif = (GifView) findViewById(R.id.happyGif);
-		surpriseGif = (GifView) findViewById(R.id.surpriseGif);
-		suspectGif = (GifView) findViewById(R.id.suspectGif);
-		wakeupGif = (GifView) findViewById(R.id.wakeupGif);
 
-		angryImg = (ImageView) findViewById(R.id.angryImg);
-		despiseImg = (ImageView) findViewById(R.id.despiseImg);
-		humsImg = (ImageView) findViewById(R.id.humsImg);
-		squintImg = (ImageView) findViewById(R.id.squintImg);
-		upsetImg = (ImageView) findViewById(R.id.upsetImg);
-
-		norGif.setGifImage(R.drawable.nor); // 从文件流中加载GIF动画
-		norGif.setGifImageType(GifImageType.COVER); // 只显示第一帧再显示
-		norGif.setVisibility(View.INVISIBLE);
-		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.NORMAL, norGif.getId());
-
-//		happyGif.setGifImage(R.drawable.happy);
-//		happyGif.setGifImageType(GifImageType.COVER);
-//		happyGif.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.HAPPY, happyGif.getId());
-//
-//		surpriseGif.setGifImage(R.drawable.surprise);
-//		surpriseGif.setGifImageType(GifImageType.COVER);
-//		surpriseGif.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.SURPRISE,
-//				surpriseGif.getId());
-
-//		suspectGif.setGifImage(R.drawable.suspect);
-//		suspectGif.setGifImageType(GifImageType.COVER);
-//		suspectGif.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.SUSPECT,
-//				suspectGif.getId());
-//
-//		suspectGif.setGifImage(R.drawable.suspect);
-//		suspectGif.setGifImageType(GifImageType.COVER);
-//		suspectGif.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.SUSPECT,
-//				suspectGif.getId());
-
-		wakeupGif.setGifImage(R.drawable.wakeup);
-		wakeupGif.setGifImageType(GifImageType.COVER);
-		suspectGif.setVisibility(View.INVISIBLE);
-//
-//		angryImg.setBackgroundResource(R.drawable.angry);
-//		angryImg.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.ANGRY, angryImg.getId());
-
-		humsImg.setBackgroundResource(R.drawable.hums);
-		humsImg.setVisibility(View.INVISIBLE);
-		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.HUMS, humsImg.getId());
-
-//		despiseImg.setBackgroundResource(R.drawable.despise);
-//		despiseImg.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.DESPISE,
-//				despiseImg.getId());
-//
-//		squintImg.setBackgroundResource(R.drawable.squint);
-//		squintImg.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil
-//				.addFaceView(FaceEyesViewUtil.SQUINT, squintImg.getId());
-//
-//		upsetImg.setImageResource(R.drawable.upset);
-//		upsetImg.setBackgroundResource(R.drawable.upset);
-//		upsetImg.setVisibility(View.INVISIBLE);
-//		FaceEyesViewUtil.addFaceView(FaceEyesViewUtil.UPSET, upsetImg.getId());
-
-		if (bFirstWakeup) {
-			wakeupGif.setVisibility(View.VISIBLE);
-			curView = wakeupGif;
-			// bFirstWakeup = false;
-			TimerTask task = new TimerTask() {
-				public void run() {
-					mUiHandler.sendEmptyMessage(0);
-					shakeHead();
-				}
-			};
-			Timer timer = new Timer(true);
-			timer.schedule(task,5000); //延时1000ms后执行，1000ms执行一次
-		} else {
-			norGif.setVisibility(View.VISIBLE);
-			curView = norGif;
-		}
 			
 	}
 
