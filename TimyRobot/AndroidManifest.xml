@@ -26,7 +26,7 @@
     <application
         android:name="com.timyrobot.IRApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/robot"
         android:theme="@style/AppTheme"
         android:label="@string/app_name"
         android:sharedUserId="android.uid.system" >
@@ -49,11 +49,7 @@
             android:name="com.timyrobot.ui.activity.EmotionActivity"
             android:screenOrientation="landscape" >
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
@@ -72,6 +68,12 @@
         </activity>
         <activity
             android:name="com.timyrobot.ui.activity.InitActivity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
     </application>

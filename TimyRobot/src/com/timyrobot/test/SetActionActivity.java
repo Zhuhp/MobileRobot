@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -90,9 +89,10 @@ public class SetActionActivity extends Activity{
                 JSONObject actionObject = new JSONObject();
 
                 JSONArray array = new JSONArray();
-                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", "1000"));
-                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", "1000"));
-                actionObject.put("wave", createAction("2", "0,0,0", array.toString()));
+                array.put(createSubAction("0,4,90,4,90,4,90,4,90,4,90,4,90,4,90,4,90,4", "2500"));
+                array.put(createSubAction("180,4,90,4,90,4,90,4,90,4,90,4,90,4,90,4,90,4", "2500"));
+                array.put(createSubAction("90,4,90,4,90,4,90,4,90,4,90,4,90,4,90,4,90,4", "2500"));
+                actionObject.put("shake_head", createAction("3", "0,0,0", array.toString()));
 
                 BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileAction,false)));
                 br.write(actionObject.toString());

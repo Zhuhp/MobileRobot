@@ -2,6 +2,7 @@ package com.timyrobot.robot.data;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.timyrobot.common.RobotServiceKey;
 import com.timyrobot.robot.bean.RobotAction;
@@ -25,11 +26,12 @@ import java.util.Map;
  */
 public enum RobotData {
     INSTANCE;
-
+    private final static String TAG  = RobotData.class.getName();
     private Map<String,RobotAction> mAction;
     private Map<String,RobotCmd> mCmd;
 
     public void initRobotData(Context ctx){
+        Log.i(TAG, "Init Robot Data!!");
         mAction = new HashMap<>();
         mCmd = new HashMap<>();
         try {
@@ -39,7 +41,7 @@ public enum RobotData {
             JSONObject actionObject = new JSONObject(actionBr.readLine());
             initCmd(cmdObject);
             initAction(actionObject);
-            cmdBr.close();;
+            cmdBr.close();
             actionBr.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,6 +100,7 @@ public enum RobotData {
                     ac.setActions(robotActions);
                 }
                 mAction.put(key,ac);
+                Log.i(TAG, "mAction put item->"+key+":"+mAction.get(key));
             }
         }
     }
@@ -113,6 +116,7 @@ public enum RobotData {
     }
 
     public RobotAction getRobotAction(String key){
+        Log.d(TAG, "Get robot action for key:" + key);
         if(TextUtils.isEmpty(key)){
             return null;
         }
