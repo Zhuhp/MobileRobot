@@ -6,7 +6,7 @@ package com.timyrobot.robot.bean;
 public class RobotSubAction {
 
     private String position;
-    private String time;
+    private long time;
 
     public String getPosition() {
         return position;
@@ -16,11 +16,11 @@ public class RobotSubAction {
         this.position = position;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

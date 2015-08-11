@@ -19,12 +19,13 @@ public class UnknownIntentParser implements IUserIntentParser{
     public ControllCommand parseIntent(String result) {
         try {
             JSONObject object = new JSONObject(result);
-            RobotCmd cmd = RobotData.INSTANCE.getRobotCmd(ActionJsonParser.getText(object));
+            String text = ActionJsonParser.getText(object);
+            RobotCmd cmd = RobotData.INSTANCE.getRobotCmd(text);
             ControllCommand command = null;
-            if(cmd == null){
+            if(cmd != null){
                 command = new ControllCommand(cmd.getFace(),cmd.getVoice(),false,cmd.getAction(),null,null);
             }else{
-                command = new ControllCommand(null,"不知道你在说什么",false,"unkonwn",result,null);
+                command = new ControllCommand(null,text,true,"unkonwn",result,null);
             }
 
             return command;

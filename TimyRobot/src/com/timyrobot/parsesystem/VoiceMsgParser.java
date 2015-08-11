@@ -53,15 +53,12 @@ public class VoiceMsgParser implements IDataParse{
             String resultString = understanderResult.getResultString();
             try {
                 JSONObject object = new JSONObject(resultString);
-                if(ActionJsonParser.isSuccess(object)){
-                    IUserIntentParser parser = mUserIntentParser.getParser(
-                            ActionJsonParser.getService(object),
-                            ActionJsonParser.getOperation(object));
-                    ControllCommand command = parser.parseIntent(resultString);
-                    if(mReceiver != null){
-                        mReceiver.parseResult(command);
-                    }
-
+                IUserIntentParser parser = mUserIntentParser.getParser(
+                        ActionJsonParser.getService(object),
+                        ActionJsonParser.getOperation(object));
+                ControllCommand command = parser.parseIntent(resultString);
+                if(mReceiver != null){
+                    mReceiver.parseResult(command);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

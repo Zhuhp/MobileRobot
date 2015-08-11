@@ -15,8 +15,7 @@ public enum RobotProxy {
     INSTANCE;
 
     public void sendData(String cmd){
-        RobotAction action = RobotData.INSTANCE.getRobotAction(cmd);
-        BluetoothManager.INSTANCE.sendData(cmd+action.getActions());
+        BluetoothManager.INSTANCE.sendData(cmd);
     }
 
     public void setIDataReceiver(IDataReceiver receiver){

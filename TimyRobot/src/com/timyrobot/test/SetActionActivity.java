@@ -64,7 +64,7 @@ public class SetActionActivity extends Activity{
         }
     }
 
-    public String createCmd(String action,String voice,String emotion){
+    public JSONObject createCmd(String action,String voice,String emotion){
         JSONObject object = new JSONObject();
         try {
             object.put(RobotServiceKey.CmdKey.ACTION,action);
@@ -73,7 +73,7 @@ public class SetActionActivity extends Activity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return object.toString();
+        return object;
     }
 
     public void createActionFile(){
@@ -90,9 +90,9 @@ public class SetActionActivity extends Activity{
                 JSONObject actionObject = new JSONObject();
 
                 JSONArray array = new JSONArray();
-                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", "1000"));
-                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", "1000"));
-                actionObject.put("wave", createAction("2", "0,0,0", array.toString()));
+                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", 1000));
+                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", 1000));
+                actionObject.put("wave", createAction(2, "0,0,0", array));
 
                 BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileAction,false)));
                 br.write(actionObject.toString());
@@ -108,7 +108,7 @@ public class SetActionActivity extends Activity{
         }
     }
 
-    public String createAction(String actionNum,String statelight,String actions){
+    public JSONObject createAction(int actionNum,String statelight,JSONArray actions){
         JSONObject object = new JSONObject();
         try {
             object.put(RobotServiceKey.ActionKey.ACTION_NUM,actionNum);
@@ -117,12 +117,12 @@ public class SetActionActivity extends Activity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return object.toString();
+        return object;
     }
 
 
 
-    public String createSubAction(String position,String time){
+    public JSONObject createSubAction(String position,long time){
         JSONObject object = new JSONObject();
         try {
             object.put(RobotServiceKey.ActionKey.TIME,time);
@@ -130,6 +130,6 @@ public class SetActionActivity extends Activity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return object.toString();
+        return object;
     }
 }
