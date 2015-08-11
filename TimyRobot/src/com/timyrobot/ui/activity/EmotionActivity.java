@@ -9,8 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.robot.R;
@@ -23,12 +24,9 @@ import com.timyrobot.listener.DataReceiver;
 import com.timyrobot.listener.ParserResultReceiver;
 import com.timyrobot.parsesystem.ParseManager;
 import com.timyrobot.triggersystem.TriggerManager;
-import com.timyrobot.ui.present.IEmotionPresent;
 
-import java.lang.ref.WeakReference;
-
-public class EmotionActivity extends Activity implements View.OnClickListener,
-        DataReceiver,ParserResultReceiver{
+public class EmotionActivity extends Activity implements
+        DataReceiver,ParserResultReceiver, View.OnTouchListener{
 
     public static final String TAG = EmotionActivity.class.getName();
 
@@ -44,23 +42,27 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
 
     private boolean isFirstCreate = false;
 
+    public ImageView iv_emotion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        iv_emotion = (ImageView)findViewById(R.id.iv_emotion);
+        iv_emotion.setOnTouchListener(this);
+
         initManager();
-        initView();
         registerReceiver(mStartConversation, new IntentFilter(
                 ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION));
         isFirstCreate = true;
+
     }
 
-    private void initView(){
-        findViewById(R.id.btn_find_blue).setOnClickListener(this);
-        findViewById(R.id.btn_send_data).setOnClickListener(this);
-    }
 
     private void initManager(){
+
         HandlerThread sendThread = new HandlerThread(EmotionActivity.class.getName()+"sendThread");
         sendThread.start();
         mSendHandler = new Handler(sendThread.getLooper(),mSendCB);
@@ -71,7 +73,7 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
         mTriggerManager.init((CameraSurfaceView)findViewById(R.id.camera_surfaceview),
                 (FaceView)findViewById(R.id.face_view));
         mParseManager = new ParseManager(this,this);
-        mCtrlManager = new ControlManager(this,(ImageView)findViewById(R.id.iv_emotion));
+        mCtrlManager = new ControlManager(this,iv_emotion);
     }
 
     @Override
@@ -80,6 +82,12 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
         if(!isFirstCreate) {
             mTriggerManager.start();
         }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -96,15 +104,6 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
         super.onDestroy();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_find_blue:
-                break;
-            case R.id.btn_send_data:
-                break;
-        }
-    }
 
     private Handler.Callback mSendCB = new Handler.Callback() {
         @Override
@@ -124,14 +123,22 @@ public class EmotionActivity extends Activity implements View.OnClickListener,
             return false;
         }
     };
-
+    //start vonversation dialog.
     private BroadcastReceiver mStartConversation = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG,"startConversation");
             mTriggerManager.startConversation();
         }
     };
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int action = event.getAction();
+        if(action==MotionEvent.ACTION_DOWN){
+            mCtrlManager.changeEmotion("laugh2");
+        }
+        return false;
+    }
 
     @Override
     public void onReceive(String data) {

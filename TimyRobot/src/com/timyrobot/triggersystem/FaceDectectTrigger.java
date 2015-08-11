@@ -21,8 +21,10 @@ import org.json.JSONObject;
 /**
  * Created by zhangtingting on 15/7/27.
  */
-public enum FaceDectectTrigger{
+public enum FaceDectectTrigger {
     INSTANCE;
+    private final static String TAG = FaceDectectTrigger.class.getName();
+
 
     Context mCtx;
 
@@ -35,13 +37,13 @@ public enum FaceDectectTrigger{
 
     private DataReceiver mReceiver;
 
-    public void init(Context context, DataReceiver receiver){
+    public void init(Context context, DataReceiver receiver) {
         mCtx = context;
         mReceiver = receiver;
         mInterface = CameraInterface.getInstance();
     }
 
-    public void initFaceDectect(CameraSurfaceView surfaceView,FaceView faceView) {
+    public void initFaceDectect(CameraSurfaceView surfaceView, FaceView faceView) {
         mFaceDectHandler = new FaceDectHandler();
         mSurfaceView = surfaceView;
         mFaceView = faceView;
@@ -59,6 +61,9 @@ public enum FaceDectectTrigger{
         stopGoogleFaceDetect();
     }
 
+    private boolean bFirstDectect = true;
+    private int lastPosition = 0;
+
     private class FaceDectHandler extends Handler {
 
         @Override
@@ -70,56 +75,89 @@ public enum FaceDectectTrigger{
                     if (faces == null || faces.length < 1) {
                         break;
                     }
+                    mFaceView.setFaces(faces);
 
                     int position = faces[0].rect.left
                             + (faces[0].rect.right - faces[0].rect.left) / 2;
 
-                    if ((faces[0].rect.right - faces[0].rect.left) > 700) {
-                        if(mReceiver != null){
-                            //探测到脸的回调
+//                    if ((faces[0].rect.right - faces[0].rect.left) > 700) {
+////                        if(bFirstDectect) {
+////                            bFirstDectect = false;
+////                            lastPosition = position;
+////                            break;
+////                        }else{
+////                            if(Math.abs(position-lastPosition)<100){
+//                                if(mReceiver != null){
+//                                    try {
+//                                        JSONObject object = new JSONObject();
+//                                        object.put(ConstDefine.TriggerDataKey.TYPE,
+//                                                ConstDefine.TriggerDataType.Vision);
+//                                        JSONObject faceObj = new JSONObject();
+//                                        faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
+//                                        faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
+//                                        object.put(ConstDefine.TriggerDataKey.CONTENT,
+//                                                faceObj.toString());
+//                                        mReceiver.onReceive(object.toString());
+//                                        break;
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+////                                }
+////                            }
+//                        }
+
+
+                    if (faces.length >= 3) {
+                        Log.d(TAG, "Dectect more than 3 face");
+                        if (mReceiver != null) {
                             try {
                                 JSONObject object = new JSONObject();
                                 object.put(ConstDefine.TriggerDataKey.TYPE,
                                         ConstDefine.TriggerDataType.Vision);
+                                JSONObject faceObj = new JSONObject();
+                                faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_MANY_FACES);
+                                faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(faces.length));
                                 object.put(ConstDefine.TriggerDataKey.CONTENT,
-                                        ConstDefine.VisionCMD.DETECT_FACE);
+                                        faceObj.toString());
                                 mReceiver.onReceive(object.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
-                        Log.d("facedetect", "dectect");
                     }
-                    // Log.d(TAG, "positon->"+position);
-                    String data = "";
-                    if (position > 0) {
-                        if (position <= 400)
-                            data = "c";
-                        else if (position <= 700)
-                            data = "b";
-                        else if (position <= 1000)
-                            data = "a";
-                    } else {
-                        if (position >= -400)
-                            data = "d";
-                        else if (position >= -700)
-                            data = "e";
-                        else if (position >= 1000)
-                            data = "f";
-                    }
-                    // if (bConnected)
-                    // sendBluetoothData(data);
+//                        lastPosition = 0;
+//                        bFirstDectect = true;
+                    break;
 
-                    break;
-                case EventUtil.CAMERA_HAS_STARTED_PREVIEW:
-                    startGoogleFaceDetect();
-                    break;
-            }
-            super.handleMessage(msg);
+
+//                    // Log.d(TAG, "positon->"+position);
+//                    String data = "";
+//                    if (position > 0) {
+//                        if (position <= 400)
+//                            data = "c";
+//                        else if (position <= 700)
+//                            data = "b";
+//                        else if (position <= 1000)
+//                            data = "a";
+//                    } else {
+//                        if (position >= -400)
+//                            data = "d";
+//                        else if (position >= -700)
+//                            data = "e";
+//                        else if (position >= 1000)
+//                            data = "f";
+//                    }
+            case EventUtil.CAMERA_HAS_STARTED_PREVIEW:
+            startGoogleFaceDetect();
+            break;
         }
 
+        super.
+
+        handleMessage(msg);
     }
+
+}
 
     private void restartPreviewCamera() {
         stopGoogleFaceDetect();

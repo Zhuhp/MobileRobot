@@ -29,7 +29,7 @@ public class VoiceControl {
     private SpeechSynthesizer mSST;
     private TulingManager mTulingManager;
 
-    private boolean isNext = true;
+    public static boolean isNext = true;
 
     public VoiceControl(Context ctx){
         mCtx = ctx;

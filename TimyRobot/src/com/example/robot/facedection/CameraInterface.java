@@ -7,7 +7,6 @@ import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
 import android.hardware.Camera.Size;
-import android.hardware.camera2.CameraDevice;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -40,7 +39,6 @@ public class CameraInterface {
 
 	public void doOpenCamera(CamOpenOverCallback callback, int cameraId){
 		Log.i(TAG, "Camera open....");
-		cameraId = 0;
 		mCamera = Camera.open(cameraId);
 		mCameraId = cameraId;
 		if(callback != null){

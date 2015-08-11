@@ -9,6 +9,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.timyrobot.common.ConstDefine;
+import com.timyrobot.controlsystem.VoiceControl;
 import com.timyrobot.listener.DataReceiver;
 import com.timyrobot.service.speechrecongnizer.SpeechJsonParser;
 
@@ -47,7 +48,7 @@ public enum VoiceTrigger {
      *
      */
     public  synchronized void startConversation(){
-        if((!isConversion) && (!mIatDialog.isShowing())){
+        if((!isConversion) && (!mIatDialog.isShowing())&& (VoiceControl.isNext)){
             isConversion = true;
             hasResult = false;
             mIatDialog.show();

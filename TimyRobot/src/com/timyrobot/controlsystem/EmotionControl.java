@@ -18,6 +18,7 @@ public class EmotionControl {
         DEFAULT,CUSTOM
     }
 
+    private final static String TAG = EmotionControl.class.getName();
     private Context mContext;
     private ImageView mImageView;
     private IEmotionProvider mProvider;
