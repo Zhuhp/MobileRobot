@@ -2,6 +2,7 @@ package com.timyrobot.controlsystem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.widget.ImageView;
 
 import com.timyrobot.bean.ControllCommand;
@@ -19,9 +20,9 @@ public class ControlManager {
     private RobotControl mRobotCtrl;
     private SystemControl mSystemCtrl;
 
-    public ControlManager(Activity activity,ImageView imageView){
+    public ControlManager(Activity activity,ImageView imageView, Handler handler){
         mActivity = activity;
-        mEmotionCtrl = new EmotionControl(mActivity,imageView, EmotionControl.EmotionType.DEFAULT);
+        mEmotionCtrl = new EmotionControl(mActivity,EmotionControl.EmotionType.DEFAULT,handler);
         mVoiceCtrl = new VoiceControl(mActivity);
         mRobotCtrl = new RobotControl(mActivity);
         mSystemCtrl = new SystemControl(mActivity);

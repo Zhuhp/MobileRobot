@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -32,9 +33,12 @@ public class EmotionActivity extends Activity implements
 
     public final static int SEND_DATA = 0x10001;
     public final static int PARSE_DATA = 0x10002;
+    public final static int CHANGE_EMOTION = 0x10003;
 
     private Handler mSendHandler;
     private Handler mParserResultHandler;
+
+    private EmotionHandler mMainHandler;
 
     private TriggerManager mTriggerManager;
     private ParseManager mParseManager;
@@ -42,7 +46,8 @@ public class EmotionActivity extends Activity implements
 
     private boolean isFirstCreate = false;
 
-    public ImageView iv_emotion;
+    private ImageView mImageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +55,8 @@ public class EmotionActivity extends Activity implements
         setContentView(R.layout.activity_emotion);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        iv_emotion = (ImageView)findViewById(R.id.iv_emotion);
-        iv_emotion.setOnTouchListener(this);
+        mImageView = (ImageView)findViewById(R.id.iv_emotion);
+        mImageView.setOnTouchListener(this);
 
         initManager();
         registerReceiver(mStartConversation, new IntentFilter(
@@ -68,12 +73,13 @@ public class EmotionActivity extends Activity implements
         mSendHandler = new Handler(sendThread.getLooper(),mSendCB);
         HandlerThread resultThread = new HandlerThread(EmotionActivity.class.getName()+"resultThread");
         resultThread.start();
-        mParserResultHandler = new Handler(resultThread.getLooper(),mSendCB);
-        mTriggerManager = new TriggerManager(this,this);
+        mParserResultHandler = new Handler(resultThread.getLooper(), mSendCB);
+        mTriggerManager = new TriggerManager(this, this);
         mTriggerManager.init((CameraSurfaceView)findViewById(R.id.camera_surfaceview),
                 (FaceView)findViewById(R.id.face_view));
-        mParseManager = new ParseManager(this,this);
-        mCtrlManager = new ControlManager(this,iv_emotion);
+        mParseManager = new ParseManager(this, this);
+        mMainHandler = new EmotionHandler(this);
+        mCtrlManager = new ControlManager(this, mImageView, mMainHandler);
     }
 
     @Override
@@ -158,5 +164,35 @@ public class EmotionActivity extends Activity implements
         msg.what = PARSE_DATA;
         msg.obj = cmd;
         mParserResultHandler.sendMessage(msg);
+    }
+
+    private void changeEmotion(AnimationDrawable drawable){
+        if(drawable == null){
+            return;
+        }
+        mImageView.setBackground(drawable);
+        drawable.start();
+    }
+
+    /**
+     *
+     */
+    private static class EmotionHandler extends Handler{
+
+        EmotionActivity mActivity;
+
+        public EmotionHandler(EmotionActivity activity){
+            mActivity = activity;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case CHANGE_EMOTION:
+                    AnimationDrawable drawable = (AnimationDrawable)msg.obj;
+                    mActivity.changeEmotion(drawable);
+                    break;
+            }
+        }
     }
 }
