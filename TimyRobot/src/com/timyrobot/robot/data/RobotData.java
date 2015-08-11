@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by zhangtingting on 15/8/8.
@@ -94,7 +95,7 @@ public enum RobotData {
                         JSONObject subAc = subAcArray.optJSONObject(i);
                         RobotSubAction subAction = new RobotSubAction();
                         subAction.setPosition(subAc.optString(RobotServiceKey.ActionKey.POSITION));
-                        subAction.setTime(subAc.optString(RobotServiceKey.ActionKey.TIME));
+                        subAction.setTime(subAc.optLong(RobotServiceKey.ActionKey.TIME));
                         robotActions.add(subAction);
                     }
                     ac.setActions(robotActions);
@@ -109,10 +110,17 @@ public enum RobotData {
         if(TextUtils.isEmpty(key)){
             return null;
         }
-        if(!mCmd.containsKey(key)){
+        Set<String> setKey = mCmd.keySet();
+        String realKey = "";
+        for(String s:setKey){
+            if(key.contains(s)){
+                realKey = s;
+            }
+        }
+        if(!mCmd.containsKey(realKey)){
             return null;
         }
-        return mCmd.get(key);
+        return mCmd.get(realKey);
     }
 
     public RobotAction getRobotAction(String key){

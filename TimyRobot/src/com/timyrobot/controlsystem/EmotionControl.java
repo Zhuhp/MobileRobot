@@ -2,12 +2,14 @@ package com.timyrobot.controlsystem;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
-import android.widget.ImageView;
+import android.os.Handler;
+import android.os.Message;
 
 import com.timyrobot.service.emotion.parser.EmotionParserFactory;
 import com.timyrobot.service.emotion.parser.IEmotionParser;
 import com.timyrobot.service.emotion.provider.EmotionProviderFactory;
 import com.timyrobot.service.emotion.provider.IEmotionProvider;
+import com.timyrobot.ui.activity.EmotionActivity;
 
 /**
  * Created by zhangtingting on 15/8/6.
@@ -20,18 +22,17 @@ public class EmotionControl {
 
     private final static String TAG = EmotionControl.class.getName();
     private Context mContext;
-    private ImageView mImageView;
     private IEmotionProvider mProvider;
     private IEmotionParser mParser;
 
     private AnimationDrawable mDrawable;
+    private Handler mHandler;
 
-    public EmotionControl(Context context, ImageView imageView,
-                          EmotionType type){
+    public EmotionControl(Context context, EmotionType type, Handler handler){
         mContext = context;
-        mImageView = imageView;
         mProvider = EmotionProviderFactory.getEmotionProvider(type);
         mParser = EmotionParserFactory.getEmotionParser(type);
+        mHandler = handler;
     }
 
     public void changeEmotion(String name){
@@ -41,8 +42,10 @@ public class EmotionControl {
         String result = mParser.parseEmotion(name);
         mDrawable = mProvider.provideEmotionAnimation(result);
         if(mDrawable != null) {
-            mImageView.setBackground(mDrawable);
-            mDrawable.start();
+            Message msg = new Message();
+            msg.obj = mDrawable;
+            msg.what = EmotionActivity.CHANGE_EMOTION;
+            mHandler.sendMessage(msg);
         }
     }
 }
