@@ -68,6 +68,7 @@
         </activity>
         <activity
             android:name="com.timyrobot.ui.activity.InitActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

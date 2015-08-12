@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.timyrobot.common.GlobalSetting;
 
@@ -120,9 +118,9 @@ public enum BluetoothManager {
             new BluetoothSPP.BluetoothConnectionListener() {
         @Override
         public void onDeviceConnected(String name, String address) {
-            Toast.makeText(mContext
-                    , "Connected to " + name + "\n" + address
-                    , Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext
+//                    , "Connected to " + name + "\n" + address
+//                    , Toast.LENGTH_SHORT).show();
             if(mBlueConnectListener != null){
                 mBlueConnectListener.connect(name,address);
             }
@@ -130,8 +128,8 @@ public enum BluetoothManager {
 
         @Override
         public void onDeviceDisconnected() {
-            Toast.makeText(mContext
-                    , "Connection lost", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext
+//                    , "Connection lost", Toast.LENGTH_SHORT).show();
             if(mBlueConnectListener != null){
                 mBlueConnectListener.disconnect();
             }
@@ -139,8 +137,8 @@ public enum BluetoothManager {
 
         @Override
         public void onDeviceConnectionFailed() {
-            Toast.makeText(mContext
-                    , "Unable to connect", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext
+//                    , "Unable to connect", Toast.LENGTH_SHORT).show();
             if(mBlueConnectListener != null){
                 mBlueConnectListener.connectFailed();
             }
@@ -153,7 +151,7 @@ public enum BluetoothManager {
             if(mReceiver != null){
                 mReceiver.onReceive(data, message);
             }
-            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         }
     };
 }

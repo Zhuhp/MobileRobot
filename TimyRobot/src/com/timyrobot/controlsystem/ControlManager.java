@@ -50,6 +50,9 @@ public class ControlManager {
             return;
         }
 
+        if(cmd.getEmotionName()!=null)
+            mEmotionCtrl.changeEmotion(cmd.getEmotionName());
+
         if(cmd.getRobotAction()!=null)
             mRobotCtrl.doAction(cmd.getRobotAction());
 

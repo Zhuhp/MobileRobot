@@ -1,1 +1,1 @@
-{"跳舞":{"voice":"那我就献丑了","action":"dance","face":"smile"},"你好":{"voice":"你好，我是小黑，请多执教","action":"wave","face":"laugh"}}
+{"摇头":{"voice":"哦，好","action":"shake_head","face":"blink"},"扭两下":{"voice":"来，吧啦啦啦啦啦啦啦","action":"slide","face":"laugh"},"拍手":{"voice":"来，吧啦啦啦","action":"five","face":"blink"},"跳舞":{"voice":"那我就献丑了","action":"dance","face":"laugh"},"你好":{"voice":"你好，我是小黑，请多执教","action":"wave","face":"laugh"}}
