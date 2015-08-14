@@ -245,8 +245,6 @@ public class MainActivity extends Activity implements RecognizerDialogListener {
 		mFaceDectHandler.sendEmptyMessageDelayed(
 				EventUtil.CAMERA_HAS_STARTED_PREVIEW, 1500);
 		
-		Intent i = new Intent(MainActivity.this, FloatViewService.class);
-		stopService(i);
 
 
 		// // listen for device state changes

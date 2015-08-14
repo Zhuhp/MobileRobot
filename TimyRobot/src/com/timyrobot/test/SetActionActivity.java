@@ -193,9 +193,14 @@ public class SetActionActivity extends Activity{
                 JSONObject actionObject = new JSONObject();
 
                 JSONArray array = new JSONArray();
-                array.put(createSubFace("bling", 1000));
+                array.put(createSubFace("blink", 1000));
                 array.put(createSubFace("laugh", 1000));
-                actionObject.put("wave", createFace(2, array));
+                actionObject.put("blink", createFace(2, array));
+
+                JSONArray array2 = new JSONArray();
+                array2.put(createSubFace("fear", 1000));
+                array2.put(createSubFace("hums", 1000));
+                actionObject.put("fear", createFace(2, array2));
 
                 BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileAction,false)));
                 br.write(actionObject.toString());
@@ -214,7 +219,7 @@ public class SetActionActivity extends Activity{
     public JSONObject createFace(int actionNum,JSONArray actions){
         JSONObject object = new JSONObject();
         try {
-            object.put(RobotServiceKey.FaceKey.FACE_NAME,actionNum);
+            object.put(RobotServiceKey.FaceKey.FACE_NUM,actionNum);
             object.put(RobotServiceKey.FaceKey.FACES,actions);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -19,11 +19,13 @@ public class ParseManager {
 
     private VisionMsgParser visionMsgParser;
     private VoiceMsgParser voiceMsgParser;
+    private TouchMsgParser touchMsgParser;
 
     public ParseManager(Context context,ParserResultReceiver receiver){
         mCtx = context;
         visionMsgParser = new VisionMsgParser(receiver);
         voiceMsgParser = new VoiceMsgParser(mCtx,receiver);
+        touchMsgParser = new TouchMsgParser(receiver);
     }
 
     public void parse(String content){
@@ -41,6 +43,8 @@ public class ParseManager {
             }else if(ConstDefine.TriggerDataType.Vision.equals(type)){
                 //视觉信息
                 visionMsgParser.parse(data);
+            }else if(ConstDefine.TriggerDataType.Touch.equals(type)){
+                touchMsgParser.parse(data);
             }
 
         } catch (JSONException e) {

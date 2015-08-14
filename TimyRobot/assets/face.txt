@@ -1,0 +1,1 @@
+{"blink":{"face_num":2,"faces":[{"face_name":"blink","time":1000},{"face_name":"laugh","time":1000}]},"fear":{"face_num":2,"faces":[{"face_name":"fear","time":1000},{"face_name":"hums","time":1000}]}}

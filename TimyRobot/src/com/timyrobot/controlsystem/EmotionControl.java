@@ -10,6 +10,7 @@ import com.timyrobot.robot.RobotProxy;
 import com.timyrobot.robot.bean.RobotFace;
 import com.timyrobot.robot.bean.RobotSubAction;
 import com.timyrobot.robot.bean.RobotSubFace;
+import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.emotion.parser.EmotionParserFactory;
 import com.timyrobot.service.emotion.parser.IEmotionParser;
 import com.timyrobot.service.emotion.provider.EmotionProviderFactory;
@@ -53,6 +54,10 @@ public class EmotionControl {
         HandlerThread thread = new HandlerThread("RobotControl-face");
         thread.start();
         mFaceHandler = new Handler(thread.getLooper(), mCmdCB);
+    }
+
+    public void randomChangeEmotion(){
+        changeEmotion(RobotData.INSTANCE.getRandomFace());
     }
 
     public void changeEmotion(String name){
@@ -101,7 +106,7 @@ public class EmotionControl {
                     if((mDrawable != null) && (mDrawable.isRunning())){
                         mDrawable.stop();
                     }
-                    mDrawable = mProvider.provideEmotionAnimation("");
+                    mDrawable = mProvider.provideEmotionAnimation("blink");
                     Message msgEndFace = new Message();
                     msgEndFace.what = EmotionActivity.CHANGE_EMOTION;
                     msgEndFace.obj = mDrawable;

@@ -1,8 +1,7 @@
 package com.example.robot.view;
 
-import com.ant.liao.GifView;
 import com.example.robot.R;
-import com.example.robot.tuling.IRApplication;
+import com.timyrobot.IRApplication;
 
 import android.content.Context;
 import android.graphics.Rect;

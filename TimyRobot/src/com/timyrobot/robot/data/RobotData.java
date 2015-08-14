@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -38,15 +39,20 @@ public enum RobotData {
         Log.i(TAG, "Init Robot Data!!");
         mAction = new HashMap<>();
         mCmd = new HashMap<>();
+        mFace = new HashMap<>();
         try {
             BufferedReader cmdBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("cmd.txt")));
             BufferedReader actionBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("action.txt")));
+            BufferedReader faceBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("face.txt")));
             JSONObject cmdObject = new JSONObject(cmdBr.readLine());
             JSONObject actionObject = new JSONObject(actionBr.readLine());
+            JSONObject faceObject = new JSONObject(faceBr.readLine());
             initCmd(cmdObject);
             initAction(actionObject);
+            initFace(faceObject);
             cmdBr.close();
             actionBr.close();
+            faceBr.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -135,7 +141,7 @@ public enum RobotData {
                     ac.setActions(robotActions);
                 }
                 mAction.put(key,ac);
-                Log.i(TAG, "mAction put item->"+key+":"+mAction.get(key));
+                Log.i(TAG, "mAction put item->" + key + ":" + mAction.get(key));
             }
         }
     }
@@ -176,5 +182,17 @@ public enum RobotData {
             return null;
         }
         return mFace.get(key);
+    }
+
+    public String getRandomFace(){
+        Set<String> data = mFace.keySet();
+        int pos = new Random().nextInt(data.size());
+        for(String faceTmp:data){
+            if(pos == 1){
+                return faceTmp;
+            }
+            pos--;
+        }
+        return null;
     }
 }

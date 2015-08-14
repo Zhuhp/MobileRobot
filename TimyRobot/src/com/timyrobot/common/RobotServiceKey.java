@@ -21,8 +21,7 @@ public class RobotServiceKey {
     }
 
     public final static class FaceKey{
-        public final static String FACE_NUM = "action_num";
-        public final static String STATELIGHT = "statelight";
+        public final static String FACE_NUM = "face_num";
         public final static String FACES = "faces";
         public final static String FACE_NAME = "face_name";
         public final static String TIME = "time";

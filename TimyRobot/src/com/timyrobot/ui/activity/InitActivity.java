@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.robot.R;
+import com.example.robot.view.FloatViewService;
 import com.timyrobot.service.bluetooth.IBlueConnectListener;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.iml.BluetoothPresent;
@@ -53,6 +54,7 @@ public class InitActivity extends Activity implements View.OnClickListener{
             }
         });
         initView();
+
     }
 
     @Override

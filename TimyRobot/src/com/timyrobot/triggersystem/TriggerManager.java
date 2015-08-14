@@ -14,6 +14,7 @@ public class TriggerManager {
     public TriggerManager(Context ctx,DataReceiver receiver){
         VoiceTrigger.INSTANCE.init(ctx,receiver);
         FaceDectectTrigger.INSTANCE.init(ctx,receiver);
+        TouchTrigger.INSTANCE.init(receiver);
     }
 
     public void init(CameraSurfaceView cameraSurfaceView,FaceView faceView){
@@ -31,5 +32,9 @@ public class TriggerManager {
 
     public void stop(){
         FaceDectectTrigger.INSTANCE.stopDetect();
+    }
+
+    public void startTouch(){
+        TouchTrigger.INSTANCE.phoneTouch();
     }
 }

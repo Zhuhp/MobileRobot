@@ -35,12 +35,10 @@ public class VisionMsgParser implements IDataParse{
                     mReceiver.parseResult(cmd);
                 }
             }
-            }catch(JSONException e){
-                Log.d(TAG, "trans vision content to json farmat error!");
-                return;
+        }catch(JSONException e){
+            Log.d(TAG, "trans vision content to json farmat error!");
+            return;
 
-            }
-
-
+        }
     }
 }

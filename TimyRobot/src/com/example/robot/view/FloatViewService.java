@@ -1,19 +1,18 @@
 package com.example.robot.view;
 
-import com.example.robot.tuling.IRApplication;
-
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.os.Binder;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+
+import com.timyrobot.IRApplication;
+import com.timyrobot.ui.activity.EmotionActivity;
 
 public class FloatViewService extends Service{
 	private WindowManager windowManager = null;
@@ -71,7 +70,7 @@ public class FloatViewService extends Service{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.setClass(getApplicationContext(),MainActivity.class);
+				intent.setClass(getApplicationContext(),EmotionActivity.class);
 				startActivity(intent);
 				
 			}
