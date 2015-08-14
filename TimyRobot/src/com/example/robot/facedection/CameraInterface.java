@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class CameraInterface {
-	private static final String TAG = "YanZi";
+	private static final String TAG = "CameraInterface";
 	private Camera mCamera;
 	private Camera.Parameters mParams;
 	private boolean isPreviewing = false;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 
 import com.example.robot.facedection.CameraInterface;
@@ -75,40 +74,54 @@ public enum FaceDectectTrigger {
                     if (faces == null || faces.length < 1) {
                         break;
                     }
-                    mFaceView.setFaces(faces);
+                    //mFaceView.setFaces(faces);//show face case
+                    int size = (faces[0].rect.right - faces[0].rect.left);
 
-                    int position = faces[0].rect.left
-                            + (faces[0].rect.right - faces[0].rect.left) / 2;
+                    if ( size > 600) {
+                        if(mReceiver != null){
+                            try {
+                                JSONObject object = new JSONObject();
+                                object.put(ConstDefine.TriggerDataKey.TYPE,
+                                        ConstDefine.TriggerDataType.Vision);
+                                JSONObject faceObj = new JSONObject();
+                                faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
+                                int position = faces[0].rect.left
+                                        + (faces[0].rect.right - faces[0].rect.left) / 2;
+                                faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
+                                object.put(ConstDefine.TriggerDataKey.CONTENT,
+                                        faceObj.toString());
+                                mReceiver.onReceive(object.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        break;
+                    }
 
-//                    if ((faces[0].rect.right - faces[0].rect.left) > 700) {
-////                        if(bFirstDectect) {
-////                            bFirstDectect = false;
-////                            lastPosition = position;
-////                            break;
-////                        }else{
-////                            if(Math.abs(position-lastPosition)<100){
-//                                if(mReceiver != null){
-//                                    try {
-//                                        JSONObject object = new JSONObject();
-//                                        object.put(ConstDefine.TriggerDataKey.TYPE,
-//                                                ConstDefine.TriggerDataType.Vision);
-//                                        JSONObject faceObj = new JSONObject();
-//                                        faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
-//                                        faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
-//                                        object.put(ConstDefine.TriggerDataKey.CONTENT,
-//                                                faceObj.toString());
-//                                        mReceiver.onReceive(object.toString());
-//                                        break;
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-////                                }
-////                            }
-//                        }
+
+                    if ( size > 500&&size <= 600) {
+                                if(mReceiver != null){
+                                    try {
+                                        JSONObject object = new JSONObject();
+                                        object.put(ConstDefine.TriggerDataKey.TYPE,
+                                                ConstDefine.TriggerDataType.Vision);
+                                        JSONObject faceObj = new JSONObject();
+                                        faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE_LOCATION);
+                                        int position = faces[0].rect.left
+                                                + (faces[0].rect.right - faces[0].rect.left) / 2;
+                                        faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
+                                        object.put(ConstDefine.TriggerDataKey.CONTENT,
+                                                faceObj.toString());
+                                        mReceiver.onReceive(object.toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                        break;
+                    }
 
 
                     if (faces.length >= 3) {
-                        Log.d(TAG, "Dectect more than 3 face");
                         if (mReceiver != null) {
                             try {
                                 JSONObject object = new JSONObject();
@@ -120,41 +133,25 @@ public enum FaceDectectTrigger {
                                 object.put(ConstDefine.TriggerDataKey.CONTENT,
                                         faceObj.toString());
                                 mReceiver.onReceive(object.toString());
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+                        break;
                     }
 //                        lastPosition = 0;
 //                        bFirstDectect = true;
                     break;
 
 
-//                    // Log.d(TAG, "positon->"+position);
-//                    String data = "";
-//                    if (position > 0) {
-//                        if (position <= 400)
-//                            data = "c";
-//                        else if (position <= 700)
-//                            data = "b";
-//                        else if (position <= 1000)
-//                            data = "a";
-//                    } else {
-//                        if (position >= -400)
-//                            data = "d";
-//                        else if (position >= -700)
-//                            data = "e";
-//                        else if (position >= 1000)
-//                            data = "f";
-//                    }
+
             case EventUtil.CAMERA_HAS_STARTED_PREVIEW:
             startGoogleFaceDetect();
             break;
         }
 
-        super.
-
-        handleMessage(msg);
+        super. handleMessage(msg);
     }
 
 }

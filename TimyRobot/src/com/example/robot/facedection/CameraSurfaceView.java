@@ -9,7 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-	private static final String TAG = "yanzi";
+	private static final String TAG = "CameraSurfaceView";
 	CameraInterface mCameraInterface;
 	Context mContext;
 	SurfaceHolder mSurfaceHolder;
@@ -27,7 +27,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "surfaceCreated...");
-		CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_BACK);
+		CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
 	}
 
 	@Override

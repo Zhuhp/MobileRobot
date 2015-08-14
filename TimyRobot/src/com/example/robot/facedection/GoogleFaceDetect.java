@@ -6,10 +6,9 @@ import android.hardware.Camera.Face;
 import android.hardware.Camera.FaceDetectionListener;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 public class GoogleFaceDetect implements FaceDetectionListener {
-	private static final String TAG = "YanZi";
+	private static final String TAG = "GoogleFaceDetect";
 	private Context mContext;
 	private Handler mHander;
 	public GoogleFaceDetect(Context c, Handler handler){

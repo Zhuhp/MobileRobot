@@ -134,6 +134,8 @@ public class EmotionActivity extends Activity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             mTriggerManager.startConversation();
+            ControllCommand cmd = new ControllCommand(null,null,false,"handup1",null,null);
+            mCtrlManager.distribute(cmd);
         }
     };
 

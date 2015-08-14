@@ -25,6 +25,7 @@ public class ConstDefine {
     public final static class VisionCMD{
         public final static String DETECT_FACE = "detect_face";
         public final static String DETECT_MANY_FACES = "detect_many_faces";
+        public final static String DETECT_FACE_LOCATION = "detect_face_location";
     }
 
     public final static class IntentFilterString{

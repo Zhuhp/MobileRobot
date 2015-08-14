@@ -2,8 +2,6 @@ package com.example.robot.facedection;
 
 
 
-import com.example.robot.R;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,8 +15,10 @@ import android.hardware.Camera.Face;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.example.robot.R;
+
 public class FaceView extends ImageView {
-	private static final String TAG = "YanZi";
+	private static final String TAG = "FaceView";
 	private Context mContext;
 	private Paint mLinePaint;
 	private Face[] mFaces;
