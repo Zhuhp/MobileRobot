@@ -3,18 +3,28 @@ package com.timyrobot.controlsystem;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Message;
 
+import com.timyrobot.robot.RobotProxy;
+import com.timyrobot.robot.bean.RobotFace;
+import com.timyrobot.robot.bean.RobotSubAction;
+import com.timyrobot.robot.bean.RobotSubFace;
 import com.timyrobot.service.emotion.parser.EmotionParserFactory;
 import com.timyrobot.service.emotion.parser.IEmotionParser;
 import com.timyrobot.service.emotion.provider.EmotionProviderFactory;
 import com.timyrobot.service.emotion.provider.IEmotionProvider;
 import com.timyrobot.ui.activity.EmotionActivity;
 
+import java.util.ArrayList;
+
 /**
  * Created by zhangtingting on 15/8/6.
  */
 public class EmotionControl {
+
+    public final static int CMD_FACE = 0x1001;
+    public final static int CMD_FACE_END = 0x1002;
 
     public enum EmotionType{
         DEFAULT,CUSTOM
@@ -27,25 +37,79 @@ public class EmotionControl {
 
     private AnimationDrawable mDrawable;
     private Handler mHandler;
+    private Handler mFaceHandler;
+
+    private boolean isNext = true;
+
+    public boolean next(){
+        return isNext;
+    }
 
     public EmotionControl(Context context, EmotionType type, Handler handler){
         mContext = context;
         mProvider = EmotionProviderFactory.getEmotionProvider(type);
         mParser = EmotionParserFactory.getEmotionParser(type);
         mHandler = handler;
+        HandlerThread thread = new HandlerThread("RobotControl-face");
+        thread.start();
+        mFaceHandler = new Handler(thread.getLooper(), mCmdCB);
     }
 
     public void changeEmotion(String name){
-        if((mDrawable != null) && (mDrawable.isRunning())){
-            mDrawable.stop();
+        isNext = false;
+        RobotFace result = mParser.parseEmotion(name);
+        if(result == null){
+            isNext = true;
+            return;
         }
-        String result = mParser.parseEmotion(name);
-        mDrawable = mProvider.provideEmotionAnimation(result);
-        if(mDrawable != null) {
+        //获取动作流
+        ArrayList<RobotSubFace> mDatas = result.getActions();
+        if((mDatas == null) || (mDatas.isEmpty())){
+            isNext = true;
+            return;
+        }
+        //间隔时间
+        long totalTime = 0L;
+        for(RobotSubFace subAction:mDatas){
             Message msg = new Message();
-            msg.obj = mDrawable;
-            msg.what = EmotionActivity.CHANGE_EMOTION;
-            mHandler.sendMessage(msg);
+            msg.obj = subAction.getFaceName();
+            msg.what = CMD_FACE;
+            //发送动作，动作延时totalTime
+            mFaceHandler.sendMessageDelayed(msg,totalTime);
+            totalTime += subAction.getTime();
         }
+        mFaceHandler.sendEmptyMessageDelayed(CMD_FACE_END, totalTime);
+
     }
+    Handler.Callback mCmdCB = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case CMD_FACE:
+                    //通过蓝牙发送命令
+                    if((mDrawable != null) && (mDrawable.isRunning())){
+                        mDrawable.stop();
+                    }
+                    mDrawable = mProvider.provideEmotionAnimation(String.valueOf(msg.obj));
+                    Message msgFace = new Message();
+                    msgFace.what = EmotionActivity.CHANGE_EMOTION;
+                    msgFace.obj = mDrawable;
+                    mHandler.sendMessage(msgFace);
+                    break;
+                case CMD_FACE_END:
+                    //动作结束，可以开始下一个动作
+                    if((mDrawable != null) && (mDrawable.isRunning())){
+                        mDrawable.stop();
+                    }
+                    mDrawable = mProvider.provideEmotionAnimation("");
+                    Message msgEndFace = new Message();
+                    msgEndFace.what = EmotionActivity.CHANGE_EMOTION;
+                    msgEndFace.obj = mDrawable;
+                    mHandler.sendMessage(msgEndFace);
+                    isNext = true;
+                    break;
+            }
+            return false;
+        }
+    };
 }

@@ -6,7 +6,9 @@ import android.text.TextUtils;
 import com.timyrobot.common.RobotServiceKey;
 import com.timyrobot.robot.bean.RobotAction;
 import com.timyrobot.robot.bean.RobotCmd;
+import com.timyrobot.robot.bean.RobotFace;
 import com.timyrobot.robot.bean.RobotSubAction;
+import com.timyrobot.robot.bean.RobotSubFace;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +31,7 @@ public enum RobotData {
 
     private Map<String,RobotAction> mAction;
     private Map<String,RobotCmd> mCmd;
+    private Map<String,RobotFace> mFace;
 
     public void initRobotData(Context ctx){
         mAction = new HashMap<>();
@@ -70,6 +73,37 @@ public enum RobotData {
         }
     }
 
+
+    private void initFace(JSONObject object){
+        if(object == null){
+            return;
+        }
+        Iterator<String> keys = object.keys();
+        if(keys == null){
+            return;
+        }
+        while(keys.hasNext()){
+            String key = keys.next();
+            JSONObject face = object.optJSONObject(key);
+            if(face != null){
+                RobotFace af = new RobotFace();
+                af.setActionNum(face.optInt(RobotServiceKey.FaceKey.FACE_NUM));
+                JSONArray subAcArray = face.optJSONArray(RobotServiceKey.FaceKey.FACES);
+                if(subAcArray != null){
+                    ArrayList<RobotSubFace> robotFaces = new ArrayList<>();
+                    for(int i = 0;i<subAcArray.length();i++) {
+                        JSONObject subAc = subAcArray.optJSONObject(i);
+                        RobotSubFace subAction = new RobotSubFace();
+                        subAction.setFaceName(subAc.optString(RobotServiceKey.FaceKey.FACE_NAME));
+                        subAction.setTime(subAc.optLong(RobotServiceKey.FaceKey.TIME));
+                        robotFaces.add(subAction);
+                    }
+                    af.setActions(robotFaces);
+                }
+                mFace.put(key,af);
+            }
+        }
+    }
 
     private void initAction(JSONObject object){
         if(object == null){
@@ -128,5 +162,15 @@ public enum RobotData {
             return null;
         }
         return mAction.get(key);
+    }
+
+    public RobotFace getRobotFace(String key){
+        if(TextUtils.isEmpty(key)){
+            return null;
+        }
+        if(!mFace.containsKey(key)){
+            return null;
+        }
+        return mFace.get(key);
     }
 }
