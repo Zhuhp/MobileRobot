@@ -2,6 +2,9 @@ package com.timyrobot.service.emotion.parser.impl;
 
 import android.content.Context;
 
+import com.timyrobot.robot.bean.RobotFace;
+import com.timyrobot.robot.bean.RobotSubFace;
+import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.emotion.parser.IEmotionParser;
 
 /**
@@ -16,7 +19,7 @@ public class DefaultEmotionParser implements IEmotionParser{
     }
 
     @Override
-    public String parseEmotion(String name) {
-        return name;
+    public RobotFace parseEmotion(String name) {
+        return RobotData.INSTANCE.getRobotFace(name);
     }
 }

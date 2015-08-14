@@ -11,6 +11,7 @@ public class ConstDefine {
         public final static String Voice = "voice";
         public final static String Vision = "vision";
         public final static String Sensor = "sensor";
+        public final static String Touch = "touch";
     }
 
     public final static class TriggerDataKey{
@@ -26,6 +27,10 @@ public class ConstDefine {
         public final static String DETECT_FACE = "detect_face";
         public final static String DETECT_MANY_FACES = "detect_many_faces";
         public final static String DETECT_FACE_LOCATION = "detect_face_location";
+    }
+
+    public final static class TouchCMD{
+        public final static String DETECT_TOUCH = "detect_touch";
     }
 
     public final static class IntentFilterString{

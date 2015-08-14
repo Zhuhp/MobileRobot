@@ -1,8 +1,10 @@
 package com.timyrobot.service.emotion.parser;
 
+import com.timyrobot.robot.bean.RobotFace;
+
 /**
  * Created by zhangtingting on 15/7/20.
  */
 public interface IEmotionParser {
-    String parseEmotion(String name);
+    RobotFace parseEmotion(String name);
 }

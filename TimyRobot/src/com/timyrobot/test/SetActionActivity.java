@@ -30,6 +30,7 @@ public class SetActionActivity extends Activity{
             public void run() {
                 createActionFile();
                 createCmdFile();
+                createFaceFile();
             }
         }.start();
     }
@@ -259,6 +260,67 @@ public class SetActionActivity extends Activity{
         try {
             object.put(RobotServiceKey.ActionKey.TIME,time);
             object.put(RobotServiceKey.ActionKey.POSITION,position);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    public void createFaceFile(){
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            File fileDir = new File(Environment.getExternalStorageDirectory(),"RobotData");
+            File fileAction = new File(fileDir,"face.txt");
+            try {
+                if(!fileDir.exists()){
+                    fileDir.mkdir();
+                }
+                if(!fileAction.exists()){
+                    fileAction.createNewFile();
+                }
+                JSONObject actionObject = new JSONObject();
+
+                JSONArray array = new JSONArray();
+                array.put(createSubFace("blink", 1000));
+                array.put(createSubFace("laugh", 1000));
+                actionObject.put("blink", createFace(2, array));
+
+                JSONArray array2 = new JSONArray();
+                array2.put(createSubFace("fear", 1000));
+                array2.put(createSubFace("hums", 1000));
+                actionObject.put("fear", createFace(2, array2));
+
+                BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileAction,false)));
+                br.write(actionObject.toString());
+                br.flush();
+                br.close();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public JSONObject createFace(int actionNum,JSONArray actions){
+        JSONObject object = new JSONObject();
+        try {
+            object.put(RobotServiceKey.FaceKey.FACE_NUM,actionNum);
+            object.put(RobotServiceKey.FaceKey.FACES,actions);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+
+
+    public JSONObject createSubFace(String faceName,long time){
+        JSONObject object = new JSONObject();
+        try {
+            object.put(RobotServiceKey.FaceKey.TIME,time);
+            object.put(RobotServiceKey.FaceKey.FACE_NAME,faceName);
         } catch (JSONException e) {
             e.printStackTrace();
         }

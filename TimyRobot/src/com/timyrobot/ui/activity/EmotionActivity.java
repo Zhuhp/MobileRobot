@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.example.robot.R;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
+import com.example.robot.view.FloatViewService;
 import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.common.ConstDefine;
 import com.timyrobot.controlsystem.ControlManager;
@@ -63,6 +64,8 @@ public class EmotionActivity extends Activity implements
                 ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION));
         isFirstCreate = true;
 
+
+
     }
 
 
@@ -79,7 +82,7 @@ public class EmotionActivity extends Activity implements
                 (FaceView)findViewById(R.id.face_view));
         mParseManager = new ParseManager(this, this);
         mMainHandler = new EmotionHandler(this);
-        mCtrlManager = new ControlManager(this, mImageView, mMainHandler);
+        mCtrlManager = new ControlManager(this, mMainHandler);
     }
 
     @Override
@@ -94,6 +97,16 @@ public class EmotionActivity extends Activity implements
     @Override
     protected void onResume() {
         super.onResume();
+        Intent i = new Intent(this, FloatViewService.class);
+        stopService(i);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent i = new Intent(getApplicationContext(), FloatViewService.class);
+        startService(i);
     }
 
     @Override
@@ -142,10 +155,10 @@ public class EmotionActivity extends Activity implements
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getAction();
-        if(action==MotionEvent.ACTION_DOWN){
+        if(action == MotionEvent.ACTION_DOWN){
             Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
             sendBroadcast(intent);
-
+//            mTriggerManager.startTouch();
         }
         return false;
     }

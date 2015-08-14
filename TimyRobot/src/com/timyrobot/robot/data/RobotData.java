@@ -7,7 +7,9 @@ import android.util.Log;
 import com.timyrobot.common.RobotServiceKey;
 import com.timyrobot.robot.bean.RobotAction;
 import com.timyrobot.robot.bean.RobotCmd;
+import com.timyrobot.robot.bean.RobotFace;
 import com.timyrobot.robot.bean.RobotSubAction;
+import com.timyrobot.robot.bean.RobotSubFace;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -30,20 +33,26 @@ public enum RobotData {
     private final static String TAG  = RobotData.class.getName();
     private Map<String,RobotAction> mAction;
     private Map<String,RobotCmd> mCmd;
+    private Map<String,RobotFace> mFace;
 
     public void initRobotData(Context ctx){
         Log.i(TAG, "Init Robot Data!!");
         mAction = new HashMap<>();
         mCmd = new HashMap<>();
+        mFace = new HashMap<>();
         try {
             BufferedReader cmdBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("cmd.txt")));
             BufferedReader actionBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("action.txt")));
+            BufferedReader faceBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("face.txt")));
             JSONObject cmdObject = new JSONObject(cmdBr.readLine());
             JSONObject actionObject = new JSONObject(actionBr.readLine());
+            JSONObject faceObject = new JSONObject(faceBr.readLine());
             initCmd(cmdObject);
             initAction(actionObject);
+            initFace(faceObject);
             cmdBr.close();
             actionBr.close();
+            faceBr.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -73,6 +82,37 @@ public enum RobotData {
     }
 
 
+    private void initFace(JSONObject object){
+        if(object == null){
+            return;
+        }
+        Iterator<String> keys = object.keys();
+        if(keys == null){
+            return;
+        }
+        while(keys.hasNext()){
+            String key = keys.next();
+            JSONObject face = object.optJSONObject(key);
+            if(face != null){
+                RobotFace af = new RobotFace();
+                af.setActionNum(face.optInt(RobotServiceKey.FaceKey.FACE_NUM));
+                JSONArray subAcArray = face.optJSONArray(RobotServiceKey.FaceKey.FACES);
+                if(subAcArray != null){
+                    ArrayList<RobotSubFace> robotFaces = new ArrayList<>();
+                    for(int i = 0;i<subAcArray.length();i++) {
+                        JSONObject subAc = subAcArray.optJSONObject(i);
+                        RobotSubFace subAction = new RobotSubFace();
+                        subAction.setFaceName(subAc.optString(RobotServiceKey.FaceKey.FACE_NAME));
+                        subAction.setTime(subAc.optLong(RobotServiceKey.FaceKey.TIME));
+                        robotFaces.add(subAction);
+                    }
+                    af.setActions(robotFaces);
+                }
+                mFace.put(key,af);
+            }
+        }
+    }
+
     private void initAction(JSONObject object){
         if(object == null){
             return;
@@ -101,7 +141,7 @@ public enum RobotData {
                     ac.setActions(robotActions);
                 }
                 mAction.put(key,ac);
-                Log.i(TAG, "mAction put item->"+key+":"+mAction.get(key));
+                Log.i(TAG, "mAction put item->" + key + ":" + mAction.get(key));
             }
         }
     }
@@ -132,5 +172,27 @@ public enum RobotData {
             return null;
         }
         return mAction.get(key);
+    }
+
+    public RobotFace getRobotFace(String key){
+        if(TextUtils.isEmpty(key)){
+            return null;
+        }
+        if(!mFace.containsKey(key)){
+            return null;
+        }
+        return mFace.get(key);
+    }
+
+    public String getRandomFace(){
+        Set<String> data = mFace.keySet();
+        int pos = new Random().nextInt(data.size());
+        for(String faceTmp:data){
+            if(pos == 1){
+                return faceTmp;
+            }
+            pos--;
+        }
+        return null;
     }
 }

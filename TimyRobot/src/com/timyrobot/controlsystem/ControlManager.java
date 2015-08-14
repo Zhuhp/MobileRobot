@@ -20,7 +20,7 @@ public class ControlManager {
     private RobotControl mRobotCtrl;
     private SystemControl mSystemCtrl;
 
-    public ControlManager(Activity activity,ImageView imageView, Handler handler){
+    public ControlManager(Activity activity,Handler handler){
         mActivity = activity;
         mEmotionCtrl = new EmotionControl(mActivity,EmotionControl.EmotionType.DEFAULT,handler);
         mVoiceCtrl = new VoiceControl(mActivity);
@@ -50,6 +50,11 @@ public class ControlManager {
             return;
         }
 
+        if(ConstDefine.TouchCMD.DETECT_TOUCH.equals(cmd.getCmd())){
+            mEmotionCtrl.randomChangeEmotion();
+            return;
+        }
+
         if(cmd.getEmotionName()!=null)
             mEmotionCtrl.changeEmotion(cmd.getEmotionName());
 
@@ -61,13 +66,7 @@ public class ControlManager {
 
         if(cmd.getSystemOperator()!=null)
             mSystemCtrl.doAction(cmd.getSystemOperator());
-        //should not be handle in sub thread
-//        if(cmd.getEmotionName()!=null)
-//            mEmotionCtrl.changeEmotion(cmd.getEmotionName());
     }
 
-    public void changeEmotion(String name){
-        mEmotionCtrl.changeEmotion(name);
-    }
 
 }
