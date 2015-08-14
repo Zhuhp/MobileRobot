@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.robot.R;
@@ -19,7 +19,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothState;
  */
 public class InitActivity extends Activity implements View.OnClickListener{
 
-    private Button mBlueButton;
+    private ImageButton mBlueButton;
     IBluetoothPresent mBluePresent;
 
     @Override
@@ -68,7 +68,7 @@ public class InitActivity extends Activity implements View.OnClickListener{
     }
 
     private void initView(){
-        mBlueButton = (Button)findViewById(R.id.btn_find_blue);
+        mBlueButton = (ImageButton)findViewById(R.id.btn_find_blue);
         mBlueButton.setOnClickListener(this);
     }
 

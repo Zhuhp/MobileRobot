@@ -141,9 +141,9 @@ public class EmotionActivity extends Activity implements
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getAction();
         if(action==MotionEvent.ACTION_DOWN){
-//            mCtrlManager.changeEmotion("laugh2")
             Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
             sendBroadcast(intent);
+
         }
         return false;
     }

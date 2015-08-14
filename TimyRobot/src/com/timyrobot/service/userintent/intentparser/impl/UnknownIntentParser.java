@@ -1,10 +1,8 @@
 package com.timyrobot.service.userintent.intentparser.impl;
 
 import com.timyrobot.bean.ControllCommand;
-import com.timyrobot.common.SystemServiceKey;
 import com.timyrobot.robot.bean.RobotCmd;
 import com.timyrobot.robot.data.RobotData;
-import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 
@@ -25,6 +23,7 @@ public class UnknownIntentParser implements IUserIntentParser{
             if(cmd != null){
                 command = new ControllCommand(cmd.getFace(),cmd.getVoice(),false,cmd.getAction(),null,null);
             }else{
+
                 command = new ControllCommand(null,text,true,"unkonwn",result,null);
             }
 

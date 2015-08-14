@@ -30,6 +30,7 @@ public class RobotControl {
         HandlerThread thread = new HandlerThread("RobotControl-cmd");
         thread.start();
         mCmdHandler = new Handler(thread.getLooper(), mCmdCB);
+        doAction("stand");
     }
 
     public boolean next(){

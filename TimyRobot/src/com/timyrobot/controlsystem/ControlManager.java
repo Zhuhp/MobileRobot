@@ -49,6 +49,10 @@ public class ControlManager {
             mActivity.sendBroadcast(intent);
             return;
         }
+
+        if(cmd.getEmotionName()!=null)
+            mEmotionCtrl.changeEmotion(cmd.getEmotionName());
+
         if(cmd.getRobotAction()!=null)
             mRobotCtrl.doAction(cmd.getRobotAction());
 
@@ -57,9 +61,9 @@ public class ControlManager {
 
         if(cmd.getSystemOperator()!=null)
             mSystemCtrl.doAction(cmd.getSystemOperator());
-
-        if(cmd.getEmotionName()!=null)
-            mEmotionCtrl.changeEmotion(cmd.getEmotionName());
+        //should not be handle in sub thread
+//        if(cmd.getEmotionName()!=null)
+//            mEmotionCtrl.changeEmotion(cmd.getEmotionName());
     }
 
     public void changeEmotion(String name){

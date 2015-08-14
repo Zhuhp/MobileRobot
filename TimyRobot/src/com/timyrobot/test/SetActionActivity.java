@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,8 +47,11 @@ public class SetActionActivity extends Activity{
                     fileCmd.createNewFile();
                 }
                 JSONObject cmdObject = new JSONObject();
-                cmdObject.put("你好", createCmd("wave", "你好，我是小黑，请多执教", "smile"));
-                cmdObject.put("跳舞", createCmd("dance", "那我就献丑了", "smile"));
+                cmdObject.put("你好", createCmd("wave", "你好，我是小黑，请多执教", "laugh"));
+                cmdObject.put("跳舞", createCmd("dance", "那我就献丑了", "laugh"));
+                cmdObject.put("摇头", createCmd("shake_head", "哦，好", "blink"));
+                cmdObject.put("拍手", createCmd("five", "来，吧啦啦啦", "blink"));
+                cmdObject.put("扭两下", createCmd("slide", "来，吧啦啦啦啦啦啦啦", "laugh"));
 
                 BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileCmd,false)));
                 br.write(cmdObject.toString());
@@ -91,9 +93,52 @@ public class SetActionActivity extends Activity{
                 JSONObject actionObject = new JSONObject();
 
                 JSONArray array = new JSONArray();
-                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", 1000));
-                array.put(createSubAction("73,5,16,5,180,5,180,5,28,5,75,5,28,5,73,5,9,5", 1000));
-                actionObject.put("wave", createAction(2, "0,0,0", array));
+                array.put(createSubAction("C82,3,10,3,170,3,145,3,45,3,77,3,82,3,90,3,82,3", 0));
+                actionObject.put("stand", createAction(2, "0,0,0", array));
+
+                JSONArray array2 = new JSONArray();
+                array2.put(createSubAction("D0,50,2,1,10,2,2,170,2,3,145,2,4,45,2", 1000));
+                array2.put(createSubAction("D0,120,2,1,10,2,2,170,2,3,145,2,4,45,2", 1000));
+                array2.put(createSubAction("D0,50,2,1,10,2,2,170,2,3,145,2,4,45,2", 1000));
+                array2.put(createSubAction("D0,82,2,1,10,2,2,170,2,3,145,2,4,45,2", 0));
+                actionObject.put("shake_head", createAction(4, "0,0,0", array2));
+
+                JSONArray array3 = new JSONArray();
+                array3.put(createSubAction("D0,82,3,1,10,3,2,170,3,3,145,3,4,45,3", 1000));
+                array3.put(createSubAction("A1,127,2", 500));
+                array3.put(createSubAction("A3,110,2", 500));
+                array3.put(createSubAction("A3,160", 500));
+                array3.put(createSubAction("A3,110,2", 500));
+                array3.put(createSubAction("A3,160,2", 500));
+                array3.put(createSubAction("A3,110,2", 500));
+                array3.put(createSubAction("D0,82,3,1,10,3,2,170,3,3,145,3,4,45,3", 0));
+                actionObject.put("wave", createAction(8, "0,0,0", array3));
+
+                JSONArray array4 = new JSONArray();
+                array4.put(createSubAction("D0,82,2,1,10,2,2,170,2,3,145,2,4,45,2", 500));
+                array4.put(createSubAction("A1,120,2", 500));
+                array4.put(createSubAction("A1,90,3", 1200));
+                array4.put(createSubAction("A1,30,2", 800));
+                array4.put(createSubAction("A1,90,2", 800));
+                array4.put(createSubAction("A3,80,2", 800));
+                array4.put(createSubAction("A3,145,3", 1200));
+                array4.put(createSubAction("A1,120,2", 800));
+                array4.put(createSubAction("A1,10,2", 0));
+                actionObject.put("five", createAction(8, "0,0,0", array4));
+
+                JSONArray array5 = new JSONArray();
+                array5.put(createSubAction("C82,3,10,3,170,3,145,3,45,3,77,3,82,3,90,3,82,3", 1000));
+                array5.put(createSubAction("D1,80,2,2,66,2,5,97,2,6,107,2", 1000));
+                array5.put(createSubAction("D1,63,2,2,130,2,5,63,2,6,63,2", 1000));
+                array5.put(createSubAction("D1,80,2,2,66,2,5,97,2,6,107,2", 1000));
+                array5.put(createSubAction("D1,63,2,2,130,2,5,63,2,6,63,2", 1000));
+                array5.put(createSubAction("D1,80,2,2,66,2,5,97,2,6,107,2", 1000));
+                array5.put(createSubAction("D1,63,2,2,130,2,5,63,2,6,63,2", 1000));
+                array5.put(createSubAction("D1,80,2,2,66,2,5,97,2,6,107,2", 1000));
+                array5.put(createSubAction("D1,63,2,2,130,2,5,63,2,6,63,2", 1000));
+                array5.put(createSubAction("C82,3,10,3,170,3,145,3,45,3,77,3,82,3,90,3,82,3", 1000));
+                actionObject.put("slide", createAction(10, "0,0,0", array5));
+
 
                 BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileAction,false)));
                 br.write(actionObject.toString());
