@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false"
+    >
+    <item android:drawable="@drawable/zuoxieyan1" android:duration="500"/>
+    <item android:drawable="@drawable/zuoxieyan2" android:duration="50"/>
+    <item android:drawable="@drawable/zuoxieyan3" android:duration="3000"/>
+    <item android:drawable="@drawable/zuoxieyan4" android:duration="50"/>
+    <item android:drawable="@drawable/zuoxieyan5" android:duration="2000"/>
+
+
+</animation-list>

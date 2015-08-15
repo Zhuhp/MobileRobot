@@ -3,6 +3,7 @@ package com.timyrobot.test;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 import com.timyrobot.common.RobotServiceKey;
 
@@ -21,10 +22,11 @@ import java.io.OutputStreamWriter;
  * Created by zhangtingting on 15/8/8.
  */
 public class SetActionActivity extends Activity{
-
+    private static final String TAG = "SetActionActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "Create Setting Files!!!");
         new Thread(){
             @Override
             public void run() {
@@ -100,6 +102,7 @@ public class SetActionActivity extends Activity{
     }
 
     public void createActionFile(){
+        Log.e(TAG,"createActionFile");
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             File fileDir = new File(Environment.getExternalStorageDirectory(),"RobotData");
             File fileAction = new File(fileDir,"action.txt");
@@ -280,14 +283,46 @@ public class SetActionActivity extends Activity{
                 JSONObject actionObject = new JSONObject();
 
                 JSONArray array = new JSONArray();
-                array.put(createSubFace("blink", 1000));
-                array.put(createSubFace("laugh", 1000));
+                array.put(createSubFace("blink", 200));
+                array.put(createSubFace("laugh", 3000));
                 actionObject.put("blink", createFace(2, array));
 
                 JSONArray array2 = new JSONArray();
-                array2.put(createSubFace("fear", 1000));
-                array2.put(createSubFace("hums", 1000));
+                array2.put(createSubFace("blink", 200));
+                array2.put(createSubFace("fear", 3000));
                 actionObject.put("fear", createFace(2, array2));
+
+
+                JSONArray array4 = new JSONArray();
+                array4.put(createSubFace("blink", 200));
+                array4.put(createSubFace("hums", 3000));
+                actionObject.put("hums", createFace(2, array4));
+
+                JSONArray array5 = new JSONArray();
+                array5.put(createSubFace("blink", 200));
+                array5.put(createSubFace("danyan", 3000));
+                actionObject.put("danyan", createFace(2, array5));
+
+                JSONArray array6 = new JSONArray();
+                array6.put(createSubFace("blink", 200));
+                array6.put(createSubFace("zhoumei", 8000));
+                actionObject.put("zhoumei", createFace(2, array6));
+
+                JSONArray array7 = new JSONArray();
+                array7.put(createSubFace("blink", 200));
+                array7.put(createSubFace("zhoumei", 8000));
+                actionObject.put("zhoumei", createFace(2, array7));
+
+
+                JSONArray array9 = new JSONArray();
+                array9.put(createSubFace("blink", 200));
+                array9.put(createSubFace("youxieyan", 6000));
+                actionObject.put("youxieyan", createFace(2, array9));
+
+                JSONArray array10 = new JSONArray();
+                array10.put(createSubFace("blink", 200));
+                array10.put(createSubFace("zuoxieyan", 6000));
+                actionObject.put("zuoxieyan", createFace(2, array10));
 
                 BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileAction,false)));
                 br.write(actionObject.toString());

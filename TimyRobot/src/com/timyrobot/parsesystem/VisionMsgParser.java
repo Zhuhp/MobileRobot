@@ -66,4 +66,4 @@ public class VisionMsgParser implements IDataParse{
 
         }
     }
-}
+

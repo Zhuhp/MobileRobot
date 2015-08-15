@@ -156,9 +156,9 @@ public class EmotionActivity extends Activity implements
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getAction();
         if(action == MotionEvent.ACTION_DOWN){
-            Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
-            sendBroadcast(intent);
-//            mTriggerManager.startTouch();
+//            Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
+//            sendBroadcast(intent);
+            mTriggerManager.startTouch();
         }
         return false;
     }
