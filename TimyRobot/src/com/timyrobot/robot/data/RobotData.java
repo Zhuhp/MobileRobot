@@ -40,110 +40,125 @@ public enum RobotData {
         mAction = new HashMap<>();
         mCmd = new HashMap<>();
         mFace = new HashMap<>();
+        initCmd(ctx);
+        initAction(ctx);
+        initFace(ctx);
+    }
+
+    private void initCmd(Context ctx){
         try {
             BufferedReader cmdBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("cmd.txt")));
-            BufferedReader actionBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("action.txt")));
-            BufferedReader faceBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("face.txt")));
-            JSONObject cmdObject = new JSONObject(cmdBr.readLine());
-            JSONObject actionObject = new JSONObject(actionBr.readLine());
-            JSONObject faceObject = new JSONObject(faceBr.readLine());
-            initCmd(cmdObject);
-            initAction(actionObject);
-            initFace(faceObject);
+            String line = null;
+            while((line = cmdBr.readLine()) != null) {
+                JSONObject object = new JSONObject(line);
+                Iterator<String> keys = object.keys();
+                if (keys == null) {
+                    return;
+                }
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    JSONObject cmd = object.optJSONObject(key);
+                    if (cmd != null) {
+                        RobotCmd rc = new RobotCmd();
+                        rc.setAction(cmd.optString(RobotServiceKey.CmdKey.ACTION));
+                        rc.setVoice(cmd.optString(RobotServiceKey.CmdKey.VOICE));
+                        rc.setFace(cmd.optString(RobotServiceKey.CmdKey.FACE));
+                        mCmd.put(key, rc);
+                    }
+                }
+            }
             cmdBr.close();
-            actionBr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void initFace(Context ctx){
+        try {
+            BufferedReader faceBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("face.txt")));
+            String line;
+            while((line = faceBr.readLine()) != null) {
+                JSONObject object = new JSONObject(line);
+                Iterator<String> keys = object.keys();
+                if (keys == null) {
+                    return;
+                }
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    JSONObject face = object.optJSONObject(key);
+                    if (face != null) {
+                        RobotFace af = new RobotFace();
+                        af.setActionNum(face.optInt(RobotServiceKey.FaceKey.FACE_NUM));
+                        JSONArray subAcArray = face.optJSONArray(RobotServiceKey.FaceKey.FACES);
+                        if (subAcArray != null) {
+                            ArrayList<RobotSubFace> robotFaces = new ArrayList<>();
+                            for (int i = 0; i < subAcArray.length(); i++) {
+                                JSONObject subAc = subAcArray.optJSONObject(i);
+                                RobotSubFace subAction = new RobotSubFace();
+                                subAction.setFaceName(subAc.optString(RobotServiceKey.FaceKey.FACE_NAME));
+                                subAction.setTime(subAc.optLong(RobotServiceKey.FaceKey.TIME));
+                                robotFaces.add(subAction);
+                            }
+                            af.setActions(robotFaces);
+                        }
+                        mFace.put(key, af);
+                    }
+                }
+            }
             faceBr.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
-    private void initCmd(JSONObject object){
-        if(object == null){
-            return;
-        }
-        Iterator<String> keys = object.keys();
-        if(keys == null){
-            return;
-        }
-        while(keys.hasNext()){
-            String key = keys.next();
-            JSONObject cmd = object.optJSONObject(key);
-            if(cmd != null){
-                RobotCmd rc = new RobotCmd();
-                rc.setAction(cmd.optString(RobotServiceKey.CmdKey.ACTION));
-                rc.setVoice(cmd.optString(RobotServiceKey.CmdKey.VOICE));
-                rc.setFace(cmd.optString(RobotServiceKey.CmdKey.FACE));
-                mCmd.put(key,rc);
-            }
-        }
-    }
-
-
-    private void initFace(JSONObject object){
-        if(object == null){
-            return;
-        }
-        Iterator<String> keys = object.keys();
-        if(keys == null){
-            return;
-        }
-        while(keys.hasNext()){
-            String key = keys.next();
-            JSONObject face = object.optJSONObject(key);
-            if(face != null){
-                RobotFace af = new RobotFace();
-                af.setActionNum(face.optInt(RobotServiceKey.FaceKey.FACE_NUM));
-                JSONArray subAcArray = face.optJSONArray(RobotServiceKey.FaceKey.FACES);
-                if(subAcArray != null){
-                    ArrayList<RobotSubFace> robotFaces = new ArrayList<>();
-                    for(int i = 0;i<subAcArray.length();i++) {
-                        JSONObject subAc = subAcArray.optJSONObject(i);
-                        RobotSubFace subAction = new RobotSubFace();
-                        subAction.setFaceName(subAc.optString(RobotServiceKey.FaceKey.FACE_NAME));
-                        subAction.setTime(subAc.optLong(RobotServiceKey.FaceKey.TIME));
-                        robotFaces.add(subAction);
-                    }
-                    af.setActions(robotFaces);
+    private void initAction(Context ctx){
+        try {
+            BufferedReader actionBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("action.txt")));
+            String line;
+            while((line = actionBr.readLine()) != null) {
+                JSONObject object = new JSONObject(line);
+                Iterator<String> keys = object.keys();
+                if (keys == null) {
+                    return;
                 }
-                mFace.put(key,af);
-            }
-        }
-    }
-
-    private void initAction(JSONObject object){
-        if(object == null){
-            return;
-        }
-        Iterator<String> keys = object.keys();
-        if(keys == null){
-            return;
-        }
-        while(keys.hasNext()){
-            String key = keys.next();
-            JSONObject action = object.optJSONObject(key);
-            if(action != null){
-                RobotAction ac = new RobotAction();
-                ac.setActionNum(action.optInt(RobotServiceKey.ActionKey.ACTION_NUM));
-                ac.setStateLight(action.optString(RobotServiceKey.ActionKey.STATELIGHT));
-                JSONArray subAcArray = action.optJSONArray(RobotServiceKey.ActionKey.ACTIONS);
-                if(subAcArray != null){
-                    ArrayList<RobotSubAction> robotActions = new ArrayList<>();
-                    for(int i = 0;i<subAcArray.length();i++) {
-                        JSONObject subAc = subAcArray.optJSONObject(i);
-                        RobotSubAction subAction = new RobotSubAction();
-                        subAction.setPosition(subAc.optString(RobotServiceKey.ActionKey.POSITION));
-                        subAction.setTime(subAc.optLong(RobotServiceKey.ActionKey.TIME));
-                        robotActions.add(subAction);
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    JSONObject action = object.optJSONObject(key);
+                    if (action != null) {
+                        RobotAction ac = new RobotAction();
+                        ac.setActionNum(action.optInt(RobotServiceKey.ActionKey.ACTION_NUM));
+                        ac.setStateLight(action.optString(RobotServiceKey.ActionKey.STATELIGHT));
+                        JSONArray subAcArray = action.optJSONArray(RobotServiceKey.ActionKey.ACTIONS);
+                        if (subAcArray != null) {
+                            ArrayList<RobotSubAction> robotActions = new ArrayList<>();
+                            for (int i = 0; i < subAcArray.length(); i++) {
+                                JSONObject subAc = subAcArray.optJSONObject(i);
+                                RobotSubAction subAction = new RobotSubAction();
+                                subAction.setPosition(subAc.optString(RobotServiceKey.ActionKey.POSITION));
+                                subAction.setTime(subAc.optLong(RobotServiceKey.ActionKey.TIME));
+                                robotActions.add(subAction);
+                            }
+                            ac.setActions(robotActions);
+                        }
+                        mAction.put(key, ac);
+                        Log.i(TAG, "mAction put item->" + key + ":" + mAction.get(key));
                     }
-                    ac.setActions(robotActions);
                 }
-                mAction.put(key,ac);
-                Log.i(TAG, "mAction put item->" + key + ":" + mAction.get(key));
             }
+            actionBr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
     }
 
     public RobotCmd getRobotCmd(String key){
