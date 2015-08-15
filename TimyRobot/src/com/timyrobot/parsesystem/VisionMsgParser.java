@@ -59,11 +59,7 @@ public class VisionMsgParser implements IDataParse{
 
             }catch(JSONException e){
                 Log.e(TAG, "trans vision content to json farmat error!");
-                return;
-
             }
-
-
         }
     }
 
