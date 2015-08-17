@@ -57,6 +57,7 @@ public class VoiceMsgParser implements IDataParse{
                         ActionJsonParser.getService(object),
                         ActionJsonParser.getOperation(object));
                 ControllCommand command = parser.parseIntent(resultString);
+                command.setNeedEnd(true);
                 if(mReceiver != null){
                     mReceiver.parseResult(command);
                 }

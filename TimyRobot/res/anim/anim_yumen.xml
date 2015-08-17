@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false"
+    >
+    <item android:drawable="@drawable/yumen1" android:duration="500"/>
+    <item android:drawable="@drawable/yumen2" android:duration="30"/>
+    <item android:drawable="@drawable/yumen3" android:duration="30"/>
+    <item android:drawable="@drawable/yumen4" android:duration="3000"/>
+    <item android:drawable="@drawable/yumen5" android:duration="50"/>
+    <item android:drawable="@drawable/yumen6" android:duration="50"/>
+    <item android:drawable="@drawable/yumen7" android:duration="2000"/>
+    <item android:drawable="@drawable/yumen8" android:duration="50"/>
+    <item android:drawable="@drawable/yumen9" android:duration="50"/>
+    <item android:drawable="@drawable/yumen10" android:duration="1000"/>
+
+
+</animation-list>

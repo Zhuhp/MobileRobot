@@ -52,7 +52,7 @@ public enum VoiceTrigger {
             isConversion = true;
             hasResult = false;
             mIatDialog.show();
-            mIatDialog.hide();
+//            mIatDialog.hide();
         }
     }
 

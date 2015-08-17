@@ -10,6 +10,5 @@
     <item android:drawable="@drawable/blink6" android:duration="10"/>
     <item android:drawable="@drawable/blink7" android:duration="10"/>
     <item android:drawable="@drawable/blink8" android:duration="10"/>
-    <item android:drawable="@drawable/blink9" android:duration="10"/>
-    <item android:drawable="@drawable/blink10" android:duration="10"/>
+
 </animation-list>

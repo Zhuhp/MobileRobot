@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 
+import com.timyrobot.listener.EndListener;
 import com.timyrobot.robot.RobotProxy;
 import com.timyrobot.robot.bean.RobotAction;
 import com.timyrobot.robot.bean.RobotSubAction;
@@ -25,20 +26,25 @@ public class RobotControl {
 
     private Handler mCmdHandler;
 
-    public RobotControl(Context context){
+    private EndListener mEndListener;
+    private boolean isNeedEnd;
+
+    public RobotControl(Context context, EndListener listener){
         mCtx = context;
         HandlerThread thread = new HandlerThread("RobotControl-cmd");
         thread.start();
         mCmdHandler = new Handler(thread.getLooper(), mCmdCB);
-        doAction("stand");
+        doAction("stand",false);
+        mEndListener = listener;
     }
 
     public boolean next(){
         return isNext;
     }
 
-    public void doAction(String action){
+    public void doAction(String action, boolean isNeedEnd){
         isNext = false;
+        this.isNeedEnd = isNeedEnd;
         //解析动作
         RobotAction rAction = RobotData.INSTANCE.getRobotAction(action);
         if(rAction == null){
@@ -77,6 +83,9 @@ public class RobotControl {
                 case CMD_ACTION_END:
                     //动作结束，可以开始下一个动作
                     isNext = true;
+                    if(isNeedEnd) {
+                        mEndListener.onEnd();
+                    }
                     break;
             }
             return false;

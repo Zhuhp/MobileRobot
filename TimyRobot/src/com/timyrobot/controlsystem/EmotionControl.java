@@ -6,9 +6,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 
-import com.timyrobot.robot.RobotProxy;
+import com.timyrobot.listener.EndListener;
 import com.timyrobot.robot.bean.RobotFace;
-import com.timyrobot.robot.bean.RobotSubAction;
 import com.timyrobot.robot.bean.RobotSubFace;
 import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.emotion.parser.EmotionParserFactory;
@@ -42,11 +41,14 @@ public class EmotionControl {
 
     private boolean isNext = true;
 
+    private EndListener mEndListener;
+    private boolean isNeedEnd;
+
     public boolean next(){
         return isNext;
     }
 
-    public EmotionControl(Context context, EmotionType type, Handler handler){
+    public EmotionControl(Context context, EmotionType type, Handler handler,EndListener listener){
         mContext = context;
         mProvider = EmotionProviderFactory.getEmotionProvider(type);
         mParser = EmotionParserFactory.getEmotionParser(type);
@@ -54,14 +56,16 @@ public class EmotionControl {
         HandlerThread thread = new HandlerThread("RobotControl-face");
         thread.start();
         mFaceHandler = new Handler(thread.getLooper(), mCmdCB);
+        mEndListener = listener;
     }
 
     public void randomChangeEmotion(){
-        changeEmotion(RobotData.INSTANCE.getRandomFace());
+        changeEmotion(RobotData.INSTANCE.getRandomFace(),false);
     }
 
-    public void changeEmotion(String name){
+    public void changeEmotion(String name,boolean isNeedEnd){
         isNext = false;
+        this.isNeedEnd = isNeedEnd;
         RobotFace result = mParser.parseEmotion(name);
         if(result == null){
             isNext = true;
@@ -112,6 +116,9 @@ public class EmotionControl {
                     msgEndFace.obj = mDrawable;
                     mHandler.sendMessage(msgEndFace);
                     isNext = true;
+                    if(isNeedEnd) {
+                        mEndListener.onEnd();
+                    }
                     break;
             }
             return false;

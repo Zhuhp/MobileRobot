@@ -62,10 +62,10 @@ public class EmotionActivity extends Activity implements
         initManager();
         registerReceiver(mStartConversation, new IntentFilter(
                 ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION));
+
+        registerReceiver(mIdleReceiver, new IntentFilter(
+                ConstDefine.IntentFilterString.BROADCAST_IDLE_CONVERSATION));
         isFirstCreate = true;
-
-
-
     }
 
 
@@ -120,6 +120,10 @@ public class EmotionActivity extends Activity implements
         if(mStartConversation != null){
             unregisterReceiver(mStartConversation);
         }
+
+        if(mIdleReceiver != null){
+            unregisterReceiver(mIdleReceiver);
+        }
         super.onDestroy();
     }
 
@@ -152,13 +156,23 @@ public class EmotionActivity extends Activity implements
         }
     };
 
+
+    private BroadcastReceiver mIdleReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ControllCommand cmd = new ControllCommand("tiaopi",null,false,"handup1",null,null);
+            cmd.setNeedEnd(false);
+            mCtrlManager.distribute(cmd);
+        }
+    };
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getAction();
         if(action == MotionEvent.ACTION_DOWN){
-//            Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
-//            sendBroadcast(intent);
-            mTriggerManager.startTouch();
+            Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
+            sendBroadcast(intent);
+//            mTriggerManager.startTouch();
         }
         return false;
     }
@@ -212,4 +226,5 @@ public class EmotionActivity extends Activity implements
             }
         }
     }
+
 }

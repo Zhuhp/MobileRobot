@@ -25,24 +25,24 @@ public class VisionMsgParser implements IDataParse{
         try {
             JSONObject object = new JSONObject(content);
             if(object.get(ConstDefine.TriggerDataKey.FACE_TGR_TYPE).equals(ConstDefine.VisionCMD.DETECT_FACE_LOCATION)) {
-                int position = object.getInt(ConstDefine.TriggerDataKey.NUMBER);
-                Log.d(TAG, "positon->"+position);
-                int data = 0;
-                if (position > 0) {
-                    if (position <= 700)
-                        data = 60;
-                    else if (position <= 1000)
-                        data = 50;
-                } else {
-                    if (position >= -700)
-                        data = 100;
-                    else if (position >= -1000)
-                        data = 110;
-                }
-                ControllCommand cmd = new ControllCommand("blink", null, false, "A0_"+data+"_2", null, null);
-                if (mReceiver != null) {
-                    mReceiver.parseResult(cmd);
-                }
+//                int position = object.getInt(ConstDefine.TriggerDataKey.NUMBER);
+//                Log.d(TAG, "positon->"+position);
+//                int data = 0;
+//                if (position > 0) {
+//                    if (position <= 700)
+//                        data = 60;
+//                    else if (position <= 1000)
+//                        data = 50;
+//                } else {
+//                    if (position >= -700)
+//                        data = 100;
+//                    else if (position >= -1000)
+//                        data = 110;
+//                }
+//                ControllCommand cmd = new ControllCommand("blink", null, false, "A0_"+data+"_2", null, null);
+//                if (mReceiver != null) {
+//                    mReceiver.parseResult(cmd);
+//                }
 
             }else if(object.get(ConstDefine.TriggerDataKey.FACE_TGR_TYPE).equals(ConstDefine.VisionCMD.DETECT_FACE)){
                 ControllCommand cmd = new ControllCommand("blink", null, false, null, null, ConstDefine.VisionCMD.DETECT_FACE);
@@ -51,10 +51,10 @@ public class VisionMsgParser implements IDataParse{
                 }
 
             }else if(object.get(ConstDefine.TriggerDataKey.FACE_TGR_TYPE).equals(ConstDefine.VisionCMD.DETECT_MANY_FACES)){
-                ControllCommand cmd = new ControllCommand("laugh", "哈,这么多人看我呀！", false, "slide", null, null);
-                if (mReceiver != null) {
-                    mReceiver.parseResult(cmd);
-                }
+//                ControllCommand cmd = new ControllCommand("laugh", "哈,这么多人看我呀！", false, "slide", null, null);
+//                if (mReceiver != null) {
+//                    mReceiver.parseResult(cmd);
+//                }
             }
 
             }catch(JSONException e){

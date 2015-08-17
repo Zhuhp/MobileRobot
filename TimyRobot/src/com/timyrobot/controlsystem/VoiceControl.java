@@ -10,6 +10,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.listener.EndListener;
 import com.tuling.util.GetTulingResultThread;
 import com.tuling.util.ResultWatcher;
 import com.tuling.util.TulingManager;
@@ -31,14 +32,17 @@ public class VoiceControl {
 
     public static boolean isNext = true;
 
-    public VoiceControl(Context ctx){
+    private EndListener mEndListener;
+    private boolean isNeedEnd;
+
+    public VoiceControl(Context ctx,EndListener endListener){
         mCtx = ctx;
         mSST = SpeechSynthesizer.createSynthesizer(mCtx, null);
         mSST.setParameter(SpeechConstant.VOICE_NAME, "xiaoyu");
         mSST.setParameter(SpeechConstant.SPEED, "35");
         mSST.setParameter(SpeechConstant.VOLUME, "80");
         mSST.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
-
+        mEndListener = endListener;
         mTulingManager = new TulingManager(mCtx);
     }
 
@@ -46,8 +50,9 @@ public class VoiceControl {
         return isNext;
     }
 
-    public void response(ControllCommand cmd){
+    public void response(ControllCommand cmd, boolean isNeedEnd){
         isNext = false;
+        this.isNeedEnd = isNeedEnd;
         String content = cmd.getVoiceContent();
         if(TextUtils.isEmpty(content)){
             isNext = true;
@@ -118,6 +123,9 @@ public class VoiceControl {
         @Override
         public void onCompleted(SpeechError speechError) {
             isNext = true;
+            if(isNeedEnd) {
+                mEndListener.onEnd();
+            }
         }
 
         @Override
