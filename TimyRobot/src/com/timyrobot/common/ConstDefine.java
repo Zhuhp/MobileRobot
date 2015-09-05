@@ -7,6 +7,9 @@ public class ConstDefine {
     private ConstDefine(){
     }
 
+    /**
+     * 表示触发的命令类型
+     */
     public final static class TriggerDataType{
         public final static String Voice = "voice";
         public final static String Vision = "vision";
@@ -14,6 +17,9 @@ public class ConstDefine {
         public final static String Touch = "touch";
     }
 
+    /**
+     *
+     */
     public final static class TriggerDataKey{
         public final static String TYPE = "type";
         public final static String CONTENT = "content";
@@ -23,24 +29,28 @@ public class ConstDefine {
 
     }
 
+    /**
+     * 视觉命令
+     */
     public final static class VisionCMD{
         public final static String DETECT_FACE = "detect_face";
         public final static String DETECT_MANY_FACES = "detect_many_faces";
         public final static String DETECT_FACE_LOCATION = "detect_face_location";
     }
 
+    /**
+     * 触摸命令
+     */
     public final static class TouchCMD{
         public final static String DETECT_TOUCH = "detect_touch";
     }
 
+    /**
+     * IntentFilter
+     */
     public final static class IntentFilterString{
         public final static String BROADCAST_START_CONVERSATION = "broadcast_start_conversation";
         public final static String BROADCAST_IDLE_CONVERSATION = "broadcast_idle_conversation";
     }
-
-    public final static class EmotionNames{
-        public final static String EMOTION_NAME_LAGTH = "laugh";
-    }
-
 
 }

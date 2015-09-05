@@ -8,6 +8,7 @@ public class RobotCmd {
     private String action;
     private String voice;
     private String face;
+    private String system;
 
     public String getAction() {
         return action;
@@ -31,5 +32,13 @@ public class RobotCmd {
 
     public void setFace(String face) {
         this.face = face;
+    }
+
+    public String getSystem() {
+        return system;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
     }
 }

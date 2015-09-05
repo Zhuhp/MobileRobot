@@ -9,6 +9,7 @@ public class RobotServiceKey {
         public final static String ACTION = "action";
         public final static String VOICE = "voice";
         public final static String FACE = "face";
+        public final static String SYSTEM = "system";
     }
 
     public final static class ActionKey{

@@ -21,9 +21,8 @@ public class UnknownIntentParser implements IUserIntentParser{
             RobotCmd cmd = RobotData.INSTANCE.getRobotCmd(text);
             ControllCommand command = null;
             if(cmd != null){
-                command = new ControllCommand(cmd.getFace(),cmd.getVoice(),false,cmd.getAction(),null,null);
+                command = new ControllCommand(cmd.getFace(),cmd.getVoice(),false,cmd.getAction(),cmd.getSystem(),null);
             }else{
-
                 command = new ControllCommand(null,text,true,"unkonwn",result,null);
             }
 

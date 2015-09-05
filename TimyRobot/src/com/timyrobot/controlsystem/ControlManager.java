@@ -3,6 +3,7 @@ package com.timyrobot.controlsystem;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.common.ConstDefine;
@@ -62,17 +63,21 @@ public class ControlManager implements EndListener{
             mEmotionCtrl.randomChangeEmotion();
             return;
         }
-        if(cmd.getEmotionName() != null)
-            mEmotionCtrl.changeEmotion(cmd.getEmotionName(),cmd.isNeedEnd());
+        if(cmd.getEmotionName() != null) {
+            mEmotionCtrl.changeEmotion(cmd.getEmotionName(), cmd.isNeedEnd());
+        }
 
-        if(cmd.getRobotAction() != null)
-            mRobotCtrl.doAction(cmd.getRobotAction(),cmd.isNeedEnd());
+        if(cmd.getRobotAction() != null) {
+            mRobotCtrl.doAction(cmd.getRobotAction(), cmd.isNeedEnd());
+        }
 
-        if(cmd.getVoiceContent() != null)
+        if(cmd.getVoiceContent() != null) {
             mVoiceCtrl.response(cmd, cmd.isNeedEnd());
+        }
 
-        if(cmd.getSystemOperator() != null)
+        if(!TextUtils.isEmpty(cmd.getSystemOperator())) {
             mSystemCtrl.doAction(cmd.getSystemOperator());
+        }
     }
 
     public synchronized boolean isEnd(){

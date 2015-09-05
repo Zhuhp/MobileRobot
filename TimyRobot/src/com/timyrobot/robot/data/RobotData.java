@@ -63,6 +63,7 @@ public enum RobotData {
                         rc.setAction(cmd.optString(RobotServiceKey.CmdKey.ACTION));
                         rc.setVoice(cmd.optString(RobotServiceKey.CmdKey.VOICE));
                         rc.setFace(cmd.optString(RobotServiceKey.CmdKey.FACE));
+                        rc.setSystem(cmd.optString(RobotServiceKey.CmdKey.SYSTEM));
                         mCmd.put(key, rc);
                     }
                 }

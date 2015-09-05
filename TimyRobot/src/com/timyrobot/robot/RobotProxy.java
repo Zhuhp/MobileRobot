@@ -10,12 +10,12 @@ public enum RobotProxy {
     INSTANCE;
     private final static String TAG = RobotProxy.class.getName();
 
-    public void sendData(String cmd){
+    public void sendData(String cmd) {
 
         BluetoothManager.INSTANCE.sendData(cmd);
     }
 
-    public void setIDataReceiver(IDataReceiver receiver){
+    public void setIDataReceiver(IDataReceiver receiver) {
         BluetoothManager.INSTANCE.setDataReceiver(receiver);
     }
 
