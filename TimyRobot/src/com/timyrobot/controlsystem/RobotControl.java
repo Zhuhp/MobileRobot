@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.text.TextUtils;
 
+import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.listener.EndListener;
 import com.timyrobot.robot.RobotProxy;
 import com.timyrobot.robot.bean.RobotAction;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by zhangtingting on 15/8/8.
  */
-public class RobotControl {
+public class RobotControl implements IControlListener{
 
     public final static int CMD_ACTION = 0x0001;
     public final static int CMD_ACTION_END = 0x0002;
@@ -27,24 +29,33 @@ public class RobotControl {
     private Handler mCmdHandler;
 
     private EndListener mEndListener;
-    private boolean isNeedEnd;
 
-    public RobotControl(Context context, EndListener listener){
+    public RobotControl(Context context){
         mCtx = context;
         HandlerThread thread = new HandlerThread("RobotControl-cmd");
         thread.start();
         mCmdHandler = new Handler(thread.getLooper(), mCmdCB);
-        doAction("stand",false);
-        mEndListener = listener;
+        doAction("stand");
+
     }
 
+    @Override
     public boolean next(){
         return isNext;
     }
 
-    public void doAction(String action, boolean isNeedEnd){
+    @Override
+    public void distributeCMD(ControllCommand cmd) {
+        doAction(cmd.getRobotAction());
+    }
+
+    @Override
+    public void setEndListener(EndListener listener) {
+        mEndListener = listener;
+    }
+
+    private void doAction(String action){
         isNext = false;
-        this.isNeedEnd = isNeedEnd;
         //解析动作
         RobotAction rAction = RobotData.INSTANCE.getRobotAction(action);
         if(rAction == null){
@@ -83,15 +94,10 @@ public class RobotControl {
                 case CMD_ACTION_END:
                     //动作结束，可以开始下一个动作
                     isNext = true;
-                    if(isNeedEnd) {
-                        mEndListener.onEnd();
-                    }
+                    mEndListener.onEnd();
                     break;
             }
             return false;
         }
     };
-
-
-
 }

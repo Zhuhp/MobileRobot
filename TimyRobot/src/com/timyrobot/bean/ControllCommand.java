@@ -16,8 +16,6 @@ public class ControllCommand {
 
     private String cmd;
 
-    private boolean isNeedEnd = false;
-
     public ControllCommand(String emotionName, String voiceContent, boolean isNeedTuling,
                            String robotAction, String systemOperator,String cmd) {
         this.emotionName = emotionName;
@@ -26,14 +24,6 @@ public class ControllCommand {
         this.robotAction = robotAction;
         this.systemOperator = systemOperator;
         this.cmd = cmd;
-    }
-
-    public boolean isNeedEnd(){
-        return isNeedEnd;
-    }
-
-    public void setNeedEnd(boolean isNeedEnd){
-        this.isNeedEnd = isNeedEnd;
     }
 
     public String getEmotionName() {

@@ -80,16 +80,19 @@ public enum FaceDectectTrigger {
                     if ( size > 600) {
                         if(mReceiver != null){
                             try {
+//                                JSONObject object = new JSONObject();
+//                                object.put(ConstDefine.TriggerDataKey.TYPE,
+//                                        ConstDefine.TriggerDataType.Vision);
+//                                JSONObject faceObj = new JSONObject();
+//                                faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
+//                                int position = faces[0].rect.left
+//                                        + (faces[0].rect.right - faces[0].rect.left) / 2;
+//                                faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
+//                                object.put(ConstDefine.TriggerDataKey.CONTENT,
+//                                        faceObj.toString());
                                 JSONObject object = new JSONObject();
-                                object.put(ConstDefine.TriggerDataKey.TYPE,
-                                        ConstDefine.TriggerDataType.Vision);
-                                JSONObject faceObj = new JSONObject();
-                                faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
-                                int position = faces[0].rect.left
-                                        + (faces[0].rect.right - faces[0].rect.left) / 2;
-                                faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
-                                object.put(ConstDefine.TriggerDataKey.CONTENT,
-                                        faceObj.toString());
+                                object.put(ConstDefine.TriggerDataKey.TYPE,ConstDefine.TriggerDataType.TriggerAnotherCmd);
+                                object.put(ConstDefine.TriggerDataKey.CONTENT,ConstDefine.VisionCMD.DETECT_FACE);
                                 mReceiver.onReceive(object.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();

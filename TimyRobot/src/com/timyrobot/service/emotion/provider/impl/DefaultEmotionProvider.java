@@ -22,6 +22,6 @@ public class DefaultEmotionProvider implements IEmotionProvider {
         Resources res = mContext.getResources();
         int id = res.getIdentifier("anim_"+name,"anim",
                 mContext.getPackageName());
-        return (AnimationDrawable)mContext.getResources().getDrawable(id);
+        return (AnimationDrawable)res.getDrawable(id);
     }
 }

@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,24 +24,28 @@ import com.example.robot.view.FloatViewService;
 import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.common.ConstDefine;
 import com.timyrobot.controlsystem.ControlManager;
+import com.timyrobot.controlsystem.EmotionControl;
+import com.timyrobot.controlsystem.IControlListener;
 import com.timyrobot.listener.DataReceiver;
+import com.timyrobot.listener.EndListener;
 import com.timyrobot.listener.ParserResultReceiver;
 import com.timyrobot.parsesystem.ParseManager;
 import com.timyrobot.triggersystem.TriggerManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class EmotionActivity extends Activity implements
-        DataReceiver,ParserResultReceiver, View.OnTouchListener{
+        View.OnClickListener, View.OnLongClickListener, IControlListener{
 
     public static final String TAG = EmotionActivity.class.getName();
 
-    public final static int SEND_DATA = 0x10001;
-    public final static int PARSE_DATA = 0x10002;
     public final static int CHANGE_EMOTION = 0x10003;
 
-    private Handler mSendHandler;
-    private Handler mParserResultHandler;
-
     private EmotionHandler mMainHandler;
+    private EmotionControl mEmotionControl;
+    //点击屏幕时，向TriggerManager传递事件
+    private DataReceiver mDataReceiver;
 
     private TriggerManager mTriggerManager;
     private ParseManager mParseManager;
@@ -57,32 +63,33 @@ public class EmotionActivity extends Activity implements
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mImageView = (ImageView)findViewById(R.id.iv_emotion);
-        mImageView.setOnTouchListener(this);
+        mImageView.setOnClickListener(this);
+        mImageView.setOnLongClickListener(this);
 
         initManager();
-        registerReceiver(mStartConversation, new IntentFilter(
-                ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION));
-
-        registerReceiver(mIdleReceiver, new IntentFilter(
-                ConstDefine.IntentFilterString.BROADCAST_IDLE_CONVERSATION));
+        initEmotion();
         isFirstCreate = true;
     }
 
-
     private void initManager(){
-
-        HandlerThread sendThread = new HandlerThread(EmotionActivity.class.getName()+"sendThread");
-        sendThread.start();
-        mSendHandler = new Handler(sendThread.getLooper(),mSendCB);
-        HandlerThread resultThread = new HandlerThread(EmotionActivity.class.getName()+"resultThread");
-        resultThread.start();
-        mParserResultHandler = new Handler(resultThread.getLooper(), mSendCB);
-        mTriggerManager = new TriggerManager(this, this);
-        mTriggerManager.init((CameraSurfaceView)findViewById(R.id.camera_surfaceview),
-                (FaceView)findViewById(R.id.face_view));
-        mParseManager = new ParseManager(this, this);
+        mTriggerManager = new TriggerManager(this);
+        mDataReceiver = mTriggerManager;
+        mTriggerManager.init((CameraSurfaceView) findViewById(R.id.camera_surfaceview),
+                (FaceView) findViewById(R.id.face_view));
+        mParseManager = new ParseManager(this);
+        mTriggerManager.setParseManager(mParseManager);
+        mParseManager.setTriggerManager(mTriggerManager);
         mMainHandler = new EmotionHandler(this);
-        mCtrlManager = new ControlManager(this, mMainHandler);
+        mCtrlManager = new ControlManager(this);
+        mParseManager.setControlManager(mCtrlManager);
+        mCtrlManager.addControlListener(this);
+        setEndListener(mCtrlManager);
+    }
+
+    private void initEmotion(){
+        AnimationDrawable drawable = (AnimationDrawable)getResources().getDrawable(R.anim.anim_blink);
+        mImageView.setBackground(drawable);
+        drawable.start();
     }
 
     @Override
@@ -91,7 +98,6 @@ public class EmotionActivity extends Activity implements
         if(!isFirstCreate) {
             mTriggerManager.start();
         }
-
     }
 
     @Override
@@ -99,7 +105,6 @@ public class EmotionActivity extends Activity implements
         super.onResume();
         Intent i = new Intent(this, FloatViewService.class);
         stopService(i);
-
     }
 
     @Override
@@ -115,94 +120,56 @@ public class EmotionActivity extends Activity implements
         mTriggerManager.stop();
     }
 
-    @Override
-    protected void onDestroy() {
-        if(mStartConversation != null){
-            unregisterReceiver(mStartConversation);
-        }
-
-        if(mIdleReceiver != null){
-            unregisterReceiver(mIdleReceiver);
-        }
-        super.onDestroy();
-    }
-
-
-    private Handler.Callback mSendCB = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what){
-                case SEND_DATA:
-                    String content = String.valueOf(msg.obj);
-                    mParseManager.parse(content);
-                    break;
-                case PARSE_DATA:
-                    ControllCommand cmd = (ControllCommand)msg.obj;
-                    mCtrlManager.distribute(cmd);
-                    mSendHandler.removeMessages(PARSE_DATA);
-                    mParserResultHandler.removeMessages(SEND_DATA);
-                    break;
-            }
-            return false;
-        }
-    };
-    //start vonversation dialog.
-    private BroadcastReceiver mStartConversation = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mTriggerManager.startConversation();
-            ControllCommand cmd = new ControllCommand(null,null,false,"handup1",null,null);
-            mCtrlManager.distribute(cmd);
-        }
-    };
-
-
-    private BroadcastReceiver mIdleReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ControllCommand cmd = new ControllCommand("tiaopi",null,false,"handup1",null,null);
-            cmd.setNeedEnd(false);
-            mCtrlManager.distribute(cmd);
-        }
-    };
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        int action = event.getAction();
-        if(action == MotionEvent.ACTION_DOWN){
-            Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
-            sendBroadcast(intent);
-//            mTriggerManager.startTouch();
-        }
-        return false;
-    }
-
-    @Override
-    public void onReceive(String data) {
-        //接收到这个信息，并通过HandlerThread来发送
-        //主要是这样可以保证单线程执行
-        Message msg = new Message();
-        msg.what = SEND_DATA;
-        msg.obj = data;
-        mSendHandler.sendMessage(msg);
-    }
-
-    @Override
-    public void parseResult(ControllCommand cmd) {
-        //接收到这个信息，并通过HandlerThread来发送
-        //主要是这样可以保证单线程执行
-        Message msg = new Message();
-        msg.what = PARSE_DATA;
-        msg.obj = cmd;
-        mParserResultHandler.sendMessage(msg);
-    }
-
     private void changeEmotion(AnimationDrawable drawable){
         if(drawable == null){
             return;
         }
         mImageView.setBackground(drawable);
         drawable.start();
+    }
+
+    @Override
+    public void onClick(View v) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put(ConstDefine.TriggerDataKey.TYPE, ConstDefine.TriggerDataType.TriggerAnotherCmd);
+            object.put(ConstDefine.TriggerDataKey.CONTENT, ConstDefine.TouchCMD.DETECT_TOUCH);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mDataReceiver.onReceive(object.toString());
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        mTriggerManager.startTouch();
+        return true;
+    }
+
+    @Override
+    public boolean next() {
+        if(mEmotionControl == null){
+            return true;
+        }
+        return mEmotionControl.next();
+    }
+
+    @Override
+    public void distributeCMD(ControllCommand cmd) {
+        if(cmd == null){
+            return;
+        }
+        if(ConstDefine.TouchCMD.DETECT_TOUCH.equals(cmd.getCmd())){
+            mEmotionControl.randomChangeEmotion();
+            return;
+        }
+        mEmotionControl.changeEmotion(cmd.getEmotionName());
+    }
+
+    @Override
+    public void setEndListener(EndListener listener) {
+        mEmotionControl = new EmotionControl(this, EmotionControl.EmotionType.DEFAULT,
+                mMainHandler, listener);
     }
 
     /**

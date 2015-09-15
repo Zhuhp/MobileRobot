@@ -8,7 +8,10 @@ import android.text.TextUtils;
 import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.common.ConstDefine;
 import com.timyrobot.listener.EndListener;
+import com.timyrobot.triggersystem.TriggerSwitch;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -21,7 +24,9 @@ public class ControlManager implements EndListener{
     private final static String TAG = "ControlManager";
     Activity mActivity;
 
-    private EmotionControl mEmotionCtrl;
+    private List<IControlListener> mListenerList;
+
+//    private EmotionControl mEmotionCtrl;
     private VoiceControl mVoiceCtrl;
     private RobotControl mRobotCtrl;
     private SystemControl mSystemCtrl;
@@ -29,13 +34,25 @@ public class ControlManager implements EndListener{
     ScheduledExecutorService mService = Executors.newScheduledThreadPool(1);
     ScheduledFuture mCurrentFuture;
 
-    public ControlManager(Activity activity,Handler handler){
+    public ControlManager(Activity activity){
         mActivity = activity;
-        mEmotionCtrl = new EmotionControl(mActivity,EmotionControl.EmotionType.DEFAULT,handler,this);
-        mVoiceCtrl = new VoiceControl(mActivity,this);
-        mRobotCtrl = new RobotControl(mActivity,this);
+        mListenerList = new ArrayList<>();
+//        mEmotionCtrl = new EmotionControl(mActivity,EmotionControl.EmotionType.DEFAULT,handler,this);
+        mVoiceCtrl = new VoiceControl(mActivity);
+        mVoiceCtrl.setEndListener(this);
+        mRobotCtrl = new RobotControl(mActivity);
+        mRobotCtrl.setEndListener(this);
         mSystemCtrl = new SystemControl(mActivity);
-        mEmotionCtrl.changeEmotion("blink",false);
+        mSystemCtrl.setEndListener(this);
+
+        addControlListener(mVoiceCtrl);
+        addControlListener(mRobotCtrl);
+        addControlListener(mSystemCtrl);
+//        mEmotionCtrl.changeEmotion("blink",false);
+    }
+
+    public void addControlListener(IControlListener listener){
+        mListenerList.add(listener);
     }
 
     public void distribute(ControllCommand cmd){
@@ -53,64 +70,45 @@ public class ControlManager implements EndListener{
             return;
         }
 
-        if(ConstDefine.VisionCMD.DETECT_FACE.equals(cmd.getCmd())){
-            Intent intent = new Intent(ConstDefine.IntentFilterString.BROADCAST_START_CONVERSATION);
-            mActivity.sendBroadcast(intent);
-            return;
-        }
-
-        if(ConstDefine.TouchCMD.DETECT_TOUCH.equals(cmd.getCmd())){
-            mEmotionCtrl.randomChangeEmotion();
-            return;
-        }
-        if(cmd.getEmotionName() != null) {
-            mEmotionCtrl.changeEmotion(cmd.getEmotionName(), cmd.isNeedEnd());
-        }
-
-        if(cmd.getRobotAction() != null) {
-            mRobotCtrl.doAction(cmd.getRobotAction(), cmd.isNeedEnd());
-        }
-
-        if(cmd.getVoiceContent() != null) {
-            mVoiceCtrl.response(cmd, cmd.isNeedEnd());
-        }
-
-        if(!TextUtils.isEmpty(cmd.getSystemOperator())) {
-            mSystemCtrl.doAction(cmd.getSystemOperator());
+        for(IControlListener listener : mListenerList){
+            listener.distributeCMD(cmd);
         }
     }
 
     public synchronized boolean isEnd(){
-        if(mVoiceCtrl.next() && mRobotCtrl.next() && mSystemCtrl.next()){
-            return true;
-        }
-        return false;
-    }
-
-    public void startIdle(){
-        if((mCurrentFuture != null) && (!mCurrentFuture.isCancelled())){
-            mCurrentFuture.cancel(true);
-        }
-       mCurrentFuture = mService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                mActivity.sendBroadcast(new Intent(ConstDefine.IntentFilterString.BROADCAST_IDLE_CONVERSATION));
+        boolean end = true;
+        for(IControlListener listener : mListenerList){
+            if(!listener.next()){
+                end = false;
+                break;
             }
-        }, 0, 40, TimeUnit.SECONDS);
+        }
+        return end;
     }
 
-    public void endIdle(){
-        if((mCurrentFuture != null) && (!mCurrentFuture.isCancelled())){
-            mCurrentFuture.cancel(true);
-        }
-        mCurrentFuture = null;
-    }
+//    public void startIdle(){
+//        if((mCurrentFuture != null) && (!mCurrentFuture.isCancelled())){
+//            mCurrentFuture.cancel(true);
+//        }
+//       mCurrentFuture = mService.scheduleAtFixedRate(new Runnable() {
+//            @Override
+//            public void run() {
+//                mActivity.sendBroadcast(new Intent(ConstDefine.IntentFilterString.BROADCAST_IDLE_CONVERSATION));
+//            }
+//        }, 0, 40, TimeUnit.SECONDS);
+//    }
+//
+//    public void endIdle(){
+//        if((mCurrentFuture != null) && (!mCurrentFuture.isCancelled())){
+//            mCurrentFuture.cancel(true);
+//        }
+//        mCurrentFuture = null;
+//    }
 
     @Override
     public void onEnd() {
-        if(isEnd() && ((mCurrentFuture == null) || (!mCurrentFuture.isCancelled()))){
-            endIdle();
-            startIdle();
+        if(isEnd()){
+            TriggerSwitch.INSTANCE.setCanNext(true);
         }
     }
 }

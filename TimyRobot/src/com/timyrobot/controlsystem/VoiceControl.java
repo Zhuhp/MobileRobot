@@ -21,7 +21,7 @@ import org.json.JSONObject;
 /**
  * Created by zhangtingting on 15/8/6.
  */
-public class VoiceControl {
+public class VoiceControl implements IControlListener{
 
     public static final String TULING_KEY = "777e74f738a03b4d855fe611c3e7fcc3";
     public static final String TAG = "tuling";
@@ -33,26 +33,34 @@ public class VoiceControl {
     public static boolean isNext = true;
 
     private EndListener mEndListener;
-    private boolean isNeedEnd;
 
-    public VoiceControl(Context ctx,EndListener endListener){
+    public VoiceControl(Context ctx){
         mCtx = ctx;
         mSST = SpeechSynthesizer.createSynthesizer(mCtx, null);
         mSST.setParameter(SpeechConstant.VOICE_NAME, "xiaoyu");
         mSST.setParameter(SpeechConstant.SPEED, "35");
         mSST.setParameter(SpeechConstant.VOLUME, "80");
         mSST.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
-        mEndListener = endListener;
         mTulingManager = new TulingManager(mCtx);
     }
 
+    @Override
     public boolean next(){
         return isNext;
     }
 
-    public void response(ControllCommand cmd, boolean isNeedEnd){
+    @Override
+    public void distributeCMD(ControllCommand cmd) {
+        response(cmd);
+    }
+
+    @Override
+    public void setEndListener(EndListener listener) {
+        mEndListener = listener;
+    }
+
+    private void response(ControllCommand cmd){
         isNext = false;
-        this.isNeedEnd = isNeedEnd;
         String content = cmd.getVoiceContent();
         if(TextUtils.isEmpty(content)){
             isNext = true;
@@ -123,9 +131,7 @@ public class VoiceControl {
         @Override
         public void onCompleted(SpeechError speechError) {
             isNext = true;
-            if(isNeedEnd) {
-                mEndListener.onEnd();
-            }
+            mEndListener.onEnd();
         }
 
         @Override

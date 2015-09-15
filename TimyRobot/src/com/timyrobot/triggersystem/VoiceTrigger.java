@@ -11,13 +11,15 @@ import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.timyrobot.common.ConstDefine;
 import com.timyrobot.controlsystem.VoiceControl;
 import com.timyrobot.listener.DataReceiver;
+import com.timyrobot.listener.VoiceDataReceiver;
 import com.timyrobot.service.speechrecongnizer.SpeechJsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * 语音识别的流程单独处理了，将语音框的启动放在了“开关”判断之后了
+ * 触发语音框的放在了“开关判断之前”
  * Created by zhangtingting on 15/8/5.
  */
 public enum VoiceTrigger {
@@ -28,6 +30,7 @@ public enum VoiceTrigger {
     private RecognizerDialog mIatDialog;
     private Context mCtx;
     private DataReceiver mReceiver;
+    private VoiceDataReceiver mVoiceDataRecevier;
 
     //判断是否有一个对话正在进行，有的话就不开起新的对话
     private boolean isConversion = false;
@@ -36,12 +39,13 @@ public enum VoiceTrigger {
     //导致对话提前结束，这是要设置isConversion为false
     private boolean hasResult = false;
 
-    public void init(Context context, DataReceiver receiver){
+    public void init(Context context, DataReceiver receiver, VoiceDataReceiver voiceDataReceiver){
         mCtx = context;
         mIatDialog = new RecognizerDialog(mCtx, null);
         mIatDialog.setListener(mRecognizerListener);
         mIatDialog.setOnDismissListener(mDismissListener);
         mReceiver = receiver;
+        mVoiceDataRecevier = voiceDataReceiver;
     }
 
     /**
@@ -52,7 +56,6 @@ public enum VoiceTrigger {
             isConversion = true;
             hasResult = false;
             mIatDialog.show();
-//            mIatDialog.hide();
         }
     }
 
@@ -84,11 +87,12 @@ public enum VoiceTrigger {
                 JSONObject data = new JSONObject();
                 data.put(ConstDefine.TriggerDataKey.TYPE,ConstDefine.TriggerDataType.Voice);
                 data.put(ConstDefine.TriggerDataKey.CONTENT,content);
-                if(mReceiver != null){
-                    mReceiver.onReceive(data.toString());
+                if(mVoiceDataRecevier != null){
+                    mVoiceDataRecevier.onVoiceDataReceiver(data.toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                mVoiceDataRecevier.onVoiceDataReceiver(ConstDefine.VoiceCMD.ERROR);
             }finally {
                 isConversion = false;
             }
@@ -101,18 +105,20 @@ public enum VoiceTrigger {
                 mIatDialog.dismiss();
             }
             isConversion = false;
+            mVoiceDataRecevier.onVoiceDataReceiver(ConstDefine.VoiceCMD.ERROR);
         }
 
     };
 
     /**
-     * 在语音对话框dismiss的时候，判断是否又语音识别的结果，如果没有，就认为对话结束
+     * 在语音对话框dismiss的时候，判断是否有语音识别的结果，如果没有，就认为对话结束
      */
     private DialogInterface.OnDismissListener mDismissListener = new DialogInterface.OnDismissListener() {
         @Override
         public void onDismiss(DialogInterface dialog) {
             if(!hasResult){
                 isConversion = false;
+                mVoiceDataRecevier.onVoiceDataReceiver(ConstDefine.VoiceCMD.ERROR);
             }
         }
     };

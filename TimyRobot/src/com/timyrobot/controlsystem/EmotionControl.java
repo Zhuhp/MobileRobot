@@ -42,7 +42,6 @@ public class EmotionControl {
     private boolean isNext = true;
 
     private EndListener mEndListener;
-    private boolean isNeedEnd;
 
     public boolean next(){
         return isNext;
@@ -60,12 +59,11 @@ public class EmotionControl {
     }
 
     public void randomChangeEmotion(){
-        changeEmotion(RobotData.INSTANCE.getRandomFace(),false);
+        changeEmotion(RobotData.INSTANCE.getRandomFace());
     }
 
-    public void changeEmotion(String name,boolean isNeedEnd){
+    public void changeEmotion(String name){
         isNext = false;
-        this.isNeedEnd = isNeedEnd;
         RobotFace result = mParser.parseEmotion(name);
         if(result == null){
             isNext = true;
@@ -116,9 +114,7 @@ public class EmotionControl {
                     msgEndFace.obj = mDrawable;
                     mHandler.sendMessage(msgEndFace);
                     isNext = true;
-                    if(isNeedEnd) {
-                        mEndListener.onEnd();
-                    }
+                    mEndListener.onEnd();
                     break;
             }
             return false;

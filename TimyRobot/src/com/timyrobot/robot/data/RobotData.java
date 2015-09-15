@@ -204,7 +204,7 @@ public enum RobotData {
         Set<String> data = mFace.keySet();
         int pos = new Random().nextInt(data.size());
         for(String faceTmp:data){
-            if(pos == 1){
+            if(pos == 0){
                 return faceTmp;
             }
             pos--;

@@ -49,8 +49,6 @@
             android:name="com.timyrobot.ui.activity.EmotionActivity"
             android:screenOrientation="landscape" >
 
-
-
         </activity>
         <activity
             android:name="com.timyrobot.ui.activity.BluetoothServerActivity" >
@@ -71,7 +69,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

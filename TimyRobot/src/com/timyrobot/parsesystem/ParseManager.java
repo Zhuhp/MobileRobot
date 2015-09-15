@@ -3,9 +3,12 @@ package com.timyrobot.parsesystem;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.common.ConstDefine;
+import com.timyrobot.controlsystem.ControlManager;
 import com.timyrobot.listener.ParserResultReceiver;
 import com.timyrobot.service.bluetooth.IDataReceiver;
+import com.timyrobot.triggersystem.TriggerManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +16,7 @@ import org.json.JSONObject;
 /**
  * Created by zhangtingting on 15/8/7.
  */
-public class ParseManager {
+public class ParseManager implements ParserResultReceiver{
 
     private Context mCtx;
 
@@ -21,11 +24,22 @@ public class ParseManager {
     private VoiceMsgParser voiceMsgParser;
     private TouchMsgParser touchMsgParser;
 
-    public ParseManager(Context context,ParserResultReceiver receiver){
+    private ControlManager mControlManager;
+    private TriggerManager mTriggerManager;
+
+    public ParseManager(Context context){
         mCtx = context;
-        visionMsgParser = new VisionMsgParser(receiver);
-        voiceMsgParser = new VoiceMsgParser(mCtx,receiver);
-        touchMsgParser = new TouchMsgParser(receiver);
+        visionMsgParser = new VisionMsgParser(this);
+        voiceMsgParser = new VoiceMsgParser(mCtx,this);
+        touchMsgParser = new TouchMsgParser(this);
+    }
+
+    public void setControlManager(ControlManager manager){
+        mControlManager = manager;
+    }
+
+    public void setTriggerManager(TriggerManager manager){
+        mTriggerManager = manager;
     }
 
     public void parse(String content){
@@ -45,10 +59,35 @@ public class ParseManager {
                 visionMsgParser.parse(data);
             }else if(ConstDefine.TriggerDataType.Touch.equals(type)){
                 touchMsgParser.parse(data);
+            }else if(ConstDefine.TriggerDataType.TriggerAnotherCmd.equals(type)){
+                triggerCMD(data);
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void triggerCMD(String data){
+        if(mTriggerManager == null){
+            return;
+        }
+        if(ConstDefine.VisionCMD.DETECT_FACE.equals(data)){
+            mTriggerManager.startConversation();
+        }
+        if(ConstDefine.TouchCMD.DETECT_TOUCH.equals(data)){
+            mTriggerManager.startTouch();
+        }
+    }
+
+    private void distributeCMD(ControllCommand cmd){
+        if(mControlManager == null){
+            return;
+        }
+        mControlManager.distribute(cmd);
+    }
+
+    @Override
+    public void parseResult(ControllCommand cmd) {
+        distributeCMD(cmd);
     }
 }
