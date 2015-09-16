@@ -33,11 +33,12 @@ public class MusicPlayer extends Thread implements MediaPlayer.OnCompletionListe
 //        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 //        try {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mPlayer = MediaPlayer.create(mContext, R.raw.test);
+        mPlayer = MediaPlayer.create(mContext,
+                mContext.getResources().getIdentifier(mMusicUri,"raw",mContext.getPackageName()));
 //            mPlayer.setDataSource(mContext, mMusicUri);
 //            mPlayer.setLooping(false);
 //            mPlayer.prepare();

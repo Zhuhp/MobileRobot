@@ -5,8 +5,8 @@
 {"可以跳个舞":{"voice":"我很忙的，没时间搭理你，爱跳自己跳","face":"huaiyi"}}
 {"拍照":{"voice":"好啊，我最喜欢拍照了","face":"laugh","action":"paizhao1"}}
 {"拍个照":{"voice":"可以啊，我最喜欢拍照了","face":"laugh","action":"paizhao2"}}
-{"给我跳个舞":{"voice":"音乐起","face":"tiaopi","action":"tiaowu1"}}
-{"跳舞":{"voice":"有音乐吗","face":"laugh","action":"tiaowu1"}}
+{"给我跳个舞":{"voice":"音乐起","face":"tiaopi","action":"tiaowu1","system":{"music":"mingzufeng"}}}
+{"跳舞":{"voice":"有音乐吗","face":"laugh","action":"tiaowu1","system":{"music":"mingzufeng"}}}
 {"你是谁":{"voice":"我叫小黑，英文名字，叫肖嘿，我是机器人，机器人，机器人，重要的事情，要说三遍","face":"blink"}}
 {"名字":{"voice":"我叫小黑，英文名字，叫肖嘿","face":"blink"}}
 {"你好":{"voice":"你好，我是小黑，请多执教","face":"laugh","action":"wave"}}
