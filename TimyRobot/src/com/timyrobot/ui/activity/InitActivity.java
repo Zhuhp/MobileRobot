@@ -136,6 +136,7 @@ public class InitActivity extends Activity implements View.OnClickListener{
             FileDownload.downloadFile("http://121.43.226.152:8080/hei02/cmd.txt", "cmd.txt");
             FileDownload.downloadFile("http://121.43.226.152:8080/hei02/action.txt", "action.txt");
             FileDownload.downloadFile("http://121.43.226.152:8080/hei02/face.txt", "face.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/robotproperty.txt", "robotproperty.txt");
             RobotData.INSTANCE.initRobotData(InitActivity.this.getApplicationContext());
             return null;
         }
