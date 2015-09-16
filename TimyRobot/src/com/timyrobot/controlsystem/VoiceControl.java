@@ -10,6 +10,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.common.Property;
 import com.timyrobot.listener.EndListener;
 import com.tuling.util.GetTulingResultThread;
 import com.tuling.util.ResultWatcher;
@@ -37,9 +38,9 @@ public class VoiceControl implements IControlListener{
     public VoiceControl(Context ctx){
         mCtx = ctx;
         mSST = SpeechSynthesizer.createSynthesizer(mCtx, null);
-        mSST.setParameter(SpeechConstant.VOICE_NAME, "xiaoyu");
-        mSST.setParameter(SpeechConstant.SPEED, "35");
-        mSST.setParameter(SpeechConstant.VOLUME, "80");
+        mSST.setParameter(SpeechConstant.VOICE_NAME, Property.VOICE_NAME);
+        mSST.setParameter(SpeechConstant.SPEED, Property.VOICE_SPEED);
+        mSST.setParameter(SpeechConstant.VOLUME, Property.VOICE_VOLUMN);
         mSST.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
         mTulingManager = new TulingManager(mCtx);
     }

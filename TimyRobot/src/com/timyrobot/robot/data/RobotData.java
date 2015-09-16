@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.timyrobot.common.Property;
 import com.timyrobot.common.RobotServiceKey;
 import com.timyrobot.httpcom.filedownload.FileDownload;
 import com.timyrobot.robot.bean.RobotAction;
@@ -44,9 +45,35 @@ public enum RobotData {
         mAction = new HashMap<>();
         mCmd = new HashMap<>();
         mFace = new HashMap<>();
+        initRobotProperty(ctx);
         initCmd(ctx);
         initAction(ctx);
         initFace(ctx);
+    }
+
+    private void initRobotProperty(Context ctx){
+        try {
+            InputStream stream = null;
+            File file  = FileDownload.getPropertyFileExist("robotproperty.txt");
+            if(file != null){
+                stream = new FileInputStream(file);
+            }else {
+                stream = ctx.getAssets().open("robotproperty.txt");
+            }
+            BufferedReader cmdBr = new BufferedReader(new InputStreamReader(stream));
+            String line = null;
+            while((line = cmdBr.readLine()) != null) {
+                JSONObject object = new JSONObject(line);
+                Property.VOICE_NAME = object.optString("voice_name");
+                Property.VOICE_VOLUMN = object.optString("voice_volumn");
+                Property.VOICE_SPEED = object.optString("voice_speed");
+            }
+            cmdBr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initCmd(Context ctx){
