@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -26,6 +27,7 @@ import com.timyrobot.common.ConstDefine;
 import com.timyrobot.controlsystem.ControlManager;
 import com.timyrobot.controlsystem.EmotionControl;
 import com.timyrobot.controlsystem.IControlListener;
+import com.timyrobot.httpcom.filedownload.FileDownload;
 import com.timyrobot.listener.DataReceiver;
 import com.timyrobot.listener.EndListener;
 import com.timyrobot.listener.ParserResultReceiver;
@@ -193,5 +195,4 @@ public class EmotionActivity extends Activity implements
             }
         }
     }
-
 }

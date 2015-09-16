@@ -2,13 +2,16 @@ package com.timyrobot.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.robot.R;
-import com.example.robot.view.FloatViewService;
+import com.timyrobot.httpcom.filedownload.FileDownload;
+import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.bluetooth.IBlueConnectListener;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.iml.BluetoothPresent;
@@ -21,6 +24,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothState;
 public class InitActivity extends Activity implements View.OnClickListener{
 
     private ImageButton mBlueButton;
+    private Button mBtnP1;
     IBluetoothPresent mBluePresent;
 
     @Override
@@ -72,6 +76,8 @@ public class InitActivity extends Activity implements View.OnClickListener{
     private void initView(){
         mBlueButton = (ImageButton)findViewById(R.id.btn_find_blue);
         mBlueButton.setOnClickListener(this);
+        findViewById(R.id.btn_p1).setOnClickListener(this);
+        findViewById(R.id.btn_p2).setOnClickListener(this);
     }
 
     @Override
@@ -79,6 +85,11 @@ public class InitActivity extends Activity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.btn_find_blue:
                 mBluePresent.findBlue(this);
+                break;
+            case R.id.btn_p1:
+                new DownloadOneFileTask().execute();
+            case R.id.btn_p2:
+                new DownloadTwoFileTask().execute();
                 break;
         }
     }
@@ -102,6 +113,30 @@ public class InitActivity extends Activity implements View.OnClickListener{
                     finish();
                 }
                 break;
+        }
+    }
+
+    class DownloadOneFileTask extends AsyncTask<Object,Integer,Object> {
+
+        @Override
+        protected Object doInBackground(Object... params) {
+            FileDownload.downloadFile("http://121.43.226.152:8080/hei01/cmd.txt", "cmd.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/hei01/action.txt", "action.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/hei01/face.txt", "face.txt");
+            RobotData.INSTANCE.initRobotData(InitActivity.this.getApplicationContext());
+            return null;
+        }
+    }
+
+    class DownloadTwoFileTask extends AsyncTask<Object,Integer,Object> {
+
+        @Override
+        protected Object doInBackground(Object... params) {
+            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/cmd.txt", "cmd.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/action.txt", "action.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/face.txt", "face.txt");
+            RobotData.INSTANCE.initRobotData(InitActivity.this.getApplicationContext());
+            return null;
         }
     }
 }

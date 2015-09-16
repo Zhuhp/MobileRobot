@@ -9,4 +9,21 @@
         android:layout_height="200dp"
         android:layout_centerInParent="true"
         android:background="@drawable/robot"/>
+
+    <Button
+        android:id="@+id/btn_p1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_black1"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/btn_p2"
+        />
+    <Button
+        android:id="@+id/btn_p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_black2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        />
 </RelativeLayout>

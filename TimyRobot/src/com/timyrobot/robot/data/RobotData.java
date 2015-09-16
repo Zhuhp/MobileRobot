@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.timyrobot.common.RobotServiceKey;
+import com.timyrobot.httpcom.filedownload.FileDownload;
 import com.timyrobot.robot.bean.RobotAction;
 import com.timyrobot.robot.bean.RobotCmd;
 import com.timyrobot.robot.bean.RobotFace;
@@ -16,7 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +51,14 @@ public enum RobotData {
 
     private void initCmd(Context ctx){
         try {
-            BufferedReader cmdBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("cmd.txt")));
+            InputStream stream = null;
+            File file  = FileDownload.getPropertyFileExist("cmd.txt");
+            if(file != null){
+                stream = new FileInputStream(file);
+            }else {
+                stream = ctx.getAssets().open("cmd.txt");
+            }
+            BufferedReader cmdBr = new BufferedReader(new InputStreamReader(stream));
             String line = null;
             while((line = cmdBr.readLine()) != null) {
                 JSONObject object = new JSONObject(line);
@@ -80,7 +91,14 @@ public enum RobotData {
 
     private void initFace(Context ctx){
         try {
-            BufferedReader faceBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("face.txt")));
+            InputStream stream = null;
+            File file  = FileDownload.getPropertyFileExist("face.txt");
+            if(file != null){
+                stream = new FileInputStream(file);
+            }else {
+                stream = ctx.getAssets().open("face.txt");
+            }
+            BufferedReader faceBr = new BufferedReader(new InputStreamReader(stream));
             String line;
             while((line = faceBr.readLine()) != null) {
                 JSONObject object = new JSONObject(line);
@@ -121,7 +139,14 @@ public enum RobotData {
 
     private void initAction(Context ctx){
         try {
-            BufferedReader actionBr = new BufferedReader(new InputStreamReader(ctx.getAssets().open("action.txt")));
+            InputStream stream = null;
+            File file  = FileDownload.getPropertyFileExist("action.txt");
+            if(file != null){
+                stream = new FileInputStream(file);
+            }else {
+                stream = ctx.getAssets().open("action.txt");
+            }
+            BufferedReader actionBr = new BufferedReader(new InputStreamReader(stream));
             String line;
             while((line = actionBr.readLine()) != null) {
                 JSONObject object = new JSONObject(line);
