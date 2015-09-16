@@ -58,8 +58,10 @@ public class SystemControl implements IControlListener{
             if(TextUtils.isEmpty(music)){
                 return;
             }
+            int waitTime = object.optInt("music_wait_time");
+            int musicTime = object.optInt("music_time");
 //            Uri name = Uri.parse("android.resource://"+mCtx.getPackageName()+"/raw/test.mp3");
-            MusicPlayer player = new MusicPlayer(mCtx,music);
+            MusicPlayer player = new MusicPlayer(mCtx,music,musicTime,waitTime);
             player.start();
         }
     }
