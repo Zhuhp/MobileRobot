@@ -43,7 +43,7 @@ public enum HttpTrigger {
 
                 try {
                     mSocket = new Socket(ip, port);
-                    mReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream(), "utf-8"));
+                    mReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream(), "GBK"));
                     mWriter = new BufferedWriter(new OutputStreamWriter(mSocket.getOutputStream(), "utf-8"));
                     if(isReceiver) {
                         sendReceiverMsg(mCode);
