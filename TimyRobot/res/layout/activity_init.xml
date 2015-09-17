@@ -14,7 +14,7 @@
         android:id="@+id/btn_p1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/str_black1"
+        android:text="@string/str_robot_property"
         android:layout_alignParentLeft="true"
         android:layout_above="@+id/btn_p2"
         />

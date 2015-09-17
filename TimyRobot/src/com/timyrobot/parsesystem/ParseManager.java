@@ -61,6 +61,11 @@ public class ParseManager implements ParserResultReceiver{
                 touchMsgParser.parse(data);
             }else if(ConstDefine.TriggerDataType.TriggerAnotherCmd.equals(type)){
                 triggerCMD(data);
+            }else if(ConstDefine.TriggerDataType.Http.equals(type)){
+                JSONObject httpdata = new JSONObject();
+                httpdata.put(ConstDefine.TriggerDataKey.TYPE,ConstDefine.TriggerDataType.Voice);
+                httpdata.put(ConstDefine.TriggerDataKey.CONTENT,data);
+                parse(httpdata.toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();

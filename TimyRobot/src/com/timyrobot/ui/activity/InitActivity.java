@@ -87,9 +87,9 @@ public class InitActivity extends Activity implements View.OnClickListener{
                 mBluePresent.findBlue(this);
                 break;
             case R.id.btn_p1:
-                new DownloadOneFileTask().execute();
+//                new DownloadFileTask("hei01").execute();
             case R.id.btn_p2:
-                new DownloadTwoFileTask().execute();
+                new DownloadFileTask("hei02").execute();
                 break;
         }
     }
@@ -116,27 +116,20 @@ public class InitActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    class DownloadOneFileTask extends AsyncTask<Object,Integer,Object> {
+    class DownloadFileTask extends AsyncTask<Object,Integer,Object> {
 
-        @Override
-        protected Object doInBackground(Object... params) {
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei01/cmd.txt", "cmd.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei01/action.txt", "action.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei01/face.txt", "face.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei01/robotproperty.txt", "robotproperty.txt");
-            RobotData.INSTANCE.initRobotData(InitActivity.this.getApplicationContext());
-            return null;
+        private String mFileName;
+
+        public DownloadFileTask(String fileName){
+            mFileName = fileName;
         }
-    }
-
-    class DownloadTwoFileTask extends AsyncTask<Object,Integer,Object> {
 
         @Override
         protected Object doInBackground(Object... params) {
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/cmd.txt", "cmd.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/action.txt", "action.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/face.txt", "face.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/hei02/robotproperty.txt", "robotproperty.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/cmd.txt", "cmd.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/action.txt", "action.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/face.txt", "face.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/robotproperty.txt", "robotproperty.txt");
             RobotData.INSTANCE.initRobotData(InitActivity.this.getApplicationContext());
             return null;
         }

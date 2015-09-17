@@ -67,6 +67,8 @@ public enum RobotData {
                 Property.VOICE_NAME = object.optString("voice_name");
                 Property.VOICE_VOLUMN = object.optString("voice_volumn");
                 Property.VOICE_SPEED = object.optString("voice_speed");
+                Property.ROBOT_CODE = object.optInt("robot_code");
+                Property.IS_RECEIVER = object.optBoolean("is_receiver");
             }
             cmdBr.close();
         } catch (IOException e) {

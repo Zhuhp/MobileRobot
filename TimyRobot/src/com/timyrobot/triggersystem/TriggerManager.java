@@ -9,6 +9,7 @@ import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
 import com.timyrobot.bean.ControllCommand;
 import com.timyrobot.common.ConstDefine;
+import com.timyrobot.common.Property;
 import com.timyrobot.controlsystem.IControlListener;
 import com.timyrobot.listener.DataReceiver;
 import com.timyrobot.listener.EndListener;
@@ -34,6 +35,7 @@ public class TriggerManager implements DataReceiver, VoiceDataReceiver, TouchDat
         VoiceTrigger.INSTANCE.init(ctx,this,this);
         FaceDectectTrigger.INSTANCE.init(ctx,this);
         TouchTrigger.INSTANCE.init(this);
+        HttpTrigger.INSTANCE.init(this, Property.ROBOT_CODE, Property.IS_RECEIVER);
     }
 
     private Handler.Callback mSendCB = new Handler.Callback() {

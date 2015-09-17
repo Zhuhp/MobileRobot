@@ -1,1 +1,1 @@
-{"voice_name":"xiaoyu","voice_volumn":"80","voice_speed":"35"}
+{"voice_name":"xiaoyu","voice_volumn":"80","voice_speed":"35","robot_code":1,"is_receiver":true}

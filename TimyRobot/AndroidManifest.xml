@@ -51,7 +51,9 @@
 
         </activity>
         <activity
-            android:name="com.timyrobot.ui.activity.BluetoothServerActivity" >
+            android:name="com.timyrobot.ui.activity.BluetoothServerActivity"
+            android:label="服务端"
+            >
 
         </activity>
 
@@ -69,6 +71,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name="com.timyrobot.ui.activity.SendActivity">
+
         </activity>
     </application>
 

@@ -62,5 +62,7 @@
 	<string name="str_disconnect">断开连接</string>
 	<string name="str_black1">小黑1</string>
 	<string name="str_black2">小黑2</string>
+	<string name="str_send">发送</string>
+	<string name="str_robot_property">机器角色选择</string>
 
 </resources>
