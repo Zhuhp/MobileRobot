@@ -1,12 +1,12 @@
-package com.timyrobot.controlsystem;
+package com.timyrobot.system.controlsystem;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 
-import com.timyrobot.bean.BaseCommand;
-import com.timyrobot.listener.EndListener;
+import com.timyrobot.system.bean.BaseCommand;
+import com.timyrobot.system.controlsystem.listener.EndListener;
 import com.timyrobot.robot.RobotProxy;
 import com.timyrobot.robot.bean.RobotAction;
 import com.timyrobot.robot.bean.RobotSubAction;

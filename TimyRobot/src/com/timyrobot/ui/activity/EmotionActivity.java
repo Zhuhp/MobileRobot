@@ -14,19 +14,18 @@ import com.example.robot.R;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
 import com.example.robot.view.FloatViewService;
-import com.timyrobot.bean.BaseCommand;
-import com.timyrobot.bean.ChangeEmotionCommand;
-import com.timyrobot.bean.NeedVoiceReconCommand;
-import com.timyrobot.common.ConstDefine;
-import com.timyrobot.controlsystem.ControlManager;
-import com.timyrobot.controlsystem.EmotionControl;
-import com.timyrobot.controlsystem.IControlListener;
-import com.timyrobot.filler.IFiller;
-import com.timyrobot.filler.UnderstandTextFiller;
-import com.timyrobot.filler.VoiceFiller;
-import com.timyrobot.listener.DataReceiver;
-import com.timyrobot.listener.EndListener;
-import com.timyrobot.triggersystem.TriggerManager;
+import com.timyrobot.system.bean.BaseCommand;
+import com.timyrobot.system.bean.ChangeEmotionCommand;
+import com.timyrobot.system.bean.NeedVoiceReconCommand;
+import com.timyrobot.system.controlsystem.ControlManager;
+import com.timyrobot.system.controlsystem.EmotionControl;
+import com.timyrobot.system.controlsystem.IControlListener;
+import com.timyrobot.system.filler.IFiller;
+import com.timyrobot.system.filler.UnderstandTextFiller;
+import com.timyrobot.system.filler.VoiceFiller;
+import com.timyrobot.system.triggersystem.listener.DataReceiver;
+import com.timyrobot.system.controlsystem.listener.EndListener;
+import com.timyrobot.system.triggersystem.TriggerManager;
 
 public class EmotionActivity extends Activity implements
         View.OnClickListener, View.OnLongClickListener, IControlListener{

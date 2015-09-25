@@ -7,10 +7,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.robot.R;
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.common.Property;
-import com.timyrobot.listener.DataReceiver;
-import com.timyrobot.triggersystem.HttpTrigger;
+import com.timyrobot.system.triggersystem.listener.DataReceiver;
+import com.timyrobot.system.triggersystem.HttpTrigger;
 
 /**
  * Created by zhangtingting on 15/9/16.

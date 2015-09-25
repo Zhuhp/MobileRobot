@@ -1,4 +1,4 @@
-package com.timyrobot.filler;
+package com.timyrobot.system.filler;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,11 +8,11 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.TextUnderstander;
 import com.iflytek.cloud.TextUnderstanderListener;
 import com.iflytek.cloud.UnderstanderResult;
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 import com.timyrobot.service.userintent.intentparser.UserIntentParserFactory;
-import com.timyrobot.triggersystem.TriggerSwitch;
+import com.timyrobot.system.triggersystem.TriggerSwitch;
 
 import org.json.JSONObject;
 

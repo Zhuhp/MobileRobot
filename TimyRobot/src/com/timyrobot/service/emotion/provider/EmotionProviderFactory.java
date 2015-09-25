@@ -2,7 +2,7 @@ package com.timyrobot.service.emotion.provider;
 
 import android.content.Context;
 
-import com.timyrobot.controlsystem.EmotionControl;
+import com.timyrobot.system.controlsystem.EmotionControl;
 import com.timyrobot.service.emotion.provider.impl.DefaultEmotionProvider;
 
 /**

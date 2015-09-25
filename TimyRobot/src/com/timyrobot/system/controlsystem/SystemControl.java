@@ -1,10 +1,10 @@
-package com.timyrobot.controlsystem;
+package com.timyrobot.system.controlsystem;
 
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.timyrobot.bean.BaseCommand;
-import com.timyrobot.listener.EndListener;
+import com.timyrobot.system.bean.BaseCommand;
+import com.timyrobot.system.controlsystem.listener.EndListener;
 import com.timyrobot.service.music.MusicPlayer;
 
 import org.json.JSONException;

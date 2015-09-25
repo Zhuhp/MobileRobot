@@ -1,7 +1,7 @@
-package com.timyrobot.controlsystem;
+package com.timyrobot.system.controlsystem;
 
-import com.timyrobot.bean.BaseCommand;
-import com.timyrobot.listener.EndListener;
+import com.timyrobot.system.bean.BaseCommand;
+import com.timyrobot.system.controlsystem.listener.EndListener;
 
 /**
  * 控制器的listener，每一个控制器都要实现这个接口

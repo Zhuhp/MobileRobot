@@ -2,7 +2,7 @@ package com.timyrobot.service.emotion.parser;
 
 import android.content.Context;
 
-import com.timyrobot.controlsystem.EmotionControl;
+import com.timyrobot.system.controlsystem.EmotionControl;
 import com.timyrobot.service.emotion.parser.impl.DefaultEmotionParser;
 
 /**

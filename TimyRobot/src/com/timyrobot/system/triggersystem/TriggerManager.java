@@ -1,4 +1,4 @@
-package com.timyrobot.triggersystem;
+package com.timyrobot.system.triggersystem;
 
 import android.content.Context;
 import android.os.Handler;
@@ -7,10 +7,10 @@ import android.os.Message;
 
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.common.Property;
-import com.timyrobot.filler.IFiller;
-import com.timyrobot.listener.DataReceiver;
+import com.timyrobot.system.filler.IFiller;
+import com.timyrobot.system.triggersystem.listener.DataReceiver;
 
 /**
  * Created by zhangtingting on 15/8/7.

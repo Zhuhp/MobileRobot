@@ -1,7 +1,7 @@
-package com.timyrobot.triggersystem;
+package com.timyrobot.system.triggersystem;
 
-import com.timyrobot.bean.NeedVoiceReconCommand;
-import com.timyrobot.listener.DataReceiver;
+import com.timyrobot.system.bean.NeedVoiceReconCommand;
+import com.timyrobot.system.triggersystem.listener.DataReceiver;
 
 /**
  * Created by zhangtingting on 15/8/14.

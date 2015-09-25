@@ -1,4 +1,4 @@
-package com.timyrobot.bean;
+package com.timyrobot.system.bean;
 
 /**
  * 需要触发语音识别的命令

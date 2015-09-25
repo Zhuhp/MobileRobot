@@ -1,6 +1,6 @@
-package com.timyrobot.filler;
+package com.timyrobot.system.filler;
 
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 
 /**
  * Created by zhangtingting on 15/9/24.

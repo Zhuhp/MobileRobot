@@ -1,4 +1,4 @@
-package com.timyrobot.filler;
+package com.timyrobot.system.filler;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,9 +8,9 @@ import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.service.speechrecongnizer.SpeechJsonParser;
-import com.timyrobot.triggersystem.TriggerSwitch;
+import com.timyrobot.system.triggersystem.TriggerSwitch;
 
 /**
  * 语音识别内容填充器

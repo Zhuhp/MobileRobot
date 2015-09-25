@@ -1,4 +1,4 @@
-package com.timyrobot.bean;
+package com.timyrobot.system.bean;
 
 /**
  * Created by zhangtingting on 15/9/24.

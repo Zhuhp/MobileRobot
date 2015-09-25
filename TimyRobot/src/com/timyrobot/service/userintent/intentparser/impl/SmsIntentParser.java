@@ -1,6 +1,6 @@
 package com.timyrobot.service.userintent.intentparser.impl;
 
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.common.SystemServiceKey;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;

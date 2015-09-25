@@ -1,4 +1,4 @@
-package com.timyrobot.controlsystem;
+package com.timyrobot.system.controlsystem;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 
-import com.timyrobot.listener.EndListener;
+import com.timyrobot.system.controlsystem.listener.EndListener;
 import com.timyrobot.robot.bean.RobotFace;
 import com.timyrobot.robot.bean.RobotSubFace;
 import com.timyrobot.robot.data.RobotData;

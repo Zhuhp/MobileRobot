@@ -1,6 +1,6 @@
-package com.timyrobot.listener;
+package com.timyrobot.system.triggersystem.listener;
 
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 
 /**
  * Created by zhangtingting on 15/8/5.

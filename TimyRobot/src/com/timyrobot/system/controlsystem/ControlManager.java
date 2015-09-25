@@ -1,17 +1,14 @@
-package com.timyrobot.controlsystem;
+package com.timyrobot.system.controlsystem;
 
 import android.app.Activity;
 
-import com.timyrobot.bean.BaseCommand;
-import com.timyrobot.filler.IFiller;
-import com.timyrobot.listener.EndListener;
-import com.timyrobot.triggersystem.TriggerSwitch;
+import com.timyrobot.system.bean.BaseCommand;
+import com.timyrobot.system.filler.IFiller;
+import com.timyrobot.system.controlsystem.listener.EndListener;
+import com.timyrobot.system.triggersystem.TriggerSwitch;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 
 /**
  * Created by zhangtingting on 15/8/7.

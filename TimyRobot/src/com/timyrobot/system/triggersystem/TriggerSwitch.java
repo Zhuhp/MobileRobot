@@ -1,4 +1,4 @@
-package com.timyrobot.triggersystem;
+package com.timyrobot.system.triggersystem;
 
 /**
  * 开关，所有的触发器必须先判断这个，才可以进行下一步动作

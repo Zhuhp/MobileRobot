@@ -1,4 +1,4 @@
-package com.timyrobot.bean;
+package com.timyrobot.system.bean;
 
 import com.timyrobot.robot.data.RobotData;
 

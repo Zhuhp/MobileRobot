@@ -1,4 +1,4 @@
-package com.timyrobot.bean;
+package com.timyrobot.system.bean;
 
 /**
  * 控制台需要的命令集合

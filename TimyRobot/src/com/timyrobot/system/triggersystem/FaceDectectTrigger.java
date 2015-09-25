@@ -1,4 +1,4 @@
-package com.timyrobot.triggersystem;
+package com.timyrobot.system.triggersystem;
 
 import android.content.Context;
 import android.hardware.Camera;
@@ -11,12 +11,8 @@ import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.EventUtil;
 import com.example.robot.facedection.FaceView;
 import com.example.robot.facedection.GoogleFaceDetect;
-import com.timyrobot.bean.NeedVoiceReconCommand;
-import com.timyrobot.common.ConstDefine;
-import com.timyrobot.listener.DataReceiver;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.timyrobot.system.bean.NeedVoiceReconCommand;
+import com.timyrobot.system.triggersystem.listener.DataReceiver;
 
 /**
  * Created by zhangtingting on 15/7/27.

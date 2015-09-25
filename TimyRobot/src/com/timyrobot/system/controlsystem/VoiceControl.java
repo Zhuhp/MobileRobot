@@ -1,4 +1,4 @@
-package com.timyrobot.controlsystem;
+package com.timyrobot.system.controlsystem;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
-import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.common.Property;
-import com.timyrobot.listener.EndListener;
+import com.timyrobot.system.controlsystem.listener.EndListener;
 import com.tuling.util.GetTulingResultThread;
 import com.tuling.util.ResultWatcher;
 import com.tuling.util.TulingManager;

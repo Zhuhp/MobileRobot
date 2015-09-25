@@ -1,9 +1,8 @@
-package com.timyrobot.triggersystem;
+package com.timyrobot.system.triggersystem;
 
-import com.timyrobot.bean.BaseCommand;
-import com.timyrobot.bean.HttpCommand;
-import com.timyrobot.common.ConstDefine;
-import com.timyrobot.listener.DataReceiver;
+import com.timyrobot.system.bean.BaseCommand;
+import com.timyrobot.system.bean.HttpCommand;
+import com.timyrobot.system.triggersystem.listener.DataReceiver;
 
 import org.json.JSONObject;
 
