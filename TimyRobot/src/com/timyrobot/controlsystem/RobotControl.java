@@ -4,9 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.text.TextUtils;
 
-import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.bean.BaseCommand;
 import com.timyrobot.listener.EndListener;
 import com.timyrobot.robot.RobotProxy;
 import com.timyrobot.robot.bean.RobotAction;
@@ -45,7 +44,7 @@ public class RobotControl implements IControlListener{
     }
 
     @Override
-    public void distributeCMD(ControllCommand cmd) {
+    public void distributeCMD(BaseCommand cmd) {
         doAction(cmd.getRobotAction());
     }
 

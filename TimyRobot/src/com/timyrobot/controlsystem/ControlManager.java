@@ -1,12 +1,9 @@
 package com.timyrobot.controlsystem;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Handler;
-import android.text.TextUtils;
 
-import com.timyrobot.bean.ControllCommand;
-import com.timyrobot.common.ConstDefine;
+import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.filler.IFiller;
 import com.timyrobot.listener.EndListener;
 import com.timyrobot.triggersystem.TriggerSwitch;
 
@@ -15,29 +12,23 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zhangtingting on 15/8/7.
  */
-public class ControlManager implements EndListener{
+public class ControlManager implements EndListener, IFiller{
     private final static String TAG = "ControlManager";
     Activity mActivity;
 
     private List<IControlListener> mListenerList;
 
-//    private EmotionControl mEmotionCtrl;
     private VoiceControl mVoiceCtrl;
     private RobotControl mRobotCtrl;
     private SystemControl mSystemCtrl;
 
-    ScheduledExecutorService mService = Executors.newScheduledThreadPool(1);
-    ScheduledFuture mCurrentFuture;
-
     public ControlManager(Activity activity){
         mActivity = activity;
         mListenerList = new ArrayList<>();
-//        mEmotionCtrl = new EmotionControl(mActivity,EmotionControl.EmotionType.DEFAULT,handler,this);
         mVoiceCtrl = new VoiceControl(mActivity);
         mVoiceCtrl.setEndListener(this);
         mRobotCtrl = new RobotControl(mActivity);
@@ -48,14 +39,18 @@ public class ControlManager implements EndListener{
         addControlListener(mVoiceCtrl);
         addControlListener(mRobotCtrl);
         addControlListener(mSystemCtrl);
-//        mEmotionCtrl.changeEmotion("blink",false);
     }
 
     public void addControlListener(IControlListener listener){
         mListenerList.add(listener);
     }
 
-    public void distribute(ControllCommand cmd){
+    @Override
+    public void fill(BaseCommand cmd) {
+        distribute(cmd);
+    }
+
+    private void distribute(BaseCommand cmd){
         if(cmd == null){
             return;
         }
@@ -111,4 +106,5 @@ public class ControlManager implements EndListener{
             TriggerSwitch.INSTANCE.setCanNext(true);
         }
     }
+
 }

@@ -1,5 +1,7 @@
 package com.timyrobot.triggersystem;
 
+import com.timyrobot.bean.BaseCommand;
+import com.timyrobot.bean.HttpCommand;
 import com.timyrobot.common.ConstDefine;
 import com.timyrobot.listener.DataReceiver;
 
@@ -24,9 +26,9 @@ public enum HttpTrigger {
     private int mCode;
     private boolean isReceiver;
 
-    private DataReceiver mTouchDataReceiver;
-    public void init(DataReceiver touchDataReceiver, int code, boolean isReceiver){
-        mTouchDataReceiver = touchDataReceiver;
+    private DataReceiver mDataReceiver;
+    public void init(DataReceiver dataReceiver, int code, boolean isReceiver){
+        mDataReceiver = dataReceiver;
         this.isReceiver = isReceiver;
         mCode = code;
         initSocket();
@@ -55,10 +57,9 @@ public enum HttpTrigger {
                             从调用这个方法开始，该线程会一直处于阻塞状态，
                             直到接收到新的消息，代码才会往下走*/
                             String data = mReader.readLine();
-                            JSONObject object = new JSONObject();
-                            object.put(ConstDefine.TriggerDataKey.TYPE,ConstDefine.TriggerDataType.Http);
-                            object.put(ConstDefine.TriggerDataKey.CONTENT,data);
-                            mTouchDataReceiver.onReceive(object.toString());
+                            BaseCommand command = new HttpCommand();
+                            command.setVoiceReconContent(data);
+                            mDataReceiver.onReceive(command);
                             //handler发送消息，在handleMessage()方法中接收
                         }
                     }

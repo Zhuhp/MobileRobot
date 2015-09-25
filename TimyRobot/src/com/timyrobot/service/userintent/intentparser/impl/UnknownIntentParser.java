@@ -1,6 +1,6 @@
 package com.timyrobot.service.userintent.intentparser.impl;
 
-import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.bean.BaseCommand;
 import com.timyrobot.robot.bean.RobotCmd;
 import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
@@ -14,23 +14,35 @@ import org.json.JSONObject;
  */
 public class UnknownIntentParser implements IUserIntentParser{
     @Override
-    public ControllCommand parseIntent(String result) {
+    public boolean parseIntent(String result, BaseCommand command) {
+        if(command == null){
+            return false;
+        }
         try {
             JSONObject object = new JSONObject(result);
             String text = ActionJsonParser.getText(object);
             RobotCmd cmd = RobotData.INSTANCE.getRobotCmd(text);
-            ControllCommand command = null;
             if(cmd != null){
-                command = new ControllCommand(cmd.getFace(),cmd.getVoice(),false,cmd.getAction(),cmd.getSystem(),null);
+                command.setEmotionName(cmd.getFace());
+                command.setVoiceContent(cmd.getVoice());
+                command.setIsNeedTuling(false);
+                command.setRobotAction(cmd.getAction());
+                command.setSystemOperator(cmd.getSystem());
+                command.setCmd(null);
             }else{
-                command = new ControllCommand(null,text,true,"unkonwn",result,null);
+                command.setEmotionName(null);
+                command.setVoiceContent(text);
+                command.setIsNeedTuling(true);
+                command.setRobotAction("unkonwn");
+                command.setSystemOperator(result);
+                command.setCmd(null);
             }
 
-            return command;
+            return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
 }

@@ -6,5 +6,6 @@
 /captures
 /gradle
 *.iml
-FaceDetection
+face-detection
 opencvsdk
+voicerecon

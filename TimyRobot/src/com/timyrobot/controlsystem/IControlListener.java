@@ -1,6 +1,6 @@
 package com.timyrobot.controlsystem;
 
-import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.bean.BaseCommand;
 import com.timyrobot.listener.EndListener;
 
 /**
@@ -19,7 +19,7 @@ public interface IControlListener {
      * 通过该方法向控制器发送命令
      * @param cmd 命令
      */
-    void distributeCMD(ControllCommand cmd);
+    void distributeCMD(BaseCommand cmd);
 
     /**
      * 设置结束的监听事件

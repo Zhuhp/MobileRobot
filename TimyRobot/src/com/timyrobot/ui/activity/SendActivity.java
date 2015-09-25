@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.robot.R;
+import com.timyrobot.bean.BaseCommand;
 import com.timyrobot.common.Property;
 import com.timyrobot.listener.DataReceiver;
 import com.timyrobot.triggersystem.HttpTrigger;
@@ -37,11 +38,11 @@ public class SendActivity extends Activity implements View.OnClickListener, Data
     }
 
     @Override
-    public void onReceive(final String data) {
+    public void onReceive(final BaseCommand data) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(SendActivity.this, data, Toast.LENGTH_LONG).show();
+                Toast.makeText(SendActivity.this, data.getVoiceReconContent(), Toast.LENGTH_LONG).show();
             }
         });
     }

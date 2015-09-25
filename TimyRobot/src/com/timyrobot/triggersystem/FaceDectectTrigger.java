@@ -11,6 +11,7 @@ import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.EventUtil;
 import com.example.robot.facedection.FaceView;
 import com.example.robot.facedection.GoogleFaceDetect;
+import com.timyrobot.bean.NeedVoiceReconCommand;
 import com.timyrobot.common.ConstDefine;
 import com.timyrobot.listener.DataReceiver;
 
@@ -79,24 +80,8 @@ public enum FaceDectectTrigger {
 
                     if ( size > 600) {
                         if(mReceiver != null){
-                            try {
-//                                JSONObject object = new JSONObject();
-//                                object.put(ConstDefine.TriggerDataKey.TYPE,
-//                                        ConstDefine.TriggerDataType.Vision);
-//                                JSONObject faceObj = new JSONObject();
-//                                faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE);
-//                                int position = faces[0].rect.left
-//                                        + (faces[0].rect.right - faces[0].rect.left) / 2;
-//                                faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
-//                                object.put(ConstDefine.TriggerDataKey.CONTENT,
-//                                        faceObj.toString());
-                                JSONObject object = new JSONObject();
-                                object.put(ConstDefine.TriggerDataKey.TYPE,ConstDefine.TriggerDataType.TriggerAnotherCmd);
-                                object.put(ConstDefine.TriggerDataKey.CONTENT,ConstDefine.VisionCMD.DETECT_FACE);
-                                mReceiver.onReceive(object.toString());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            mReceiver.onReceive(new NeedVoiceReconCommand());
+
                         }
                         break;
                     }
@@ -104,21 +89,7 @@ public enum FaceDectectTrigger {
 
                     if ( size > 500&&size <= 600) {
                                 if(mReceiver != null){
-                                    try {
-                                        JSONObject object = new JSONObject();
-                                        object.put(ConstDefine.TriggerDataKey.TYPE,
-                                                ConstDefine.TriggerDataType.Vision);
-                                        JSONObject faceObj = new JSONObject();
-                                        faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_FACE_LOCATION);
-                                        int position = faces[0].rect.left
-                                                + (faces[0].rect.right - faces[0].rect.left) / 2;
-                                        faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(position));
-                                        object.put(ConstDefine.TriggerDataKey.CONTENT,
-                                                faceObj.toString());
-                                        mReceiver.onReceive(object.toString());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+//                                    mReceiver.onReceive(object.toString());
                                 }
                         break;
                     }
@@ -126,20 +97,7 @@ public enum FaceDectectTrigger {
 
                     if (faces.length >= 3) {
                         if (mReceiver != null) {
-                            try {
-                                JSONObject object = new JSONObject();
-                                object.put(ConstDefine.TriggerDataKey.TYPE,
-                                        ConstDefine.TriggerDataType.Vision);
-                                JSONObject faceObj = new JSONObject();
-                                faceObj.put(ConstDefine.TriggerDataKey.FACE_TGR_TYPE, ConstDefine.VisionCMD.DETECT_MANY_FACES);
-                                faceObj.put(ConstDefine.TriggerDataKey.NUMBER, String.valueOf(faces.length));
-                                object.put(ConstDefine.TriggerDataKey.CONTENT,
-                                        faceObj.toString());
-                                mReceiver.onReceive(object.toString());
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+//                            mReceiver.onReceive(object.toString());
                         }
                         break;
                     }

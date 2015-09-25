@@ -1,12 +1,10 @@
 package com.timyrobot.controlsystem;
 
 import android.content.Context;
-import android.net.Uri;
 import android.text.TextUtils;
 
-import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.bean.BaseCommand;
 import com.timyrobot.listener.EndListener;
-import com.timyrobot.robot.RobotProxy;
 import com.timyrobot.service.music.MusicPlayer;
 
 import org.json.JSONException;
@@ -30,7 +28,7 @@ public class SystemControl implements IControlListener{
     }
 
     @Override
-    public void distributeCMD(ControllCommand cmd) {
+    public void distributeCMD(BaseCommand cmd) {
         doAction(cmd.getSystemOperator());
     }
 

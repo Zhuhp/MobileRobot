@@ -9,7 +9,7 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
-import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.bean.BaseCommand;
 import com.timyrobot.common.Property;
 import com.timyrobot.listener.EndListener;
 import com.tuling.util.GetTulingResultThread;
@@ -51,7 +51,7 @@ public class VoiceControl implements IControlListener{
     }
 
     @Override
-    public void distributeCMD(ControllCommand cmd) {
+    public void distributeCMD(BaseCommand cmd) {
         response(cmd);
     }
 
@@ -60,7 +60,7 @@ public class VoiceControl implements IControlListener{
         mEndListener = listener;
     }
 
-    private void response(ControllCommand cmd){
+    private void response(BaseCommand cmd){
         isNext = false;
         String content = cmd.getVoiceContent();
         if(TextUtils.isEmpty(content)){

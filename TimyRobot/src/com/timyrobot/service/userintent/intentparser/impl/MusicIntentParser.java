@@ -1,10 +1,7 @@
 package com.timyrobot.service.userintent.intentparser.impl;
 
-import android.app.Activity;
-
-import com.timyrobot.bean.ControllCommand;
+import com.timyrobot.bean.BaseCommand;
 import com.timyrobot.common.SystemServiceKey;
-import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.service.userintent.actionparse.ActionJsonParser;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 
@@ -16,10 +13,13 @@ import org.json.JSONObject;
  */
 public class MusicIntentParser implements IUserIntentParser{
 
-    private ControllCommand mAction;
+    private BaseCommand mAction;
 
     @Override
-    public ControllCommand parseIntent(String result) {
+    public boolean parseIntent(String result, BaseCommand command) {
+        if(command == null){
+            return false;
+        }
         try {
             JSONObject object = new JSONObject(result);
             JSONObject systemData = new JSONObject();
@@ -28,12 +28,17 @@ public class MusicIntentParser implements IUserIntentParser{
             JSONObject slot = ActionJsonParser.getSlots(object);
             systemData.put(SystemServiceKey.Music.ARTIST,slot.opt(SystemServiceKey.Music.ARTIST));
             systemData.put(SystemServiceKey.Music.SONG,slot.opt(SystemServiceKey.Music.SONG));
-            ControllCommand command = new ControllCommand(null,"好的，主人，很荣幸为你服务",false,systemData.toString(),result,null);
-            return command;
+            command.setEmotionName(null);
+            command.setVoiceContent("好的，主人，很荣幸为你服务");
+            command.setIsNeedTuling(false);
+            command.setRobotAction(systemData.toString());
+            command.setSystemOperator(result);
+            command.setCmd(null);
+            return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
 }

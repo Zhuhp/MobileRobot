@@ -87,7 +87,8 @@ public class InitActivity extends Activity implements View.OnClickListener{
                 mBluePresent.findBlue(this);
                 break;
             case R.id.btn_p1:
-//                new DownloadFileTask("hei01").execute();
+                new DownloadFileTask("hei01").execute();
+//                startActivity(new Intent(this, MainActivity.class));
             case R.id.btn_p2:
                 new DownloadFileTask("hei02").execute();
                 break;
