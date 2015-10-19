@@ -76,6 +76,12 @@
         <activity android:name="com.timyrobot.ui.activity.SendActivity">
 
         </activity>
+
+        <activity android:name="com.timyrobot.ui.activity.AddActionActivity"
+            android:screenOrientation="landscape"
+            >
+
+        </activity>
     </application>
 
 </manifest>

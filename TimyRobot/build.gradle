@@ -49,4 +49,15 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //    compile 'com.akexorcist:bluetoothspp:1.0.0'
     compile project(':BluetoothLibrary')
+    compile ('com.facebook.fresco:fresco:0.7.0'){
+        exclude module: 'support-v4'
+    }
+    compile 'io.reactivex:rxandroid:1.0.1'
+
+    compile 'ai.api:sdk:1.7.0@aar'
+    compile ('com.android.support:appcompat-v7:22.0.0'){
+        exclude module: 'support-v4'
+    }
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'commons-io:commons-io:2.4'
 }

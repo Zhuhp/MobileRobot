@@ -10,11 +10,13 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.robot.R;
+import com.timyrobot.common.SharedPrefs;
 import com.timyrobot.httpcom.filedownload.FileDownload;
 import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.bluetooth.IBlueConnectListener;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.iml.BluetoothPresent;
+import com.timyrobot.utils.SharePrefsUtils;
 
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
@@ -32,9 +34,9 @@ public class InitActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
         mBluePresent = new BluetoothPresent();
-        if(!mBluePresent.initBluetoothService(getApplicationContext())){
-            finish();
-        }
+//        if(!mBluePresent.initBluetoothService(getApplicationContext())){
+//            finish();
+//        }
         mBluePresent.setConnectListener(new IBlueConnectListener() {
             @Override
             public void connect(String name, String address) {
@@ -64,13 +66,13 @@ public class InitActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onStart() {
         super.onStart();
-        mBluePresent.startBluetoothService(this);
+//        mBluePresent.startBluetoothService(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBluePresent.stopBluetoothService();
+//        mBluePresent.stopBluetoothService();
     }
 
     private void initView(){
@@ -84,15 +86,25 @@ public class InitActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_find_blue:
-                mBluePresent.findBlue(this);
+//                mBluePresent.findBlue(this);
+                Intent intent = new Intent(this, EmotionActivity.class);
+                startActivity(intent);
                 break;
             case R.id.btn_p1:
                 new DownloadFileTask("hei01").execute();
+                setRobotName("hei01");
 //                startActivity(new Intent(this, MainActivity.class));
+                break;
             case R.id.btn_p2:
                 new DownloadFileTask("hei02").execute();
+                setRobotName("hei02");
                 break;
         }
+    }
+
+    private void setRobotName(String name){
+        SharePrefsUtils utils = new SharePrefsUtils(this, SharedPrefs.ROBOT_PROPERTY_FILE_NAME);
+        utils.setStringData(SharedPrefs.ROBOTKEY.CURRENT_ROBOT_NAME, name);
     }
 
     @Override
@@ -127,11 +139,11 @@ public class InitActivity extends Activity implements View.OnClickListener{
 
         @Override
         protected Object doInBackground(Object... params) {
-            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/cmd.txt", "cmd.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/action.txt", "action.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/face.txt", "face.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/robotproperty.txt", "robotproperty.txt");
-            RobotData.INSTANCE.initRobotData(InitActivity.this.getApplicationContext());
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/cmd.txt", mFileName, "cmd.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/action.txt", mFileName,"action.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/face.txt", mFileName, "face.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/robotproperty.txt", mFileName, "robotproperty.txt");
+            RobotData.INSTANCE.initRobotData(InitActivity.this.getApplicationContext(), mFileName);
             return null;
         }
     }

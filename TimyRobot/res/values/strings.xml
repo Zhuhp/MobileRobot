@@ -64,5 +64,12 @@
 	<string name="str_black2">小黑2</string>
 	<string name="str_send">发送</string>
 	<string name="str_robot_property">机器角色选择</string>
+	<string name="str_login_login">登陆</string>
+	<string name="str_register_register">注册</string>
+	<string name="str_add_action">增加动作</string>
+	<string name="str_edit_action">修改动作</string>
+	<string name="str_save_action">保存修改</string>
+	<string name="str_quit_edit_action">退出编辑</string>
+	<string name="str_action_empty">没有动作可调试</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.timyrobot.httpcom.filedownload;
 
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.timyrobot.common.ConstDefine;
@@ -24,11 +25,11 @@ public class FileDownload {
      * @param fileName 文件名
      * @return 本地文件
      */
-    public static File downloadFile(String url, String fileName){
+    public static File downloadFile(String url, String robotName, String fileName){
         try {
             final URL downloadFileUrl = new URL(url);
             final URLConnection urlConnection = downloadFileUrl.openConnection();
-            File file = getPropertySaveFile(fileName);
+            File file = getPropertySaveFile(robotName, fileName);
             if(file == null){
                 return null;
             }
@@ -56,7 +57,7 @@ public class FileDownload {
      * @param fileName 文件名
      * @return File
      */
-    private static File getPropertySaveFile(String fileName){
+    private static File getPropertySaveFile(String robotName, String fileName){
         if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             return null;
         }
@@ -65,6 +66,10 @@ public class FileDownload {
             file.mkdirs();
         }
         file = new File(file, "Property");
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        file = new File(file, robotName);
         if(!file.exists()){
             file.mkdirs();
         }
@@ -85,7 +90,10 @@ public class FileDownload {
      * @param fileName 文件名
      * @return 返回本地配置文件
      */
-    public static File getPropertyFileExist(String fileName){
+    public static File getPropertyFileExist(String robotName, String fileName){
+        if(TextUtils.isEmpty(robotName)){
+            return null;
+        }
         if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             return null;
         }
@@ -94,6 +102,10 @@ public class FileDownload {
             return null;
         }
         file = new File(file, "Property");
+        if(!file.exists()){
+            return null;
+        }
+        file = new File(file, robotName);
         if(!file.exists()){
             return null;
         }

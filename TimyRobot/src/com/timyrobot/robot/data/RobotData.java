@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,26 +41,45 @@ public enum RobotData {
     private Map<String,RobotCmd> mCmd;
     private Map<String,RobotFace> mFace;
 
-    public void initRobotData(Context ctx){
+    public void initRobotData(Context ctx, String name){
         Log.i(TAG, "Init Robot Data!!");
         mAction = new HashMap<>();
         mCmd = new HashMap<>();
         mFace = new HashMap<>();
-        initRobotProperty(ctx);
-        initCmd(ctx);
-        initAction(ctx);
-        initFace(ctx);
+        initRobotProperty(ctx, name);
+        initCmd(ctx, name);
+        initAction(ctx, name);
+        initFace(ctx, name);
     }
 
-    private void initRobotProperty(Context ctx){
+    /**
+     * 根据角色获取输入流，如果没有该角色的数据，就用默认的
+     * @param context context
+     * @param name 角色名，同时也是文件名
+     * @param propertyName 配置文件名
+     * @return 输入流
+     */
+    private InputStream getInputStreamByName(Context context, String name, String propertyName){
         try {
             InputStream stream = null;
-            File file  = FileDownload.getPropertyFileExist("robotproperty.txt");
-            if(file != null){
+            File file = FileDownload.getPropertyFileExist(name, propertyName);
+            if (file != null) {
                 stream = new FileInputStream(file);
-            }else {
-                stream = ctx.getAssets().open("robotproperty.txt");
+            } else {
+                stream = context.getAssets().open(propertyName);
             }
+            return stream;
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void initRobotProperty(Context ctx, String name){
+        try {
+            InputStream stream = getInputStreamByName(ctx, name, "robotproperty.txt");
             BufferedReader cmdBr = new BufferedReader(new InputStreamReader(stream));
             String line = null;
             while((line = cmdBr.readLine()) != null) {
@@ -78,15 +98,9 @@ public enum RobotData {
         }
     }
 
-    private void initCmd(Context ctx){
+    private void initCmd(Context ctx, String name){
         try {
-            InputStream stream = null;
-            File file  = FileDownload.getPropertyFileExist("cmd.txt");
-            if(file != null){
-                stream = new FileInputStream(file);
-            }else {
-                stream = ctx.getAssets().open("cmd.txt");
-            }
+            InputStream stream = getInputStreamByName(ctx, name, "cmd.txt");
             BufferedReader cmdBr = new BufferedReader(new InputStreamReader(stream));
             String line = null;
             while((line = cmdBr.readLine()) != null) {
@@ -121,15 +135,9 @@ public enum RobotData {
     }
 
 
-    private void initFace(Context ctx){
+    private void initFace(Context ctx, String name){
         try {
-            InputStream stream = null;
-            File file  = FileDownload.getPropertyFileExist("face.txt");
-            if(file != null){
-                stream = new FileInputStream(file);
-            }else {
-                stream = ctx.getAssets().open("face.txt");
-            }
+            InputStream stream = getInputStreamByName(ctx, name, "face.txt");
             BufferedReader faceBr = new BufferedReader(new InputStreamReader(stream));
             String line;
             while((line = faceBr.readLine()) != null) {
@@ -169,15 +177,9 @@ public enum RobotData {
 
     }
 
-    private void initAction(Context ctx){
+    private void initAction(Context ctx, String name){
         try {
-            InputStream stream = null;
-            File file  = FileDownload.getPropertyFileExist("action.txt");
-            if(file != null){
-                stream = new FileInputStream(file);
-            }else {
-                stream = ctx.getAssets().open("action.txt");
-            }
+            InputStream stream = getInputStreamByName(ctx, name, "action.txt");
             BufferedReader actionBr = new BufferedReader(new InputStreamReader(stream));
             String line;
             while((line = actionBr.readLine()) != null) {

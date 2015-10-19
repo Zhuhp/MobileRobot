@@ -1,14 +1,10 @@
 package com.example.robot.view;
 
-
-
-import android.R;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.IBinder;
-import android.view.View;
 
 public class MusicService extends Service{
 	public final String MUSICURL = "url";

@@ -46,11 +46,11 @@ public class RobotListActivity extends Activity{
 
         @Override
         protected Object doInBackground(Object... params) {
-            FileDownload.downloadFile("http://121.43.226.152:8080/" + mFileName + "/cmd.txt", "cmd.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/action.txt", "action.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/face.txt", "face.txt");
-            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/robotproperty.txt", "robotproperty.txt");
-            RobotData.INSTANCE.initRobotData(RobotListActivity.this.getApplicationContext());
+            FileDownload.downloadFile("http://121.43.226.152:8080/" + mFileName + "/cmd.txt", mFileName, "cmd.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/action.txt", mFileName, "action.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/face.txt", mFileName, "face.txt");
+            FileDownload.downloadFile("http://121.43.226.152:8080/"+mFileName+"/robotproperty.txt", mFileName, "robotproperty.txt");
+            RobotData.INSTANCE.initRobotData(RobotListActivity.this.getApplicationContext(), mFileName);
             return null;
         }
     }

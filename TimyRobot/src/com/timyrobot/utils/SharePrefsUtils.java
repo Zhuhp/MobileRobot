@@ -10,17 +10,17 @@ public class SharePrefsUtils {
 
     SharedPreferences sp;
 
-    public SharePrefsUtils(Context context){
-       sp = context.getSharedPreferences("blut_data",Context.MODE_PRIVATE);
+    public SharePrefsUtils(Context context, String name){
+       sp = context.getSharedPreferences(name,Context.MODE_PRIVATE);
     }
 
-    public void setBlueAddress(String address){
+    public void setStringData(String key, String data){
         SharedPreferences.Editor et = sp.edit();
-        et.putString("blue_address",address);
+        et.putString(key, data);
         et.commit();
     }
 
-    public String getBlueAddress(){
-        return sp.getString("blue_address",null);
+    public String getStringData(String key){
+        return sp.getString(key, null);
     }
 }

@@ -20,6 +20,7 @@ import com.timyrobot.system.bean.NeedVoiceReconCommand;
 import com.timyrobot.system.controlsystem.ControlManager;
 import com.timyrobot.system.controlsystem.EmotionControl;
 import com.timyrobot.system.controlsystem.IControlListener;
+import com.timyrobot.system.filler.EngilshVoiceFiller;
 import com.timyrobot.system.filler.IFiller;
 import com.timyrobot.system.filler.UnderstandTextFiller;
 import com.timyrobot.system.filler.VoiceFiller;
@@ -73,8 +74,9 @@ public class EmotionActivity extends Activity implements
         mCtrlManager.addControlListener(this);
         setEndListener(mCtrlManager);
 
-        mFiller1 = new UnderstandTextFiller(this, mCtrlManager);
-        mFiller2 = new VoiceFiller(this, mFiller1);
+//        mFiller1 = new UnderstandTextFiller(this, mCtrlManager);
+//        mFiller2 = new VoiceFiller(this, mFiller1);
+        mFiller2 = new EngilshVoiceFiller(this, mCtrlManager);
 
         mTriggerManager = new TriggerManager(this, mFiller2);
         mDataReceiver = mTriggerManager;

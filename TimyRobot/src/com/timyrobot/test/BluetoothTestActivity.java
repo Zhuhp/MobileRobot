@@ -7,19 +7,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.robot.R;
-import com.timyrobot.service.userintent.actionparse.Action;
 import com.timyrobot.service.userintent.intentparser.IUserIntentParser;
 import com.timyrobot.ui.present.IBluetoothPresent;
 import com.timyrobot.ui.present.iml.BluetoothPresent;
-import com.timyrobot.ui.view.IEmotionView;
 
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 /**
  * Created by zhangtingting on 15/7/28.
  */
-public class BluetoothTestActivity extends Activity implements IEmotionView,
-        View.OnClickListener{
+public class BluetoothTestActivity extends Activity implements View.OnClickListener{
 
     private IBluetoothPresent mBluePresent;
 
@@ -90,10 +87,5 @@ public class BluetoothTestActivity extends Activity implements IEmotionView,
                 }
                 break;
         }
-    }
-
-    @Override
-    public void userAction(IUserIntentParser action) {
-
     }
 }

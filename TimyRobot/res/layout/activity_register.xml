@@ -4,18 +4,18 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/et_login_username"
+        android:id="@+id/et_register_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/et_login_pwd"
+        android:id="@+id/et_register_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/btn_login_login"
+        android:id="@+id/btn_register_register"
         android:layout_width="match_parent"
-        android:text="@string/str_login_login"
+        android:text="@string/str_register_register"
         android:layout_height="wrap_content" />
 </LinearLayout>
