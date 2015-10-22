@@ -78,25 +78,6 @@ public class ControlManager implements EndListener, IFiller{
         return end;
     }
 
-//    public void startIdle(){
-//        if((mCurrentFuture != null) && (!mCurrentFuture.isCancelled())){
-//            mCurrentFuture.cancel(true);
-//        }
-//       mCurrentFuture = mService.scheduleAtFixedRate(new Runnable() {
-//            @Override
-//            public void run() {
-//                mActivity.sendBroadcast(new Intent(ConstDefine.IntentFilterString.BROADCAST_IDLE_CONVERSATION));
-//            }
-//        }, 0, 40, TimeUnit.SECONDS);
-//    }
-//
-//    public void endIdle(){
-//        if((mCurrentFuture != null) && (!mCurrentFuture.isCancelled())){
-//            mCurrentFuture.cancel(true);
-//        }
-//        mCurrentFuture = null;
-//    }
-
     @Override
     public void onEnd() {
         if(isEnd()){

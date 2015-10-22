@@ -60,4 +60,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'commons-io:commons-io:2.4'
     compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.yalantis:contextmenu:1.0.4'
+
+
 }
