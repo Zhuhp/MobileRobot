@@ -33,7 +33,6 @@ public class FloatView extends ImageView {
 	private WindowManager.LayoutParams windowManagerParams = ((IRApplication) getContext()
 			.getApplicationContext()).getWindowParams();
 
-	@SuppressWarnings("deprecation")
 	public FloatView(Context context) {
 		super(context);
 		Log.i(TAG, "FloatView!");
@@ -48,39 +47,39 @@ public class FloatView extends ImageView {
         /* 为动画添加一帧 */  
         //参数mBitAnimation是该帧的图片  
         //参数100是该帧显示的时间,按毫秒计算  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg1);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg2);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg3);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg4);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg5);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg6);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg7);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        mBitAnimation = getResources().getDrawable(R.drawable.logoimg8);  
-        frameAnimation.addFrame(mBitAnimation, 150);  
-        
-        frameAnimation.setOneShot( false );  /* 设置播放模式是否循环false表示循环而true表示不循环 */  
-        this.setBackground(frameAnimation);  
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg1);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg2);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg3);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg4);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg5);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg6);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg7);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//        mBitAnimation = getResources().getDrawable(R.drawable.logoimg8);
+//        frameAnimation.addFrame(mBitAnimation, 150);
+//
+//        frameAnimation.setOneShot( false );  /* 设置播放模式是否循环false表示循环而true表示不循环 */
+//        this.setImageDrawable(frameAnimation);
 
-        opdl=new OnPreDrawListener(){    
-        	  
-            @Override   
-            public boolean onPreDraw() {    
-                   
-                 frameAnimation.start();   
-                return true;    
-  
-            }    
-  
-        };    
-         this.getViewTreeObserver().addOnPreDrawListener(opdl);
-         
+//        opdl=new OnPreDrawListener(){
+//
+//            @Override
+//            public boolean onPreDraw() {
+//
+//                 frameAnimation.start();
+//                return true;
+//
+//            }
+//
+//        };
+//         this.getViewTreeObserver().addOnPreDrawListener(opdl);
+         setImageResource(R.drawable.logoimg1);
 	}
 
 	

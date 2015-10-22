@@ -1,11 +1,14 @@
 package com.timyrobot.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import com.example.robot.R;
 import com.example.robot.facedection.CameraSurfaceView;
 import com.example.robot.facedection.FaceView;
+import com.example.robot.view.FloatView;
 import com.example.robot.view.FloatViewService;
 import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.system.bean.ChangeEmotionCommand;
@@ -20,13 +24,11 @@ import com.timyrobot.system.bean.NeedVoiceReconCommand;
 import com.timyrobot.system.controlsystem.ControlManager;
 import com.timyrobot.system.controlsystem.EmotionControl;
 import com.timyrobot.system.controlsystem.IControlListener;
+import com.timyrobot.system.controlsystem.listener.EndListener;
 import com.timyrobot.system.filler.EngilshVoiceFiller;
 import com.timyrobot.system.filler.IFiller;
-import com.timyrobot.system.filler.UnderstandTextFiller;
-import com.timyrobot.system.filler.VoiceFiller;
-import com.timyrobot.system.triggersystem.listener.DataReceiver;
-import com.timyrobot.system.controlsystem.listener.EndListener;
 import com.timyrobot.system.triggersystem.TriggerManager;
+import com.timyrobot.system.triggersystem.listener.DataReceiver;
 
 public class EmotionActivity extends Activity implements
         View.OnClickListener, View.OnLongClickListener, IControlListener{
@@ -64,6 +66,9 @@ public class EmotionActivity extends Activity implements
         initManager();
         initEmotion();
         isFirstCreate = true;
+
+//        Intent i = new Intent(this, FloatViewService.class);
+//        startService(i);
     }
 
     private void initManager(){
@@ -96,6 +101,8 @@ public class EmotionActivity extends Activity implements
         if(!isFirstCreate) {
             mTriggerManager.start();
         }
+//        FloatViewService.sendBroadCast(this, false);
+
     }
 
     @Override
@@ -108,14 +115,24 @@ public class EmotionActivity extends Activity implements
     @Override
     protected void onPause() {
         super.onPause();
-        Intent i = new Intent(getApplicationContext(), FloatViewService.class);
-        startService(i);
+//        Intent i = new Intent(getApplicationContext(), FloatViewService.class);
+//        startService(i);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mTriggerManager.stop();
+//        FloatViewService.sendBroadCast(this, true);
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        Intent i = new Intent(getApplicationContext(), FloatViewService.class);
+//        stopService(i);
     }
 
     private void changeEmotion(AnimationDrawable drawable){

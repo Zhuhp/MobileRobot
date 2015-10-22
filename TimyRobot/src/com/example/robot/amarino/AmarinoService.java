@@ -479,7 +479,7 @@ public class AmarinoService extends Service {
 		notification = new Notification(R.drawable.icon_small, title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		notification.flags |= Notification.FLAG_NO_CLEAR;
-		notification.setLatestEventInfo(this, title, getString(R.string.service_notify_text), launchIntent);
+//		notification.setLatestEventInfo(this, title, getString(R.string.service_notify_text), launchIntent);
 		return notification;
 	}
 	

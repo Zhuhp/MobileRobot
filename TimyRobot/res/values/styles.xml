@@ -6,5 +6,9 @@
     -->
     <style name="AppTheme" parent="android:Theme.Light.NoTitleBar.Fullscreen"/>
 
+    <style name="Middle_Button_Icon">
+        <item name="android:layout_height">@dimen/middle_icon_size</item>
+        <item name="android:layout_width">@dimen/middle_icon_size</item>
+    </style>
 
 </resources>
