@@ -2,7 +2,9 @@ package com.timyrobot.ui.activity;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -152,19 +154,23 @@ public class InitActivity extends FragmentActivity implements View.OnClickListen
     private void initView(){
         mBlueButton = (ImageButton)findViewById(R.id.btn_find_blue);
         mBlueButton.setOnClickListener(this);
+        AnimationDrawable drawable = (AnimationDrawable)getResources().getDrawable(R.anim.anim_main_robot);
+        mBlueButton.setImageDrawable(drawable);
+        drawable.start();
         findViewById(R.id.btn_p1).setOnClickListener(this);
         findViewById(R.id.btn_p2).setOnClickListener(this);
         findViewById(R.id.ibtn_main_activity_personal).setOnClickListener(this);
         findViewById(R.id.ibtn_main_activity_about).setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_find_blue:
-//                mBluePresent.findBlue(this);
-                Intent intent = new Intent(this, EmotionActivity.class);
-                startActivity(intent);
+                mBluePresent.findBlue(this);
+//                Intent intent = new Intent(this, EmotionActivity.class);
+//                startActivity(intent);
                 break;
             case R.id.btn_p1:
                 new DownloadFileTask("hei01").execute();
