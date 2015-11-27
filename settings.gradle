@@ -1,1 +1,1 @@
-include ':TimyRobot', ':BluetoothLibrary'
+include ':TimyRobot', ':BluetoothLibrary', ':NsdChat', ':wireme', ':httpserver', ':httpserver', ':nsdlib'

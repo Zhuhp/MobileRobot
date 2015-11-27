@@ -11,6 +11,7 @@ import com.timyrobot.system.bean.BaseCommand;
 import com.timyrobot.common.Property;
 import com.timyrobot.system.filler.IFiller;
 import com.timyrobot.system.triggersystem.listener.DataReceiver;
+import com.timyrobot.utils.ToastUtils;
 
 /**
  * Created by zhangtingting on 15/8/7.
@@ -20,6 +21,7 @@ public class TriggerManager implements DataReceiver{
     public static final int START_RUN = 0x001;
 
     private Handler mRunHandler;
+    private boolean isNeedVision = false;
 
     private IFiller mFiller;
 
@@ -28,9 +30,16 @@ public class TriggerManager implements DataReceiver{
         runThread.start();
         mRunHandler = new Handler(mSendCB);
         mFiller = filler;
-        FaceDectectTrigger.INSTANCE.init(ctx,this);
+        if(isNeedVision) {
+            FaceDectectTrigger.INSTANCE.init(ctx,this);
+        }
         TouchTrigger.INSTANCE.init(this);
-        HttpTrigger.INSTANCE.init(this, Property.ROBOT_CODE, Property.IS_RECEIVER);
+        try {
+            HttpTrigger.INSTANCE.init(this);
+        }catch (Exception e){
+            e.printStackTrace();
+            ToastUtils.toastShort(ctx, "server init fail");
+        }
     }
 
     private Handler.Callback mSendCB = new Handler.Callback() {
@@ -46,15 +55,21 @@ public class TriggerManager implements DataReceiver{
     };
 
     public void init(CameraSurfaceView cameraSurfaceView,FaceView faceView){
-        FaceDectectTrigger.INSTANCE.initFaceDectect(cameraSurfaceView, faceView);
+        if(isNeedVision) {
+            FaceDectectTrigger.INSTANCE.initFaceDectect(cameraSurfaceView, faceView);
+        }
     }
 
     public void start(){
-        FaceDectectTrigger.INSTANCE.startDetect();
+        if(isNeedVision) {
+            FaceDectectTrigger.INSTANCE.startDetect();
+        }
     }
 
     public void stop(){
-        FaceDectectTrigger.INSTANCE.stopDetect();
+        if(isNeedVision) {
+            FaceDectectTrigger.INSTANCE.stopDetect();
+        }
     }
 
 

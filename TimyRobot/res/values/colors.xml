@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="color_base_text">#4f989a</color>
+
+    <!-- 视频涂层-->
+    <color name="color_video_coat">#b24f989a</color>
+</resources>

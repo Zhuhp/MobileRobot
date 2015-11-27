@@ -25,14 +25,14 @@ public class SendActivity extends Activity implements View.OnClickListener, Data
         setContentView(R.layout.activity_sender);
         mContentET = (EditText)findViewById(R.id.et_content);
         findViewById(R.id.btn_send).setOnClickListener(this);
-        HttpTrigger.INSTANCE.init(this, Property.ROBOT_CODE, Property.IS_RECEIVER);
+//        HttpTrigger.INSTANCE.init(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_send:
-                HttpTrigger.INSTANCE.sendMsg(mContentET.getText().toString());
+//                HttpTrigger.INSTANCE.sendMsg(mContentET.getText().toString());
                 break;
         }
     }

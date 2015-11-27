@@ -6,6 +6,7 @@ import android.view.WindowManager;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.timyrobot.common.SharedPrefs;
+import com.timyrobot.httpserver.Router;
 import com.timyrobot.robot.data.RobotData;
 import com.timyrobot.service.emotion.provider.EmotionProviderFactory;
 import com.timyrobot.utils.SharePrefsUtils;
@@ -28,6 +29,7 @@ public class IRApplication extends Application {
 		EmotionProviderFactory.init(this);
 		SharePrefsUtils utils = new SharePrefsUtils(this, SharedPrefs.ROBOT_PROPERTY_FILE_NAME);
 		RobotData.INSTANCE.initRobotData(this, utils.getStringData(SharedPrefs.ROBOTKEY.CURRENT_ROBOT_NAME));
+		Router.ROUTER_PACKAGE_NAME = "com.timyrobot.httpserver.router.";
 	}
 
 }

@@ -31,6 +31,10 @@ import com.timyrobot.system.filler.UnderstandTextFiller;
 import com.timyrobot.system.filler.VoiceFiller;
 import com.timyrobot.system.triggersystem.TriggerManager;
 import com.timyrobot.system.triggersystem.listener.DataReceiver;
+import com.timyrobot.utils.ToastUtils;
+import com.zhuhp.base.nsd.RobotClient;
+
+import java.io.IOException;
 
 public class EmotionActivity extends Activity implements
         View.OnClickListener, View.OnLongClickListener, IControlListener{
@@ -46,6 +50,7 @@ public class EmotionActivity extends Activity implements
 
     private TriggerManager mTriggerManager;
     private ControlManager mCtrlManager;
+    private RobotClient mRobotClient;
 
     private IFiller mFiller1;
     private IFiller mFiller2;
@@ -67,10 +72,8 @@ public class EmotionActivity extends Activity implements
 
         initManager();
         initEmotion();
+        initRobotClient();
         isFirstCreate = true;
-
-//        Intent i = new Intent(this, FloatViewService.class);
-//        startService(i);
     }
 
     private void initManager(){
@@ -87,8 +90,8 @@ public class EmotionActivity extends Activity implements
 
         mTriggerManager = new TriggerManager(this, mFiller2);
         mDataReceiver = mTriggerManager;
-        mTriggerManager.init((CameraSurfaceView) findViewById(R.id.camera_surfaceview),
-                (FaceView) findViewById(R.id.face_view));
+//        mTriggerManager.init((CameraSurfaceView) findViewById(R.id.camera_surfaceview),
+//                (FaceView) findViewById(R.id.face_view));
     }
 
     private void initEmotion(){
@@ -97,35 +100,38 @@ public class EmotionActivity extends Activity implements
         drawable.start();
     }
 
+    private void initRobotClient(){
+        try {
+            mRobotClient = new RobotClient(this);
+            mRobotClient.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            ToastUtils.toastShort(this, "init robot server fail");
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         if(!isFirstCreate) {
             mTriggerManager.start();
         }
-//        FloatViewService.sendBroadCast(this, false);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Intent i = new Intent(this, FloatViewService.class);
-        stopService(i);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        Intent i = new Intent(getApplicationContext(), FloatViewService.class);
-//        startService(i);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mTriggerManager.stop();
-//        FloatViewService.sendBroadCast(this, true);
     }
 
 
@@ -133,8 +139,6 @@ public class EmotionActivity extends Activity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Intent i = new Intent(getApplicationContext(), FloatViewService.class);
-//        stopService(i);
     }
 
     private void changeEmotion(AnimationDrawable drawable){

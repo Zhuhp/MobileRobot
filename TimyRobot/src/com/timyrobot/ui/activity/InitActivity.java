@@ -121,10 +121,14 @@ public class InitActivity extends FragmentActivity implements View.OnClickListen
         MenuObject addFav = new MenuObject("小黑2");
         addFav.setResource(R.drawable.icn_4);
 
+        MenuObject addFa = new MenuObject("小黑3");
+        addFa.setResource(R.drawable.icn_4);
+
 
         menuObjects.add(close);
         menuObjects.add(addFr);
         menuObjects.add(addFav);
+        menuObjects.add(addFa);
         return menuObjects;
     }
 
@@ -227,6 +231,9 @@ public class InitActivity extends FragmentActivity implements View.OnClickListen
         }else if(position == 2){
             new DownloadFileTask("hei02").execute();
             setRobotName("hei02");
+        } else if(position == 3){
+            new DownloadFileTask("hei03").execute();
+            setRobotName("hei03");
         }
     }
 

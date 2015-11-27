@@ -34,7 +34,7 @@ public class RobotControl implements IControlListener{
         HandlerThread thread = new HandlerThread("RobotControl-cmd");
         thread.start();
         mCmdHandler = new Handler(thread.getLooper(), mCmdCB);
-        doAction("stand");
+        doAction("zhaohao");
 
     }
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ff000000"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:background="@drawable/bg_activity_remote_control_scan"
+        android:layout_height="match_parent"></RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_connect_status"
+        android:layout_width="wrap_content"
+        android:textColor="@color/color_base_text"
+        android:textSize="@dimen/dimen_txt_big_size"
+        android:text="Status:Connected"
+        android:layout_marginTop="@dimen/middle_margin_size"
+        android:layout_marginLeft="@dimen/normal_margin_size"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/rl_wheel"
+        android:layout_width="@dimen/dimen_large_icon_size"
+        android:background="@drawable/icon_activity_remote_wheel"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/middle_margin_size"
+        android:layout_marginLeft="@dimen/middle_margin_size"
+        android:layout_height="@dimen/dimen_large_icon_size">
+
+        <ImageButton
+            android:id="@+id/btn_ahead"
+            android:background="@null"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/icon_wheel_ahead"
+            android:layout_width="@dimen/normal_icon_size"
+            android:layout_height="@dimen/normal_icon_size" />
+
+        <ImageButton
+            android:id="@+id/btn_left"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_wheel_left"
+            android:layout_width="@dimen/normal_icon_size"
+            android:layout_height="@dimen/normal_icon_size" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:background="@null"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/icon_wheel_back"
+            android:layout_width="@dimen/normal_icon_size"
+            android:layout_height="@dimen/normal_icon_size" />
+
+        <ImageButton
+            android:id="@+id/btn_right"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_wheel_right"
+            android:layout_width="@dimen/normal_icon_size"
+            android:layout_height="@dimen/normal_icon_size" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_menu"
+        android:layout_width="@dimen/normal_middle_icon_size"
+        android:background="@drawable/icon_activity_remote_menu"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/middle_margin_size"
+        android:layout_marginRight="@dimen/middle_margin_size"
+        android:layout_height="@dimen/normal_middle_icon_size" />
+
+    <Button
+        android:id="@+id/btn_vr"
+        android:layout_width="@dimen/normal_middle_icon_size"
+        android:background="@drawable/icon_activity_remote_vr"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btn_menu"
+        android:layout_marginTop="@dimen/middle_margin_size"
+        android:layout_marginRight="@dimen/middle_margin_size"
+        android:layout_height="@dimen/normal_middle_icon_size" />
+
+
+
+</RelativeLayout>
